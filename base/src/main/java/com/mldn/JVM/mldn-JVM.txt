@@ -1,0 +1,49 @@
+JVM内存模型如图：
+年轻代：存 新创建对象和未达到一定年龄的对象；
+老年代：存 被长时间使用的对象；老年代内存空间应该大于新生代内存空间；
+元空间(永久代)：存 方法中临时变量对象；电脑有30G内存，分给JVM20G，剩余10G，元空间使用的是剩余的10G物理
+内存，永久代使用的是20G的堆内存空间；
+
+GC垃圾回收范围：新生代，老年代；注意：元空间不允许GC垃圾回收；
+
+GC垃圾回收如图：
+Minor GC只回收 Eden区不活跃对象；Full GC只回收老年代不活跃对象；
+
+8.JVM垃圾回收(Java堆内存调整参数)
+参考图片：JVM内存调整.png；
+堆内存调整策略中，基本会调整 2个参数：①-Xmx 最大内存；②-Xms 初始化内存；
+通过 Runtime类获取 最大内存maxMemory(默认为内存的 1/4) 初始化内存totalMemory(默认为内存的 1/64)
+创建 RuntimeTest.java 类
+public class RuntimeTest {
+    public static void main(String[] args) {
+        Runtime runtime = Runtime.getRuntime();
+        long maxMemory = runtime.maxMemory();
+        long totalMemory = runtime.totalMemory();
+        System.out.println(maxMemory/1024/1024 + "M");
+        System.out.println(totalMemory/1024/1024 + "M");
+    }
+}
+返回结果：
+844M
+57M
+表示初始化内存为 57M，最大内存为844M，可伸缩区为 57M~844M，可能造成性能下降，最好让初始化内存与最大内存
+保持一致，cmd中输入 java -Xmx844m -Xms844m RuntimeTest运行；或者 idea的 Edit Configurations中的
+VM options中添加参数 -Xmx844m -Xms844m，再运行该类main方法，返回 809M 809M；
+VM options中添加参数 -Xmx844m -Xms844m -XX:+PrintGCDetails，运行该类main方法，输出GC日志；
+
+运行内存分析工具：
+①F:\Program Files\Java\jdk1.8.0_101\bin\jvisualvm.exe
+②jmap -heap 7052 (7052为java.exe的pid，windows中查看各进程pid方法，cmd中输入tasklist)
+
+9.JVM垃圾回收(年轻代)
+参考图片：年轻代.png 年轻代复制算法.png
+存新创建对象，当年轻代空间不足时，执行 Minor GC进行垃圾回收，不活跃对象被回收，活跃对象保存到老年代中；
+s0和s1大小相同，并且其中其中一个必须是空的；就像用杯子接水，a杯子接水，b杯子空着，当a杯接满后，用b杯接，
+并清空a杯，以此循环；
+
+10.JVM垃圾回收(老年代)
+
+当老年代空间不足时，执行 Full GC进行垃圾回收；
+
+14.JVM垃圾收集策略(垃圾回收策略概览)
+参考图片：常用GC策略.png

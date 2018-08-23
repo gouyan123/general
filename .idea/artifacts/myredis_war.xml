@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="myredis:war">
+    <output-path>$PROJECT_DIR$/myredis/target</output-path>
+    <root id="archive" name="myredis.war">
+      <element id="artifact" artifact-name="myredis:war exploded" />
+    </root>
+  </artifact>
+</component>

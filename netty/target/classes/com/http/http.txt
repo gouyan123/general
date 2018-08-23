@@ -1,0 +1,23 @@
+基于Netty构建HTTP访问分为两类，使用浏览器访问的和使用Netty客户端访问。在介绍之前，先简单说一下如何使用
+Netty实现Http服务的， Netty的Http服务的流程是：
+1、Client向Server发送http请求。
+2、Server端对http请求进行解析。
+3、Server端向client发送http响应。
+4、Client对http响应进行解析。
+流程如下：
+①客户端发送http请求 → ②客户端利用HttpRequestEncoder对请求进行编码 → ③服务端使用HttpRequestDecoder
+对请求进行解码 → ④服务端读取客户端http请求 → ⑤服务端进行http响应 → ⑥服务端利用HttpResponsetEncoder
+对响应进行编码 → ⑦客户端利用HttpResponseDecoder对响应进行解码 → ⑧客户端读取响应
+其中的4个类是Netty提供的，它们其实也是一种Handler，其中Encoder继承自ChannelOutboundHandler，
+Decoder继承自ChannelInboundHandler，它们的作用是：
+1、HttpRequestEncoder：客户端对请求进行编码；
+2、HttpRequestDecoder：服务端对请求进行解码，即把ByteBuf解码到HttpRequest和HttpContent；
+3、HttpResponsetEncoder：服务端对响应进行编码，即把HttpResponse或HttpContent编码到ByteBuf；
+4、HttpResponseDecoder：客户端对响应进行解码；
+然而，以上编解码器只能够支持部分HTTP请求解析，比如 HTTP GET请求所传递的参数是包含在 uri 中的，因此通过
+HttpRequest 既能解析出请求参数。但是，对于 HTTP POST 请求，参数信息是放在 message body 中的（对应于
+ netty 来说就是 HttpMessage），所以以上编解码器并不能完全解析 HTTP POST请求？？？
+netty提供了一个HttpObjectAggregator来处理：
+即通过它可以把 HttpMessage 和 HttpContent 聚合成一个 FullHttpRequest 或者 FullHttpResponse （取
+决于是处理请求还是响应），而且它还可以帮助你在解码时忽略是否为“块”传输方式。
+因此，在解析 HTTP POST 请求时，请务必在 ChannelPipeline 中加上 HttpObjectAggregator。

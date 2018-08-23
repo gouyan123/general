@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="FrameworkDetectionExcludesConfiguration">
+    <file type="web" url="file://$PROJECT_DIR$/base" />
+    <file type="web" url="file://$PROJECT_DIR$/blockchain" />
+    <file type="web" url="file://$PROJECT_DIR$/DesignPatterns" />
+    <file type="web" url="file://$PROJECT_DIR$/dubbo-consumer" />
+    <file type="web" url="file://$PROJECT_DIR$/dubbo-provider" />
+    <file type="web" url="file://$PROJECT_DIR$/javaweb" />
+    <file type="web" url="file://$PROJECT_DIR$/listener" />
+    <file type="web" url="file://$PROJECT_DIR$/mongodb" />
+    <file type="web" url="file://$PROJECT_DIR$/mysql" />
+    <file type="web" url="file://$PROJECT_DIR$/netty" />
+    <file type="web" url="file://$PROJECT_DIR$/NettyGuide" />
+    <file type="web" url="file://$PROJECT_DIR$/rabbitMQ" />
+    <file type="web" url="file://$PROJECT_DIR$/redis" />
+    <file type="web" url="file://$PROJECT_DIR$/self-orm" />
+    <file type="web" url="file://$PROJECT_DIR$/self-redis" />
+    <file type="web" url="file://$PROJECT_DIR$/self-spring" />
+    <file type="web" url="file://$PROJECT_DIR$/servlet" />
+    <file type="web" url="file://$PROJECT_DIR$/spring/springmvc" />
+    <file type="web" url="file://$PROJECT_DIR$/springboot" />
+    <file type="web" url="file://$PROJECT_DIR$/springmvc" />
+    <file type="web" url="file://$PROJECT_DIR$/ssm" />
+    <file type="web" url="file://$PROJECT_DIR$/thread" />
+    <file type="web" url="file://$PROJECT_DIR$/zookeeper" />
+  </component>
+  <component name="MavenProjectsManager">
+    <option name="originalFiles">
+      <list>
+        <option value="$PROJECT_DIR$/pom.xml" />
+      </list>
+    </option>
+    <option name="ignoredFiles">
+      <set>
+        <option value="$PROJECT_DIR$/NettyGuide/pom.xml" />
+        <option value="$PROJECT_DIR$/blockchain/pom.xml" />
+        <option value="$PROJECT_DIR$/dnjacksoa/pom.xml" />
+        <option value="$PROJECT_DIR$/dubbo-consumer/pom.xml" />
+        <option value="$PROJECT_DIR$/dubbo-provider/pom.xml" />
+        <option value="$PROJECT_DIR$/javaweb/pom.xml" />
+        <option value="$PROJECT_DIR$/listener/pom.xml" />
+        <option value="$PROJECT_DIR$/netty/pom.xml" />
+        <option value="$PROJECT_DIR$/rabbitmq/pom.xml" />
+        <option value="$PROJECT_DIR$/redis/pom.xml" />
+        <option value="$PROJECT_DIR$/remoteapi/pom.xml" />
+        <option value="$PROJECT_DIR$/self-redis/pom.xml" />
+        <option value="$PROJECT_DIR$/springboot/pom.xml" />
+        <option value="$PROJECT_DIR$/strategy/pom.xml" />
+      </set>
+    </option>
+  </component>
+  <component name="ProjectResources">
+    <resource url="http://code.alibabatech.com/schema/dubbo/dubbo.xsd" location="$PROJECT_DIR$/dubbo-provider/src/main/resources/dubbo.xsd" />
+    <resource url="http://java.sun.com/dtd/web-app_2_3.dtd" location="$USER_HOME$/Desktop/web-app_2_3.dtd" />
+    <resource url="http://mybatis.org/dtd/mybatis-3-config.dtd" location="$USER_HOME$/Desktop/mybatis-3-config.dtd" />
+    <resource url="http://www.springframework.org/schema/beans/spring-beans.xsd" location="$USER_HOME$/Desktop/spring-beans-4.2.xsd" />
+    <resource url="http://www.springframework.org/schema/context/spring-mvc.xsd" location="$USER_HOME$/Desktop/spring-mvc-4.2.xsd" />
+    <resource url="http://www.springframework.org/schema/data/mongo/spring-mongo.xsd" location="$PROJECT_DIR$/mongodb/src/test/resources/spring-mongo.xsd" />
+  </component>
+  <component name="ProjectRootManager" version="2" project-jdk-name="1.8" project-jdk-type="JavaSDK">
+    <output url="file://$PROJECT_DIR$/out" />
+  </component>
+</project>

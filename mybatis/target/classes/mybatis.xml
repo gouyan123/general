@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+    <!--自动去classpath路径下读取该文件，得到properties对象，获得key对应value，不需要额外定义工具类-->
+    <!--也就是说，在配置文件中告诉properties文件的名称即可，就可以获取里面key对应的value-->
+    <properties resource="jdbc_mysql.properties"/>
+    <!--设置别名，*mapper.xml中parameterType可以使用-->
+    <typeAliases>
+        <!--<typeAlias type="com.bjpowernode.beans.Student" alias="Student" />-->
+        <package name="com.bjpowernode.beans"/>
+    </typeAliases>
+    <!--配置运行环境-->
+    <environments default="mysqlEM"><!--default指定使用哪个environment-->
+        <environment id="mysqlEM">
+            <transactionManager type="JDBC"></transactionManager><!--使用JDBC事务处理-->
+            <dataSource type="POOLED"><!--数据源使用数据库连接池-->
+                <!--<property name="driver" value="com.mysql.jdbc.Driver"/>
+                <property name="url" value="jdbc:mysql://101.132.109.12:3306/test"/>
+                <property name="username" value="root"/>
+                <property name="password" value="123456"/>-->
+                <!--读取properties-->
+                <property name="driver" value="${jdbc.driver}"/>
+                <property name="url" value="${jdbc.url}"/>
+                <property name="username" value="${jdbc.username}"/>
+                <property name="password" value="${jdbc.passwd}"/>
+            </dataSource>
+        </environment>
+    </environments>
+    <!--注册映射文件-->
+    <mappers>
+        <mapper resource="com/bjpowernode/dao/studentMapper.xml"/><!--扫描mapper.xml-->
+        <!--<package name="com.bjpowernode.dao"/> 扫描该包下的注解-->
+    </mappers>
+</configuration>

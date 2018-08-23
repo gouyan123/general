@@ -1,0 +1,300 @@
+问题：想知道一个方法运行时间用聚合还是继承？
+前提：使用jar包中方法时，没有源代码，无法修改方法；
+思路：
+1、继承这个类，然后对它的方法进行重写；
+2、定义一个代理类，与该类实现同一个接口，并持有该类对象引用；
+-------------------------------------------------------------
+动态代理：
+先生成代理类的字符串，通过字符串生成 代理类 *.java文件，再编译为 *.class 文件，*.class文件加载到内存得到反射类Class对象，然后实例化得到类对象
+Proxy类创建流程：①生成代理类的代码字符串；②将字符串输出到 *.java文件；③编译 *.java 文件，得到 *.class文件；
+④使用ClassLoader将 *.class文件加载到内存中 Class<?> clz = ClassLoader.load("*.class文件路径")；
+⑤利用反射，生成代理对象；
+1、生成动态代理字符串步骤：
+第一阶段：Proxy类使用死动态代理类字符串；
+第二阶段：Proxy类把动态代理字符串中接口换为变量。作用：可以自己传接口，生成字符串中的接口可以动态变化；
+第三阶段：Proxy类把动态代理字符串中方法换为变量。
+第四阶段：Proxy类中，代理方法按照用户定义去增强目标方法，增加这个功能；
+定义方法调用处理器接口
+public interface InvocationHandler {
+    /*只要给我method，就能做一些特殊处理，特殊处理方式由其子类决定*/
+    // m 为目标方法 obj为代理对象，Object[] args为方法参数
+    // 每个实现类的 invoke(...) 方法中除了调用目标方法，还可以对目标方法进行增强，即，在目标方法前后执行其他方法，或者修改目标方法返回值
+    // InvocationHandler接口的实现类中必须持有目标类target对象，因为代理字符串中传过来的是代理对象
+     public abstract void invoke(Method m,Objcect obj,Object[] args);
+}
+产生的代理类，可以发现被代理对象不见了
+import java.lang.reflect.Method;
+
+public class TankTimeProxy implements com.bjsxt.Moveable {
+    private com.bjsxt.Moveable t ;
+    private com.bjsxt.InvocationHandler h;
+    public TankTimeProxy(InvocationHandler h) {
+        this.h = h;
+    }
+    @Override
+    public void move() throws Exception {
+        Method md = com.bjsxt.Moveable.class.getMethod("move");
+        h.invoke(md,this,null);
+    }
+}
+
+public static Object newProxyInstance(Class interfaceparam,InvocationHandler h)
+interfaceparam表示对哪些方法进行增强；
+InvocationHandler表示通过invoke(Method m,Object o,Object[] args)方法对接口interfaceparam中的方法进行增强,
+invoke(Method m,Object o,Object[] args){
+    处理1;
+    m.invoke(target,args);target为目标类对象，o为代理类对象
+    处理2;
+}
+-------------------------------动态代理----------------------------------------------
+假设：假设被代理的对象都实现类某个接口；why：根据接口去生成代理类，而不是根据类去生成代理类；
+动态代理：对于任意一个类，只要它实现了一个接口，就能给它生成一个动态代理；
+创建 com.proxy.Proxy.java 类，动态给任意类（实现类接口的类）生成代理类
+public class Proxy {
+
+}
+Proxy类中创建 newProxyInstance()方法，该方法用于动态生成代理对象
+public static Object newProxyInstance(){
+    return null;
+}
+假如 Proxy类此时已经能够生成代理类了，看客户端 com.proxy.Client.java 类
+public class Client {
+    /*创建目标类对象*/
+    Tank t = new Tank();
+    /*创建代理类对象，假设此时Proxy已经可以创建代理对象了*/
+    /*TankTimeProxy ttp = (TankTimeProxy)Proxy.newProxyInstance();
+    Moveable m = ttp;*/
+    /*上面两句简写如下*/
+    Moveable m = (Moveable)Proxy.newProxyInstance();
+    m.move();
+    /*假如Proxy可以生成动态代理 m，就可以这么调用*/
+}
+代理类由 Proxy.newProxyInstance() 方法产生，回到该方法：
+*****************************************************************************************
+Proxy.newProxyInstance()方法实质：拼凑目标类的代理类的代码的字符串，然后利用反射获得代理类实例化对象；
+*****************************************************************************************
+newProxyInstance()方法中定义目标类的代理类TankTimeProxy（实现同一接口）的代码的字符串为 src：
+public class Proxy {
+    public static Object newProxyInstance(){
+        String src =
+        "package com.proxy;" + rt +
+        "public class $Proxy1 implements Moveable {" + rt +
+            "private Moveable t;" + rt +
+            "public $Proxy1(Moveable t) {" + rt +
+                "this.t = t;" + rt +
+            "}" + rt +
+            "@Override" + rt +
+            "public void move() throws Exception {" + rt +
+                "long start = System.currentTimeMillis();" + rt +
+                "System.out.println(\"start at : \" + start);" + rt +
+                "this.t.move();" + rt +
+                "long end = System.currentTimeMillis();" + rt +
+                "System.out.println(\"end at : \" + end);" + rt +
+                "System.out.println(\"spend : \" + (end - start));" + rt +
+            "}" + rt +
+        "}";
+        return null;
+    }
+}
+Proxy.newProxyInstance()方法实质：拼凑目标类的代理类的代码的字符串，然后利用反射获得代理类实例化对象
+拼凑的目标类代理类代码字符串中代理类名称随便定义，一般命名为 $Proxy1，后面将命名为 $Proxy1
+下一步思路：将 src 字符串 写入 *.java 文件，然后编译为对应 *.class，然后classLoader将该*.class加载
+进jvm内存，然后利用反射，产生该字符串代理类实例化对象，代码如下：
+public class Proxy {
+    static String rt = "\r\n";
+    public static Object newProxyInstance() throws Exception {
+        String src =
+        "package com.proxy;" + rt +
+        "public class $Proxy1 implements Moveable {" + rt +
+            "private Moveable t;" + rt +
+            "public $Proxy1(Moveable t) {" + rt +
+                "this.t = t;" + rt +
+            "}" + rt +
+            "@Override" + rt +
+            "public void move() throws Exception {" + rt +
+                "long start = System.currentTimeMillis();" + rt +
+                "System.out.println(\"start at : \" + start);" + rt +
+                "this.t.move();" + rt +
+                "long end = System.currentTimeMillis();" + rt +
+                "System.out.println(\"end at : \" + end);" + rt +
+                "System.out.println(\"spend : \" + (end - start));" + rt +
+            "}" + rt +
+        "}";
+
+        /*1、将字符串保存到 *.java 中，该 *.java文件就是代理类，当被编译后，就会被删除，因此只需要生成一个代理类的字符串*/
+        System.out.println("*表示当前项目根路径*" + System.getProperty("user.dir"));
+        String fileName = System.getProperty("user.dir")
+                + "/DesignPatterns/src/main/java/com/proxy/$Proxy1.java";
+        //String fileName = "/D:/$Proxy1.java";
+
+        File file = new File(fileName);
+        FileWriter fw = new FileWriter(file);
+        fw.write(src);
+        fw.flush();
+        fw.close();
+        /*2、把生成的 *.java 文件编译为 *.class */
+        JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
+        System.out.println("类名字：" + compiler.getClass().getName());
+        StandardJavaFileManager fileManager = compiler.getStandardFileManager(null,null,null);
+        Iterable units = fileManager.getJavaFileObjects(fileName);
+        JavaCompiler.CompilationTask t = compiler.getTask(null,fileManager,null,null,null,units);
+        t.call();
+        fileManager.close();
+        /*3、将 *.class 文件加载到内存得到 Class<?>类对象c */
+        /*ClassLoader：将硬盘中的*.class文件加载到内存中，需要指定加载路径URL*/
+        /*URL指定加载范围，在这个文件夹下查找 *.class*/
+        URL[] urls = new URL[]{new URL("file:/" + System.getProperty("user.dir") +"/DesignPatterns/src/main/java/")};
+        //URL[] urls = new URL[]{new URL("file:/D:")};
+
+        URLClassLoader urlClassLoader = new URLClassLoader(urls);
+        Class<?> c = urlClassLoader.loadClass("com.proxy.$Proxy1");
+        System.out.println("c = " + c.getName());
+        /*4、在内存中生成该对象*/
+        /*因为构造函数参数为 Moveable t，所以参数类型为 Moveable.class，参数值为 new Tank()*/
+        /*获得参数类型为 Moveable.class 的构造方法*/
+        Constructor constructor = c.getDeclaredConstructor(Moveable.class);
+        /**/
+        Moveable m = (Moveable) constructor.newInstance(new Tank());
+        return m;
+    }
+
+    public static void main(String[] args) throws Exception {
+        Moveable m = (Moveable) Proxy.newProxyInstance();
+        m.move();
+    }
+}
+转到客户端类 Client
+public class Client {
+    public static void main(String[] args) throws Exception {
+        /*创建目标类对象*/
+        Tank t = new Tank();
+        /*创建代理类对象，假设此时Proxy已经可以创建代理对象了*/
+        /*TankTimeProxy ttp = (TankTimeProxy)Proxy.newProxyInstance();
+        Moveable m = ttp;*/
+        /*上面两句简写如下*/
+        Moveable m = (Moveable)Proxy.newProxyInstance();
+        m.move();
+        /*假如Proxy可以生成动态代理 m，就可以这么调用*/
+    }
+}
+返回结果：
+start at : 1524918440823            代理类增强方法
+tank move ...                       目标类方法
+end at : 1524918443616              代理类增强方法
+spend : 2793                        代理类增强方法
+
+目前 Proxy 类的缺陷：只能产生 Moveable 接口 下的目标类的代理类，不能产生任意接口的目标类的代理类；
+解决办法：将接口反射类对象传递给 Proxy.newProxyInstance(Moveable.class)方法，因此，需要重新拼凑目标
+类的代理类的代码的字符串，如下，指修改 src，其他不用改：
+String methodStr = "";
+Method[] methods = interf.getDeclaredMethods();
+for (Method method : methods) {
+    methodStr += "@Override" + rt +
+    "public void " + method.getName() + "(){" + rt +
+    "long start = System.currentTimeMillis();" + rt +
+    "this.t." + method.getName() + "();" + rt +
+    "long end = System.currentTimeMillis();" + rt +
+    "System.out.println(\"time = \" + (end - start));" + rt +
+    "}";
+}
+String src =
+"package com.proxy;" + rt +
+"public class $Proxy1 implements " + interf.getName() + "{" + rt +
+    "private " + interf.getName() + " t;" + rt +
+    "public $Proxy1( \" + interf.getName() + \"  t) {" + rt +
+        "this.t = t;" + rt +
+    "}" + rt +
+    methodStr + rt +
+"}";
+主方法测试：
+public static void main(String[] args) throws Exception {
+    /*获得代理对象 m*/
+    Moveable m = (Moveable) Proxy.newProxyInstance(Moveable.class);
+    /*调用代理类目标类共同实现的接口中的方法*/
+    m.move();
+}
+
+目前 Proxy 类的缺陷：
+@Override
+public void move() throws Exception {
+    long start = System.currentTimeMillis();                代理类增强方法
+    System.out.println("start at : " + start);              代理类增强方法
+    this.t.move();                                          目标类目标方法
+    long end = System.currentTimeMillis();                  代理类增强方法
+    System.out.println("end at : " + end);                  代理类增强方法
+    System.out.println("spend : " + (end - start));         代理类增强方法
+}
+目标类目标方法的增强方法都是写死的，客户无法自己定义，怎么实现这些增强方法的自定义呢？
+创建接口 com.proxy.InvocationHandler.java
+public interface InvocationHandler {
+    /*Method m为目标方法，invoke()方法中利用反射触发 m 方法，并对其进行增强*/
+    public abstract void invoke(Method m, Object obj, Object[] args) throws Exception;
+}
+创建该接口实现类 com.proxy.TimeHandler.java
+public class TimeHandler implements InvocationHandler {
+    /*代理类持有目标类对象*/
+    private Object target;
+    public TimeHandler(Object target) {
+        this.target = target;
+    }
+    @Override
+    public void invoke(Method m,Object obj,Object[] args) {
+        long start = System.currentTimeMillis();
+        try {
+            m.invoke(this.target,args);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        long end = System.currentTimeMillis();
+        System.out.println("time = " + (end - start));
+    }
+}
+回到 Proxy.newProxyInstance(Class<?> interf)，该方法还要传递一个代理类接口InvocationHandler对象
+即 Proxy.newProxyInstance(Class<?> interf,InvocationHandler h)
+重新定义 String src ：
+String methodStr = "";
+Method[] methods = interf.getDeclaredMethods();
+for (Method method : methods) {
+    methodStr += "@Override" + rt +
+    "public void " + method.getName() + "(){" + rt +
+        "try{" + rt +
+            "Method md = " + interf.getName() + ".class.getMethod(\"" + method.getName() + "\");" + rt +
+            "h.invoke(md,this,null);" + rt +
+        "}catch(Exception e){};" + rt +
+    "}";
+}
+String src =
+"package com.proxy;" + rt +
+"import java.lang.reflect.*;" + rt +
+"public class $Proxy1 implements " + interf.getName() + "{" + rt +
+    "private com.proxy.InvocationHandler h;" + rt +
+    "public $Proxy1(com.proxy.InvocationHandler h) {" + rt +
+        "this.h = h;" + rt +
+    "}" + rt +
+methodStr + rt +
+"}";
+
+主方法测试：
+public static void main(String[] args) throws Exception {
+    /*****************第 2 阶段测试 ************************************************
+    //获得代理对象 m
+    Moveable m = (Moveable) Proxy.newProxyInstance(Moveable.class);
+    //调用代理类目标类共同实现的接口中的方法
+    m.move();
+    ******************************************************************************/
+    /*第 3 阶段*/
+    InvocationHandler h = new TimeHandler(new Tank());
+    Moveable m = (Moveable) Proxy.newProxyInstance(Moveable.class,h);
+    m.move();
+}
+总结：
+①Proxy创建代理对象：Object proxy = Proxy.newProxyInstance(Class<?> interf,InvocationHandler h)
+interf为目标方法接口，其实现类为目标类；
+h     为代理方法接口，其实现类为代理类，该代理类要持有目标类，并在 invoke(Method m,Object proxy,Object[] args)
+方法中利用反射触发目标方法，并对其增强（所谓增强，就是在目标方法前后执行其他一些操作，或对目标方法返回值
+进行一些操作）；
+②获得Proxy创建的代理对象 proxy 后，调用目标方法即可实现增强：proxy.目标方法名()
+
+
+
+

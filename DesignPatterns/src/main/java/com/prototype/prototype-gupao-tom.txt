@@ -1,0 +1,55 @@
+原型模式：两个对象，内存内容相同，内存地址不同；
+原型模式实现：实现 Clone 接口，覆写 clone()方法；
+public class Prototype implements Cloneable {
+    public String name;
+    public ArrayList<CloneTarget> list;
+    @Override
+    protected Object clone() throws CloneNotSupportedException {
+        return super.clone();
+    }
+}
+测试：
+public static void main(String[] args) {
+    Prototype p = new Prototype();
+    /*p01是新创建的一个对象，内容，即属性的 类型 名称 值 与 p 相同*/
+    Prototype p01 = (Prototype)p.clone();
+}
+
+以上是浅拷贝：即 Prototype 类中的 对象成员变量是浅拷贝。
+怎么实现深拷贝呢，即 所有内容都重新创建？
+public class QiTianDaSheng extends Monkey implements Cloneable,Serializable {
+    public JinGuBang jinGuBang;
+    public  QiTianDaSheng(){
+        //只是初始化
+        this.birthday = new Date();
+        this.jinGuBang = new JinGuBang();
+    }
+    /*浅拷贝*/
+    @Override
+    protected Object clone() throws CloneNotSupportedException {
+        return this.deepClone();
+    }
+    /*深拷贝*/
+    public Object deepClone(){
+        try{
+            /*将对象内存状态转换成字节码*/
+            ByteArrayOutputStream bos = new ByteArrayOutputStream();
+            ObjectOutputStream oos = new ObjectOutputStream(bos);
+            /*将对象转换成字节码，并将内存中内容写入输出流 oos 中*/
+            oos.writeObject(this);
+            /*用字节码重新创建对象*/
+            ByteArrayInputStream bis = new ByteArrayInputStream(bos.toByteArray());
+            ObjectInputStream ois = new ObjectInputStream(bis);
+            /*字节码重新创建对象，将 流osi 中的内容读到内存中*/
+            QiTianDaSheng copy = (QiTianDaSheng)ois.readObject();
+            copy.birthday = new Date();
+            return copy;
+        }catch (Exception e){
+            e.printStackTrace();
+            return null;
+        }
+    }
+}
+
+总结：深度拷贝
+将对象内存状态转换成字节码，存到输出流中；再从输出流中获取字节码，使用字节码重新创建对象；

@@ -1,0 +1,37 @@
+103课-------------------------
+自定义链表；
+Set List Map等集合依赖 2 种东西来实现：①集合封装数组；②集合封装链表；
+linkedlist包 定义节点类 Node，封装前一个节点previous，当前节点里面的内容obj，下一个节点next
+public class Node {
+    private Node previous;
+    private Object obj;
+    private Node next;
+    setter，getter省略
+}
+linkedlist包中定义 SxtLinkedList 类，该类即为链表
+public class SxtLinkedList {
+}
+类中定义 3 个成员变量如下，通过第一个节点first可以找到后面所有节点，最后一个节点同理，size表示链表长度
+private Node first;
+private Node last;
+private int size;
+类中创建 add("123") 方法，向链表中添加内容，内容要存到节点里面，因此 add()方法里面要创建节点
+public void add(Object o){
+    Node n = new Node();
+    /*如果列表中第一个节点为空，则将新建的节点作为该链表第一个节点*/
+    if(this.first == null){
+        n.setPrevious(null);
+        n.setObj(o);
+        n.setNext(null);
+        this.first = n;
+        this.last = n;
+    }else{
+        /*如果第一个节点不为空，则将新建的节点放在最后一个节点后面*/
+        n.setPrevious(this.last);
+        n.setObj(o);
+        n.setNext(null);
+        this.last.setNext(n);
+        this.last = n;
+    }
+    this.size++;
+}

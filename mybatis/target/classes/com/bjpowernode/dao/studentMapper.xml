@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--<mapper namespace="test">--><!--用于接口实现方法-->
+<mapper namespace="com.bjpowernode.dao.IStudentDAO"><!--用于 getMapper()-->
+    <insert id="insertStu" parameterType="com.bjpowernode.beans.Student">
+        <!--#{name}中name代表属性名，即setName()方法去掉set后首字母小写-->
+        insert into student(name,age,score) values(#{name},#{age},#{score})
+        <!--将数据库返回结果给student对象id属性初始化-->
+       <!-- <selectKey keyProperty="id" resultType="int" order="AFTER">
+            select last_insert_id()
+        </selectKey>-->
+    </insert>
+
+</mapper>

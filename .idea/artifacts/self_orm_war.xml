@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="self-orm:war">
+    <output-path>$PROJECT_DIR$/self-orm/target</output-path>
+    <root id="archive" name="self-orm.war">
+      <element id="artifact" artifact-name="self-orm:war exploded" />
+    </root>
+  </artifact>
+</component>

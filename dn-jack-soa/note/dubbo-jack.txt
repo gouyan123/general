@@ -1,0 +1,451 @@
+****************************************************************************************
+重点：
+User user = context.getBean(User.class);
+通过类型获取spring容器中所有 user实例，String表示user实例的 id：
+Map<String,User> map = context.getBeanOfType(User.class);
+****************************************************************************************
+---------------------------------整体流程：-----------------------------------------------
+①Service端：
+<jack:service interface="com.dongnao.jack.test.UserService" ref="userServiceImpl"/>
+Service类将 服务内容上传到 redis注册中心中，Service类实现 InitializingBean接口，覆写afterPropertiesSet()
+方法，当Service类所有成员变量赋值以后，自动调用该afterPropertiesSet()方法，代码如下：
+public class Service implements InitializingBean{
+    private String intf;
+    private String ref;
+    private String protocol;
+    @Override
+    public void afterPropertiesSet() throws Exception {
+        /**创建 BaseRegistryDelegate类，将服务内容注册到注册中心*/
+        BaseRegistryDelegate.registry(this.ref,Service.applicationContext);
+        RedisApi.publish("channel" + ref,"里面内容跟redis节点内容一致");
+    }
+}
+其中，上传内容格式如下，userServiceImpl表示 服务的key，"host:port":{}表示各个生产者
+{"userServiceImpl":{
+        "host:port":{
+            protocol:{},
+            service:{}
+        },
+        "host:port":{
+            protocol:{/*将protocol对象转换成JSON字符串，最后上传到redis中*/},
+            service:{ /*将service中ref对应的bean对象转换成JSON字符串，最后上传到redis中*/}
+        }
+    }
+}
+②Reference端：
+Reference类获取 注册中心的服务内容，通过Reference类实现 InitializingBean接口，覆写afterPropertiesSet()
+方法，调用BaseRegistryDelegate.getRegistry()方法，去注册中心获取 服务内容，然后封装到registryInfo；
+public class Reference implements InitializingBean {
+    @Override
+    public void afterPropertiesSet() throws Exception {
+        /**getRegistry()从注册中心获取 服务内容*/
+        this.registryInfo = BaseRegistryDelegate.getRegistry(this.id, this.applicationContext);/*id继承自父类*/
+        System.out.println(this.registryInfo);
+        RedisApi.subsribe("channel" + id,new RedisServerRegistry());
+    }
+}
+③Reference端：
+<!--消费者 创建interface的代理对象，调用代理对象的代理方法，该方法将[目标对象id,目标方法名,方法参数]
+发送给 生产者端，生产者端 利用反射执行目标方法，生产者端将返回结果发生给消费者端-->
+<jack:reference id="userServiceImpl" interface="com.dongnao.jack.test.UserService" protocol="http"/>
+实际代码如下：
+ApplicationContext context = new ClassPathXmlApplicationContext("mytest.xml");
+UserService userservice = (UserService)context.getBean(UserService.class);
+String result = userservice.eat("xxxxx");
+解析如下：
+context.getBean(UserService.class)获取的是 UserService接口的代理对象，userservice.eat("xxxxx");
+调用代理对象的代理方法，代理方法 将 [对象beanId,方法名,方法参数]发送给 Service端，Service端通过反射
+调用该方法，并将返回值 发送给 Reference端；
+如何将Reference类的代理对象交给Spring容器管理？ 实现 FactoryBean接口，覆写 getObject()方法，当调用
+context.getBean("beanId")方法时，该getBean()方法里面调用 getObject()方法，代码如下：
+public class Reference implements FactoryBean{
+    @Override
+    public Object getObject() throws Exception {
+        Object proxy = Proxy.newProxyInstance(this.getClass().getClassLoader(),
+                new Class<?>[]{Class.forName(intf)},
+                new InvokeInvocationHandler(this.invoke, this)
+        );
+        return proxy;
+    }
+}
+其中 InvokeInvocationHandler为代理对象，持有目标类，实现 InvocationHandler代理接口，覆写
+invoke(Object proxy, Method method, Object[] args)方法，method为目标方法，args为目标方法参数，
+当代理对象调用代理方法时，代理方法里面调用 invoke()方法，该方法将[对象beanId,方法名,方法参数]传给Service
+端，Service端通过反射执行，并将返回值发回来，具体代码如下：
+public class InvokeInvocationHandler implements InvocationHandler {
+    public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+        将[对象beanId,方法名,方法参数]传给Service端，Service端通过反射执行，并将返回值发回来
+    }
+}
+---------------------------------流程结束：-----------------------------------------------
+手写类似于dubbo的soa：
+1、为什么消费者consumer可以调用生产者producor的方法？
+①消费者consumer将 [方法名，对象beanId，方法参数] 发送给 生产者consumer；
+②producor根据beanId获取容器中bean对象(bean = context.getBean("beanId"))；
+③通过 bean对象，方法名，方法参数 的反射获得方法对象 Method m = bean.class.getMethod(方法名，方法参数)；
+④producor端执行 result = m.invoke(bean,args);然后将 result结果通过输出流返回给consumer端；
+
+2、生产者producor怎么把内容注册到注册中心的，然后消费者如何获取这个内容的？
+
+3、dubbo框架如何与spring框架进行整合的，消费者consumer获取的代理实例
+(@Autowired UserService userService)是如何获得的？
+userService是代理实例，它与目标类实现同一个接口且持有目标类对象，并且在代理类目标方法中调用目标类目标方法
+，并对目标方法进行增强，实现代理功能；
+-----------------------------------------------------------------------------------------
+①消费者类 Reference如何实现代理呢？
+<!--消费者 创建interface的代理对象，调用代理对象的代理方法，该方法将[目标对象id,目标方法名,方法参数]
+发送给 生产者端，生产者端 利用反射执行目标方法，生产者端将返回结果发生给消费者端-->
+<jack:reference id="userServiceImpl" interface="com.dongnao.jack.test.UserService" protocol="http"/>
+
+实现 FactoryBean接口，覆写getObject()方法，getBean(Reference.class)方法里面会调用此getObject()
+方法，getObject()方法返回值交给spring容器管理；
+<!--通过interface产生代理对象-->
+<jack:reference id="userServiceImpl" interface="com.dongnao.jack.test.UserService" protocol="http"/>
+public class Reference implements FactoryBean {
+    /*获得一个实例，这个方法是spring初始化时调用的，具体是 getBean(..) 方法里面调用
+    * 只要调用 getBean(..)方法，它里面就会调用 getObject()方法
+    * getObject()方法的返回值交给 spring 容器进行管理
+    * getObject()方法返回的是 intf 这个接口的代理对象，代理再去调用远程生产者
+    * */
+    @Override
+    public Object getObject() throws Exception {
+        System.out.println("返回 intf 代理对象");
+        if (protocol != null && !"".equals(protocol)){
+            this.invoke = invokes.get(protocol);
+        }else {
+            /*如果<jack:reference 中没有 protocol 属性，将去 <jack:protocol 中找*/
+            /*protocol对象在spring容器中，要从容器中获取实例，要拿到sring的上下文，因此Reference要实现ApplicationContextAware接口*/
+            Protocol protocol =this.applicationContext.getBean(Protocol.class);/*没有id，则根据类型获得bean*/
+            if (protocol != null){
+                this.invoke = invokes.get(protocol.getName());
+            }else {
+                this.invoke = invokes.get("http");/*否则默认http协议*/
+            }
+        }
+        Object proxy = Proxy.newProxyInstance(this.getClass().getClassLoader(),
+                new Class<?>[]{Class.forName(intf)},
+                new InvokeInvocationHandler(this.invoke, this)
+        );
+        return proxy;
+    }
+}
+------------------------------------------------------------------------------------------
+上面代理类 InvokeInvocationHandler如下：
+
+package com.dongnao.jack.proxy.advice;
+/*InvokeInvocationHandler是一个 advice增强 在这个advice里面进行了rpc远程调用：http，netty，rmi
+采用策略模式，需要创建 Invoke接口及其实现类，构造方法传进来哪个实现类，就调哪个类的方法*/
+public class InvokeInvocationHandler implements InvocationHandler {
+    private Invoke invoke;
+    /*①reference里面封装了调用者的所有信息；②该对象由xml配置文件解析而来*/
+    private Reference reference;
+    public InvokeInvocationHandler() {
+    }
+
+    public InvokeInvocationHandler(Invoke invoke,Reference reference) {
+        this.reference = reference;
+        this.invoke = invoke;
+    }
+
+    public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+        System.out.println("已经进入了代理");
+        /*在这个invoke()里面最终要调用多个远程的provider*/
+        /*reference已经从registry中获取到了相应的JSON字符串，那么怎么调用呢*/
+        /*invocation对象主要用来封装 invoke()方法的method和args*/
+        Invocation invocation = new Invocation();
+        invocation.setMethod(method);
+        invocation.setArgs(args);
+        invocation.setReference(this.reference);
+        //String result = invoke.invoke(invocation);
+
+        invocation.setInvoke(invoke);
+        /*获取集群配置*/
+        Cluster cluster = Reference.getClusters().get(reference.getCluster());
+        /*策略模式：invoke方法里面为什么不直接将 invacation发送到 生产者端，而是创建 Invoke接口
+        及其实现类HttpInvoke NettyInvoke RmiInvoke？
+        答：通过传过来一个 *Invoke对象，Invoke接口接收，通过该 *Invoke对象里面的方法发送实现策略模式*/
+        String result = cluster.invoke(invocation);
+        return result;
+    }
+}
+--------------------------------------
+创建 Invoke接口，及实现类 HttpInvoke类，NettyInvoke类，RmiInvoke类如下：
+package com.dongnao.jack.invoke;
+/*返回String，用json的方式进行通信*/
+public interface Invoke {
+   /*invocation就是对要传递参数(Object proxy, Method method, Object[] args)的一个封装*/
+   public abstract String invoke(Invocation invocation) throws Exception;
+}
+创建 HttpInvoke类，将 [调用方法对象，方法名，方法参数] 发送到 producor端，通过反射执行方法并发送返回值
+package com.dongnao.jack.invoke;
+public class HttpInvoke implements Invoke {
+    public String invoke(Invocation invocation) {
+        String result = null;
+        try {
+            /*获取registry中的JSON字符串信息*/
+            List<String> registryInfo = invocation.getReference().getRegistryInfo();
+            /*负载均衡算法*/
+            String loadbalance = invocation.getReference().getLoadbalance();
+            Reference reference = invocation.getReference();
+            LoadBalance loadbalanceBean = Reference.getLoadBalances().get(loadbalance);
+            NodeInfo nodeInfo = loadbalanceBean.doSelect(registryInfo);
+            /*既然要远程调用，就要传一下参数给远程的生产者，这里 通过 json字符串 传递*/
+            //我们调用远程的生产者是传输的json字符串
+            //根据serviceid去对端生产者的spring容器中获取serviceid对应的实例
+            //根据methodName和methodType获取实例的method对象
+            //然后反射调用method方法
+            JSONObject sendparam = new JSONObject();
+            sendparam.put("methodName", invocation.getMethod().getName());
+            sendparam.put("methodParams", invocation.getArgs());
+            /*从远程生产者的工程的spring容器中，获取serviceId对应的服务层的实例*/
+            sendparam.put("serviceId", reference.getId());
+            sendparam.put("paramTypes", invocation.getMethod().getParameterTypes());
+
+            String url = "http://" + nodeInfo.getHost() + ":" + nodeInfo.getPort() + "/" + nodeInfo.getContextpath();
+            /*调用对端的生产者的服务*/
+            result = HttpRequest.sendPost(url, sendparam.toJSONString());
+            /*消费者这里发出了请求，那么生产者就一定要接收请求*/
+            /*生产者怎么接收请求呢？答：servlet，因此建立 *.remote.servlet包，创建DispatcherServlet类 */
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+}
+创建 NettyInvoke类，将 [调用方法对象，方法名，方法参数] 发送到 producor端，通过反射执行方法并发送返回值
+public class NettyInvoke implements Invoke {
+    public String invoke(Invocation invocation) throws Exception {
+        try {
+            List<String> registryInfo = invocation.getReference()
+                    .getRegistryInfo();
+            //这个是负载均衡算法
+            String loadbalance = invocation.getReference().getLoadbalance();
+            Reference reference = invocation.getReference();
+            LoadBalance loadbalanceBean = reference.getLoadBalances()
+                    .get(loadbalance);
+            NodeInfo nodeinfo = loadbalanceBean.doSelect(registryInfo);
+            //我们调用远程的生产者是传输的json字符串
+            //根据serviceid去对端生产者的spring容器中获取serviceid对应的实例
+            //根据methodName和methodType获取实例的method对象
+            //然后反射调用method方法
+            JSONObject sendparam = new JSONObject();
+            sendparam.put("methodName", invocation.getMethod().getName());
+            sendparam.put("methodParams", invocation.getArgs());
+            sendparam.put("serviceId", reference.getId());
+            sendparam.put("paramTypes", invocation.getMethod()
+                    .getParameterTypes());
+
+            return NettyUtil.sendMsg(nodeinfo.getHost(),
+                    nodeinfo.getPort(),
+                    sendparam.toJSONString());
+        }
+        catch (Exception e) {
+            throw e;
+        }
+    }
+}
+转到 Reference类的getObject()方法，Proxy.newProxyInstance(invoke,reference)创建代理对象需要
+invoke接口的实现类对象，因此使用静态块提前创建 invoke接口的实现类对象
+
+package com.dongnao.jack.configBean;
+public class Reference implements FactoryBean{
+    /*接口方法表示策略模式*/
+    private Invoke invoke;
+    private static Map<String,Invoke> invokes = new HashMap<String,Invoke>();
+    /*策略模式：接口对象调用接口方法，只调用不实现，具体交给子类去实现*/
+    static {
+            invokes.put("http",new HttpInvoke());
+            invokes.put("rmi",new RmiInvoke());
+            invokes.put("netty",new NettyInvoke());
+    }
+    @Override
+    public Object getObject() throws Exception {
+        System.out.println("返回 intf 代理对象");
+        if (protocol != null && !"".equals(protocol)){
+            this.invoke = invokes.get(protocol);
+        }else {
+            /*如果<jack:reference 中没有 protocol 属性，将去 <jack:protocol 中找*/
+            /*protocol对象在spring容器中，要从容器中获取实例，要拿到sring的上下文，因此Reference要实现ApplicationContextAware接口*/
+            Protocol protocol =this.applicationContext.getBean(Protocol.class);/*没有id，则根据类型获得bean*/
+            if (protocol != null){
+                this.invoke = invokes.get(protocol.getName());
+            }else {
+                this.invoke = invokes.get("http");/*否则默认http协议*/
+            }
+        }
+        Object proxy = Proxy.newProxyInstance(this.getClass().getClassLoader(),
+                new Class<?>[]{Class.forName(intf)},
+                new InvokeInvocationHandler(this.invoke, this)
+        );
+        return proxy;
+    }
+}
+-----------------------------------------------------------------------------------------
+②生产者类 Service如何在启动的时候，就将服务注册到注册中心(redis)上？
+<jack:protocol  name="http" port="27017" host="127.0.0.1"/>
+<jack:registry protocol="redis" address="101.132.109.12:6379"/>
+<jack:service interface="com.dongnao.jack.test.UserService" ref="userServiceImpl"/>
+
+Service类实现 InitializingBean接口，覆写afterPropertiesSet()方法，当Service成员变量赋值以后，即
+依赖注入以后，默认执行这个方法，该方法将 服务内容 注册到注册中心：
+public class Service extends BaseConfigBean implements InitializingBean{
+    private static final long serialVersionUID = -958612407085199402L;
+    private String intf;
+    private String ref;
+    private String protocol;
+
+    @Override
+    public void afterPropertiesSet() throws Exception {
+        BaseRegistryDelegate.registry(this.ref,Service.applicationContext);
+        RedisApi.publish("channel" + ref,"里面内容跟redis节点内容一致");
+    }
+}
+Service类实现 ApplicationContextAware接口，覆写setApplicationContext(applicationContext)方法，
+当spring容器初始化完毕后，调用该setApplicationContext()方法，将spring容器地址赋给该类成员变量；
+public class Service extends BaseConfigBean implements InitializingBean,ApplicationContextAware{
+    private static ApplicationContext applicationContext;
+    @Override
+    public void setApplicationContext(ApplicationContext applicationContext)
+           throws BeansException {
+       Service.applicationContext = applicationContext;
+    }
+}
+创建 BaseRegistryDelegate委托类，将服务内容注册到注册中心：
+package com.dongnao.jack.registry;
+public class BaseRegistryDelegate {
+    public static void registry(String ref,ApplicationContext applicationContext){
+        /*根据类型获取spring容器中registry对象*/
+        Registry registry = applicationContext.getBean(Registry.class);
+        String protocol = registry.getProtocol();
+        /*注册中心有多个，该如何处理*/
+        /*根据protocol在registryMap中获取处理类*/
+        /*分析如下 <jack:*/>*/
+        /**根据protocol在registryMap中获取 注册中心处理类*/
+        BaseRegistry registryBean = Registry.getRegistryMap().get(protocol);
+        /**注册中心处理类 将 注册内容 注册到 注册中心*/
+        registryBean.registry(ref, applicationContext);
+    }
+}
+<jack:registry protocol="redis" address="101.132.109.12:6379"/>
+registry中的protocol为redis，即将 服务注册到 redis中，也可以注册到zookeeper等因此创建 注册接口
+BaseRegistry及其各实现类 RedisRegistry，ZookeeperRegistry，并在 Registry类静态块中保存下来
+public class Registry{
+    private static Map<String,BaseRegistry> registryMap = new HashMap<String,BaseRegistry>();
+    static {
+        registryMap.put("redis",new RedisRegistry());
+    }
+}
+package com.dongnao.jack.registry;
+public interface BaseRegistry {
+    public boolean registry(String param, ApplicationContext applicationContext);
+}
+package com.dongnao.jack.registry;
+public class RedisRegistry implements BaseRegistry {
+    @Override
+    public boolean registry(String ref, ApplicationContext applicationContext) {
+        try {
+            Protocol protocol = applicationContext.getBean(Protocol.class);
+            /*getBeansOfType(Service.class)获得Service类的所有实例*/
+            Map<String, Service> services = applicationContext.getBeansOfType(Service.class);
+            Registry registry = applicationContext.getBean(Registry.class);
+            /*获取注册标签registry的属性address*/
+            /*需要redis客户端连接redis服务端，并操作服务端*/
+            RedisApi.createJedisPool(registry.getAddress());
+            for (Map.Entry<String, Service> entry : services.entrySet()) {
+                if (entry.getValue().getRef().equals(ref)) {
+                    JSONObject jo = new JSONObject();
+                    jo.put("protocol", JSONObject.toJSONString(protocol));
+                    /*service将bean对象转换成JSON字符串，保存到redis中*/
+                    jo.put("service", JSONObject.toJSONString(entry.getValue()));
+                    JSONObject ipport = new JSONObject();
+                    ipport.put(protocol.getHost() + ":" + protocol.getPort(),
+                            jo);
+                    //                RedisApi.lpush(ipport, ref);
+                    /*定义lpush()方法，目的：去重*/
+                    lpush(ipport, ref);
+                }
+            }
+            return true;
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+}
+regist()方法逻辑：
+<jack:registry protocol="redis" address="101.132.109.12:6379"/>
+<jack:service interface="com.dongnao.jack.test.UserService" ref="userServiceImpl"/>
+
+com.dongnao.jack.test.UserService provider01 host01 port01
+com.dongnao.jack.test.UserService provider02 host02 port02
+com.dongnao.jack.test.UserService provider03 host03 port03
+各服务的提供者可能不一样，那么生产者注册到注册中心的服务的格式应该什么样子呢？
+{"userServiceImpl":{
+        "host:port":{
+            protocol:{},
+            service:{}
+        },
+        "host:port":{
+            protocol:{/*将protocol对象转换成JSON字符串，最后上传到redis中*/},
+            service:{ /*将service中ref对应的bean对象转换成JSON字符串，最后上传到redis中*/}
+        }
+    }
+}
+其中 userServiceImpl代表服务对象名称；"host:port":{protocol:{},service:{}},代表一个服务提供者，
+protocol:{}代表<jack:protocol  name="http" port="27017" host="127.0.0.1"/>
+service:{}代表<jack:service interface="com.dongnao.jack.test.UserService" ref="userServiceImpl"/>；
+-----------------------------------------------------------------------------------------
+Reference如何从 redis注册中心 获取注册内容呢？
+Reference类中创建 registryInfo成员变量，将从注册中心获取的内容 保存到该列表里面：
+public class Reference implements InitializingBean{
+    /**将从注册中心获取的内容 保存到该列表里面*/
+    private List<String> registryInfo = new ArrayList<String>();
+
+    @Override
+    public void afterPropertiesSet() throws Exception {
+        /**getRegistry()从注册中心获取 服务内容*/
+        this.registryInfo = BaseRegistryDelegate.getRegistry(this.id, this.applicationContext);/*id继承自父类*/
+        System.out.println(this.registryInfo);
+        RedisApi.subsribe("channel" + id,new RedisServerRegistry());
+    }
+}
+BaseRegistryDelegate类中创建 getRegistry()方法，从注册中心获取服务内容：
+public class BaseRegistryDelegate {
+    ...
+    public static List<String> getRegistry(String id,ApplicationContext applicationContext) {
+        Registry registry = applicationContext.getBean(Registry.class);
+        String protocol = registry.getProtocol();
+        BaseRegistry registryBean = registry.getRegistryMap().get(protocol);
+        return registryBean.getRegistry(id, applicationContext);
+    }
+}
+BaseRegistry实现子类 RedisRegistry中创建 getRegistry()方法，获取redis注册中心的 服务内容：
+public class RedisRegistry implements BaseRegistry {
+    @Override
+    public List<String> getRegistry(String id, ApplicationContext applicationContext) {
+        try {
+            Registry registry = applicationContext.getBean(Registry.class);
+            RedisApi.createJedisPool(registry.getAddress());
+            if (RedisApi.exists(id)) {
+                //拿key对应的list
+                return RedisApi.lrange(id);
+            }
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+}
+-----------------------------------------------------------------------------------------
+集群容错怎么实现？
+创建集群接口 Cluster，
+package com.dongnao.jack.cluster;
+public interface Cluster {
+    public String invoke(Invocation invocation) throws Exception;
+}
+
+
+
+

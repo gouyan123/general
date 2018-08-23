@@ -1,0 +1,497 @@
+手写ORM就是利用vo对象，反射，拼接 sql 语句，wheresql语句，ordersql语句，这些语句中含有变量 ? ,再将
+含有变量 ? 的sql语句及变量值数组提交给 jdbcTemplate的update(sql,[参数值数组])或者jdbcTemplate的
+select(sql,[参数值数组])方法；
+1、增 inseert：
+sql = " insert into t_member (name,addr) values(?,?) ";
+其中字段名，表名由vo类反射类获取
+jdbcTemplateWrite.update(sql,[参数值数组]);
+2、删 delete：
+sql = " delete from t_member where id = ? ";
+jdbcTemplateWrite.update(sql,id的值即 pkValue);
+3、改 update：
+sql = " update t_member set name = ? , addr = ? where id = ? "
+jdbcTemplateWrite.update(sql,[参数值数组]);
+4、查 select
+sql = " select id , name , addr , age from t_member where name = ? "
+其中字段名，表名由vo类反射类获取，sql中的 where 部分封装到 QueryRule 中，然后利用 QueryRuleSqlBuilder
+将 QueryRule 转换成 sql语句；
+jdbcTemplateReadOnly.query(sql,[参数值数组]);
+将 sql 语句和 [参数值数组]提交给 jdbcTemplateReadOnly.query(...)方法
+-----------------------------------------------------------------------------------------
+为什么要自己写ORM框架？
+①解决实际的业务问题（根据业务需要）；②自定义需求，如果要直接第三方开源框架的话，需要进行二次开发
+③解决团队成员之间水平参差不齐的问题；④可以实现统一的管理、监控、排错等等一系列底层操作
+大数据监测系统：①数据吞吐量大；②数据存储方式多样化；③数据源需要频繁切换；④API无法统一；
+
+如图 11.手写ORM框架顶层设计；
+首先 统一API，统一API后，无论是业务数据，实时数据，缓存数据，都统一调用API处方法进行增删改查；
+将统一API的类，作为最底层的类，DAO层所有的类都要继承这个统一API的类；
+统一API的最底层类要满足以下三点：①统一方法名；②统一参数；③统一返回结果；
+然后 API调用路由，路由获得各数据库的连接对象 connection；
+src/test/java 下创建 JdbcTest 类，手写最原始的jdbc
+public class JdbcTest {
+    public static void main(String[] args) {
+        try {
+            /**1 加载驱动类，将com.mysql.jdbc.Driver.class文件加载到方法区，得到运行时数据结构*/
+            Class.forName("com.mysql.jdbc.Driver");
+            /**2 获得连接对象，客户端通过连接对象操作服务端，Connection接口由java定，具体实现由各数据库公司实现*/
+            Connection connection = DriverManager.getConnection("jdbc:mysql://101.132.109.12:3306/gupaoedu_demo?characterEncoding=UTF-8&rewriteBatchedStatements=true","root","123456");
+            /**3 创建语句集并开启事务*/
+            PreparedStatement pstmt = connection.prepareStatement("SELECT id,name,addr,age FROM t_member");
+            /**4 执行语句集，获得结果集*/
+            ResultSet rs = pstmt.executeQuery();
+            /**5 遍历结果集*/
+            while (rs.next()){
+                System.out.print(rs.getLong("id") + " ");
+                System.out.print(rs.getString("name") + " ");
+                System.out.print(rs.getString("addr") + " ");
+                System.out.println(rs.getInt("age") + " ");
+            }
+            /**Begin ORM*/
+            /**End ORM*/
+            /**6 关闭结果集、关闭语句集、关闭连接*/
+            rs.close();
+            pstmt.close();
+            connection.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+}
+
+com.gupaoedu.vip.orm.demo.model包中创建 Member 类，将查询结果封装到该类中；
+/**注解表示 表与类，字段与成员变量的映射关系*/
+@Entity
+@Table(name = "t_member")
+public class Member {
+    @Id
+    private Long id;
+    @Column(name = "name")
+    private String name;
+    @Column(name = "addr")
+    private String addr;
+    @Column(name = "age")
+    private Integer age;
+    省略...
+}
+修改 JdbcTest 类中 main()方法中 while() 循环，将rs中每一行数据封装到一个Member对象中，代码如下
+/*rs.getMetaData()获取元数据(描述数据的数据)；columnCount表示列数；*/
+int columnCount = rs.getMetaData().getColumnCount();
+/**存储封装好的对象*/
+List<Object> results = new ArrayList<Object>();
+while (rs.next()){/*循环每一行*/
+    System.out.print(rs.getLong("id") + " ");
+    System.out.print(rs.getString("name") + " ");
+    System.out.print(rs.getString("addr") + " ");
+    System.out.println(rs.getInt("age") + " ");
+
+    /**利用反射，将rs 中的一行数据封装到一个 Member对象中*/
+    Class<?> memberClass = Member.class;
+    Member member = (Member) memberClass.newInstance();
+    for (int i=1;i<=columnCount;i++){
+        String columnName = rs.getMetaData().getColumnName(i);
+        Field field = memberClass.getDeclaredField(columnName);
+        field.setAccessible(true);
+        /**通过数据类型映射，从rs中取得相应的属性值*/
+        Object type = field.getType();
+        if (type == Long.class){
+            field.set(member,rs.getLong(columnName));
+        }else if (type == String.class){
+            field.set(member,rs.getString(columnName));
+        }else if (type == int.class){
+            field.set(member,rs.getInt(columnName));
+        }else if (type == Integer.class){
+            field.set(member,rs.getInt(columnName));
+        }
+    }
+    /**将封装好的对象存到 results 列表中*/
+    results.add(member);
+}
+for (int i=0;i<results.size();i++){
+    System.out.println(results.get(i));
+}
+上面这段 while() 代码中，需要自己创建 Member对象，这样没有意义，因为我们现在写的是框架，不是应用程序，
+因此，我们框架中是不会知道应用程序中定义什么类的，即写这个框架时，这个类还不存在，因此将Member.class传
+进去；
+model包中创建 User 类
+@Entity
+@Table(name="t_user")
+public class User implements Serializable {
+    private Integer id;
+    private String username;
+    private String password;
+    省略...
+}
+JdbcTest中定义 select(Class clazz) 方法，将数据库返回数据rs的每一行数据封装到相应对象中，保存到列表中
+框架代码如下：
+public class JdbcTest {
+    public static void main(String[] args) {
+        /**传一个User.class对象，根据反射自动取出注解中信息，拼接 sql语句，然后将查询出的内容封装到
+         * User对象中*/
+        List<Object> result = select(User.class);
+        System.out.println(result.toString());
+    }
+    public static List<Object> select(Class<?> clazz){
+        /**rs数据封装到对象中，对象存到 results 列表中*/
+        List<Object> results = new ArrayList<Object>();
+        try {
+            /**1 加载驱动类，将com.mysql.jdbc.Driver.class文件加载到方法区，得到运行时数据结构*/
+            Class.forName("com.mysql.jdbc.Driver");
+            /**2 获得连接对象，客户端通过连接对象操作服务端，Connection接口由java定，具体实现由各数据库公司实现*/
+            Connection connection = DriverManager.getConnection("jdbc:mysql://101.132.109.12:3306/gupaoedu_demo?characterEncoding=UTF-8&rewriteBatchedStatements=true","root","123456");
+            /**3 创建语句集并开启事务*/
+            /*由注解获取表名 tableName*/
+            Table table = clazz.getDeclaredAnnotation(Table.class);/*获取@Table注解*/
+            String tableName = table.name().trim();/*获取注解中name中的值*/
+            /**获取查询语句中的字段名称，封装到sql语句中*/
+            StringBuffer sb = new StringBuffer();
+            Field[] fields = clazz.getDeclaredFields();
+            for (Field field : fields){
+                /**判断 field 是否使用 @Column注解*/
+                if (field.isAnnotationPresent(Column.class)){
+                    Column column = field.getDeclaredAnnotation(Column.class);
+                    String columnName = column.name().trim();
+                    sb.append(columnName).append(",");
+                }
+            }
+            int index = sb.length();
+            /*删除最后一个 , */
+            sb.deleteCharAt(index-1);
+            /*动态拼接sql*/
+            String sql = "SELECT id ," + sb.toString() + " FROM " + tableName;
+            PreparedStatement pstmt = connection.prepareStatement(sql);
+            /**4 执行语句集，获得结果集，rs类似于excel分行分列*/
+            ResultSet rs = pstmt.executeQuery();
+            /**5 遍历结果集*/
+            /*rs.getMetaData()获取元数据(描述数据的数据)；columnCount表示列数；*/
+            int columnCount = rs.getMetaData().getColumnCount();
+
+            while (rs.next()){/*循环每一行*/
+                /**利用反射，将rs 中某一行的每个字段的数据封装到一个 Member对象中的每个成员变量中*/
+
+                Object obj = clazz.newInstance();
+                for (int i=1;i<=columnCount;i++){
+                    /*通过元数据获取字段名*/
+                    String columnName = rs.getMetaData().getColumnName(i);
+                    Field field = clazz.getDeclaredField(columnName);
+                    field.setAccessible(true);
+                    /**通过数据类型映射，从rs中取得相应的属性值*/
+                    Object type = field.getType();
+                    if (type == Long.class){
+                        field.set(obj,rs.getLong(columnName));
+                    }else if (type == String.class){
+                        field.set(obj,rs.getString(columnName));
+                    }else if (type == int.class){
+                        field.set(obj,rs.getInt(columnName));
+                    }else if (type == Integer.class){
+                        field.set(obj,rs.getInt(columnName));
+                    }
+                }
+                /**将封装好的对象存到 results 列表中*/
+                results.add(obj);
+            }
+
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+        return results;
+    }
+}
+最底层的父类
+①统一方法名：insert; delete; update; select;
+约定：
+如果是 删，改，以 id 作为唯一的检索条件，如果没有 id ，那么先要查出 id；
+
+②统一参数；
+如果是条件查询，将查询条件封装到 QueryRule 中，；
+如果是批量 增，删，改，方法名以All结尾，以 List 为参数；
+如果是 增，删，改一条数据，以 T 为参数；
+
+③统一返回值：所有分页操作都返回 Page 对象；所有集合查询都返回 List 对象；所有单条查询返回 T 对象；
+所有的 id 采用 Long类型；数据库中 id 采用 bigint 类型；数据库中 bigint 与java中 Long相对应；
+所有的 增，删，改操作，返回 boolean；
+
+创建 com.gupaoedu.vip.orm.framework 包，将 javax.core.utils 包直接拷贝过来；
+javax.core.common包中再创建一个最顶层规范类 ResultMsg，封装返回数据和状态码及状态码的解释，对外输出
+都用 ResultMsg，无论返回结果是 Page类型也好，List类型也好；
+public class ResultMsg<T> implements Serializable {
+	private int status; //状态码，系统的返回码
+	private String msg;  //状态码的解释
+	private T data;  //放任意结果
+	setter，getter省略...
+}
+javax.core.common包中再创建一个最顶层规范类 Page，用于③统一返回结果
+
+framework包中创建一个最顶层的 abstract类 BaseDaoSupport，让所有DAO层的类都来继承
+/**①抽象类里面可以写一些默认的功能，即普通方法，子类继承以后，直接可以调用该方法；
+ * ②客户端操作数据库服务端，必须先有连接对象，所以，先配置好数据库连接参数，再进行实例化；
+ * ③通过子类继承父类，new 子类的时候，将连接参数传递给 new 父类；
+ * */
+public abstract class BaseDaoSupport {
+    /**获取数据源，由各子类去获取自己的数据源*/
+    protected abstract void setDataSource(DataSource dataSource);
+}
+demo.dao包中创建 MemberDao，继承 BaseDaoSupport 抽象类
+@Repository
+public class MemberDao extends BaseDaoSupport {
+    /**dataSource定义application-db.xml文件中*/
+    /*@Resource注释方法自动执行*/
+    @Resource(name = "dataSource")
+    protected void setDataSource(DataSource dataSource) {
+        System.out.println(dataSource);
+    }
+}
+src/test/java 中创建 Test 测试类，测试是否可以获取数据源DataSource(对连接的封装)
+@ContextConfiguration(locations = {"classpath:application-context.xml"})
+@RunWith(SpringJUnit4ClassRunner.class)
+public class Test {
+    @Autowired
+    MemberDao memberDao;
+    @org.junit.Test
+    public void testDataSource(){
+        System.out.println(this.memberDao);
+    }
+}
+
+手写 ORM 下：①②③④⑤
+①要传一个复杂的查询条件，怎么传？
+a.JdbcTest中用对象来传，但是有几个问题，无法夸表联查，无法携带判断逻辑的运算符，or和and无法区分；
+改造JdbcTest类中的 select(Class clazz)方法为 select(Object condition){
+    //将 clazz 保留下来
+    Class clazz = condition.getClass()}
+}
+我们ORM的“初衷”：单表查询，不写一句 SQL；查询的结果，自动映射为java对象；
+因此在 framework 包中定义 QueryRule ，拼接复杂查询规则，具体情况转到下面；
+②自动映射类型判断麻烦，JdbcTest类中代码如下：
+if (type == Long.class){
+    field.set(obj,rs.getLong(columnName));
+}else if (type == String.class){
+    field.set(obj,rs.getString(columnName));
+}
+使用 field.set(obj,rs.getObject(columnName)); 代替以上代码；
+③跨多种数据库如何统一 API？
+④数据源的动态切换如何来做？
+创建 javax.core.common.jdbc.datasource.DynamicDataSource 类
+/**动态数据源*/
+/**AbstractRoutingDataSource为 spring 提供的路由数据源，执行数据连接前，根据业务规则动态获得连接，
+ * 从而达到动态切换数据库连接的效果，主要用于分库分表*/
+public class DynamicDataSource extends AbstractRoutingDataSource {
+    /*entry的目的，主要是用来给每个数据源打个标记，由此知道什么业务对应什么数据源*/
+	private DynamicDataSourceEntry dataSourceEntry;
+	/*隐藏父类 2 个成员变量*/
+    /*private Map<Object, Object> targetDataSources;
+    private Object defaultTargetDataSource;*/
+}
+application-db.xml配置如下：
+<bean id="dynamicDataSource" class="javax.core.common.jdbc.datasource.DynamicDataSource" >
+    <property name="dataSourceEntry" ref="dynamicDataSourceEntry"></property>
+    <property name="targetDataSources">
+        <map>
+            <entry key="db_one" value-ref="dataSource"></entry>
+            <entry key="db_two" value-ref="dataSource2"></entry>
+        </map>
+    </property>
+    <property name="defaultTargetDataSource" ref="dataSource" />
+</bean>
+创建 javax.core.common.jdbc.datasource.DynamicDataSourceEntry 类
+/**动态切换数据源*/
+/***/
+public class DynamicDataSourceEntry {
+	/*每次执行完，会将数据源设为默认数据源*/
+    public final static String DEFAULT_SOURCE = null;
+    /*保存数据源名字*/
+    private final static ThreadLocal<String> local = new ThreadLocal<String>();
+}
+application-db.xml配置如下：
+<bean id="dynamicDataSourceEntry"  class="javax.core.common.jdbc.datasource.DynamicDataSourceEntry" />
+新建数据库 gupaoedu_two；
+⑤SQL注入如何解决？
+
+承接上面 QueryRule：注意，QueryRule只是拼接sql语句中的 where部分和order by部分，不包含主题部分；
+Test中创建 testQueryRule()方法
+@org.junit.Test
+public void testQueryRule(){
+    QueryRule queryRule = QueryRule.getInstance();
+    /*查询字段名字为 name，值为Tom的数据*/
+    queryRule.andEqual("name","Tom");
+}
+那么，怎么将查询规则 QueryRule 转换成 SQL 语句呢？因此，创建 QueryRuleSqlBuilder 类，该类构造方法
+接收 QueryRule对象，并循环 ruleList，跟 case QueryRule.EQ:processEqual(rule);进入processEqual()
+方法，跟 add()方法最终进入 add()方法；
+QueryRuleSqlBuilder类中还有拼接 wheresql 的方法 appendWhereSql()
+
+⑤如何防止SQL注入？
+a.将QueryRule构建好，把所有查询规则Rule保存到 ruleList中；
+b.再写一个工具类QueryRuleSqlBuilder，循环每一个Rule，对每一个Rule分别使用 processXxx()处理；
+c.processXxx()方法，将诸如 and name = ？保存到properties列表中，将诸如 "Tom" 保存到 values列表里
+根据索引位置相同，进行一一对应；
+
+需要回到 BaseDaoSupport类定义 select(QueryRule queryRule)方法，BaseDaoSupport需要定义范型，如下
+BaseDaoSupport<T extends Serializabel,PK extends Serializable> 定义类时使用范型，使用类时指明
+范型；例如  demo包中 class MemberDao extends BaseDaoSupport<Member,Long>，使用范型目的：返回结果
+不需要强制转型；
+
+----------------------代码研究----------------------------------------
+
+BaseDaoSuppoert中定义最基础的 insert delete update select 方法，XxxDao类继承 BaseDaoSuport类，
+子类 XxxDao 定义自己的 增 删 改 查 方法，XxxDao的增 删 改 查 方法只作辅助工作，最终要调用父类的 insert
+delete() update() select()方法去执行sql；
+
+OrmTest类中进行测试；
+测试增加
+@Test
+public void testInsert(){
+    try {
+        for (int age = 25; age < 26; age++) {
+            Member member = new Member();
+            member.setAge(age);
+            member.setName("Tom");
+            member.setAddr("Hunan Changsha");
+            this.memberDao.insert(member);
+        }
+    }catch (Exception e){
+        e.printStackTrace();
+    }
+}
+跟 this.memberDao.insert(member);
+进入 MemberDao.insert()
+public boolean insert(Member entity) throws Exception{
+    if(entity.getAge() >= 30){
+        this.dataSource.getDataSourceEntry().set("db_two");
+    }else{
+        this.dataSource.getDataSourceEntry().set("db_one");
+    }
+    Long id = super.insertAndReturnId(entity);
+    entity.setId(id);
+    return id > 0;
+}
+跟 Long id = super.insertAndReturnId(entity);
+进入 BaseDaoSupport.insertAndReturnId()方法，改方法拼接sql语句 " insert into t_member(name,age,addr) values(?,?,?) "
+并调用 jdbcTemplate.update(sql,values) values 为占位符 ? 对应的值；
+
+父类 BaseDaoSuppoert 中的 delete(T vo) update(T vo)都是以vo对象为参数，因此父类要先通过查询方法
+selet(QueryRule queryRule)来获取符合 删除或者更新 条件的 vo 对象或者 vo 对象列表，然后再调用
+delete(T vo) 或者 update(T vo) 方法，对符合条件的 vo 进行 删除或者更新 操作；
+
+因此，先来研究 select()，OrmTest类中 测试查询
+@Test
+/*@Ignore*/
+public void testSelect(){
+    try {
+        QueryRule queryRule = QueryRule.getInstance();
+        /*封装查询条件*/
+        queryRule.andEqual("name","James");
+        List<Member> result = this.memberDao.select(queryRule);
+        System.out.println(Arrays.toString(result.toArray()));
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+}
+根 List<Member> result = this.memberDao.select(queryRule);
+进入 MemberDao.select(...)方法：
+/*查找数据*/
+public List<Member> select(QueryRule queryRule){
+    List<Member> memberList = super.select(queryRule);
+    return memberList;
+}
+跟 List<Member> memberList = super.select(queryRule);
+进入 BaseDaoSupport.select(QueryRule queryRule)方法
+/*创建 QueryRuleSqlBuilder对象，将 QueryRule里面封装的内容拼凑成sql语句*/
+QueryRuleSqlBuilder bulider = new QueryRuleSqlBuilder(queryRule);
+将 queryRule 封装到 QueryRuleSqlBuilder 里面，然后通过 builder 获取 whereSql；
+最后拼接完整 sql " select name,age,addr from t_member where name = ? "，然后调用
+jdbcTemplate.query(sql,new RowMapper<T>{
+    @override
+    //rowNum当前行数，rs当前行数对应的结果集
+    public T mapRow(ResultSet rs, int rowNum) throws SQLException {
+        try {
+            T t = entityClass.newInstance();
+            ResultSetMetaData meta = rs.getMetaData();
+            int columns = meta.getColumnCount();
+            String columnName;
+            for (int i = 1; i <= columns; i++) {
+                Object value = rs.getObject(i);
+                columnName = meta.getColumnName(i);
+                fillBeanFieldValue(t,columnName,value);
+            }
+            return t;
+        }catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    },values
+}
+定义 jdbcTemplate.query(sql,new RowMapper<T>{},values)方法时，会调用参数new RowMapper<T>{}里面
+的 mapRow(ResultSet rs, int rowNum) 方法，将结果集中当前行数rowNum对应的行rs中的数据封装到 vo 对
+象中；
+
+OrmTest类 测试删除，以 vo 对象为参数
+/**先查询出符合条件的 vo 对象，再进行删除*/
+@Test
+public void testDelete(){
+    QueryRule queryRule = QueryRule.getInstance();
+    /*封装查询条件*/
+    queryRule.andEqual("name","Tom");
+    List<Member> memberList = null;
+    try {
+        /**先查询出符合条件的 vo 对象列表，再进行删除*/
+        memberList =  this.memberDao.select(queryRule);
+        boolean flag = false;
+        for (Member member : memberList){
+            flag = this.memberDao.delete(member);
+            System.out.println("---------------" + flag);
+        }
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+}
+跟 flag = this.memberDao.delete(member);
+进入 MemberDao.delete(Member member)方法
+/*删除单个数据*/
+public boolean delete(Member member) throws Exception{
+    return super.delete(member);
+}
+跟 return super.delete(member); 进入
+BaseDaoSuppoer.doDelete()，删除 vo，tableName表名，pkName主键字段名，pkValue主键Field对象的值
+private int doDelete(String tableName, String pkName, Object pkValue) {
+    StringBuffer sb = new StringBuffer();
+    sb.append("delete from ").append(tableName).append(" where ").append(pkName).append(" = ?");
+    int ret = this.jdbcTemplateWrite().update(sb.toString(), pkValue);
+    return ret;
+}
+拼接 sql "delete from t_member where id = ?"，并调用
+this.jdbcTemplateWrite().update(sql, pkValue); pkValue为占位符 ? 的值；
+
+OrmTest类 测试修改，以 vo 对象为参数
+/**先查询出符合条件的 vo 对象，再进行修改*/
+@Test
+public void testUpdate(){
+    QueryRule queryRule = QueryRule.getInstance();
+    /*封装查询条件*/
+    queryRule.andEqual("name","James");
+    List<Member> memberList = null;
+    /**先查询出符合条件的 vo 对象列表，再进行修改*/
+    memberList = this.memberDao.select(queryRule);
+    try {
+        boolean flag = false;
+        for (Member member : memberList){
+            /**修改查询出来的 vo 对象的成员变量的值*/
+            member.setAge(18);
+            flag = this.memberDao.update(member);
+            System.out.println("---------------" + flag);
+        }
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+}
+跟 flag = this.memberDao.update(member);
+进入 MemberDao.update(Member member) 方法
+/*修改数据*/
+public boolean update(Member member) throws Exception{
+    return super.update(member);
+}
+跟 return super.update(member);
+进入 BaseDaoSupport.update()方法
+protected boolean update(T entity) throws Exception {
+    /*this.op.pkField.get(entity) 主键值；将vo对象解析为Map；key:字段名,value:字段值*/
+    return this.doUpdate(this.op.pkField.get(entity), this.parse(entity)) > 0;
+}

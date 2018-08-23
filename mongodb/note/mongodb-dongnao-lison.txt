@@ -1,0 +1,108 @@
+mongodb图形化工具
+-----
+mongodb脚本可以直接在命令行中运行：
+脚本内容如下：
+var user1 = {name:"James",age:33};
+db.users.insert(user1);
+执行完毕后查询：db.users.find().pretty();
+返回结果：{
+    _id:"...",
+    name:"James",
+    age:33
+}
+-----------------------利用原生java客户端操作包操作mongodb数据库------------------------------------
+原生java操作mongodb包里面有 3 种方法：①基于文档 document 操作mongodb；②基于 pojo 操作mongodb；③基于
+spring-mongodb-data 操作 mongodb；
+
+对该变量进行操作：
+var user1 = {name:"James",
+             age:33,
+             country:{
+                    code:001,
+                    add:"USA"
+                     },
+             favs:{
+                  movies:["m1","m2"],
+                  cites:["c1","c2"]
+                  }
+             };
+①基于 Document 操作如下：
+创建 com.dongnao.lison.mongo.test.QuickStartJavaDocTest.java
+public class QuickStartJavaDocTest {
+}
+该类中定义成员变量如下：成员变量被各个方法所共有；类中要定义一些方法给成员变量赋值，比如set方法，构造方法
+；要定义一些方法修改成员变量，比如业务方法；要定义一些方法返回成员变量，比如 get 方法；
+private MongoClient mongoClient;//数据库连接对象，通过这个对象去连接到
+mongodb，并操作mongodb里面的某个库database的某个集合collection；
+private MongoDatabase mongoDatabase;//要连接操作的数据库
+private MongoCollection<Document> mongoCollection;//要连接操作的集合
+类中这三个变量默认都为 null，如何赋值呢？定义 init() 方法，对这三个属性赋值；
+@Before
+public void init(){
+    this.mongoClient = new MongoClient("39.106.185.193",27017);
+    this.mongoDatabase = this.mongoClient.getDatabase("lison");
+    this.mongoCollection = this.mongoDatabase.getCollection("users");
+}
+
+类中定义 testInsert() 方法，像数据库的集合中增加数据：
+@Test
+public void testInsert(){
+        Document doc = new Document();//相当于mysql中的一条数据
+        //跟Document()构造方法，发现 Document 其实就是一个map，存key和value，封装了一些其他操作方法；
+        doc.append("name","James").append("age",33);
+        Map<String,String> country = new HashMap<String, String>();
+        /*country:{code:001,add:"USA"} 用 map 封装 */
+        country.put("code","001");
+        country.put("add","USA");
+        doc.append("country",country);
+        this.mongoCollection.insertOne(doc);
+}
+②基于 pojo 操作如下：
+创建 com.dongnao.lison.mongo.test.QuickStartJavaPojoTest.java
+public class QuickStartJavaPojoTest {
+}
+给类中定义 3 个成员变量：
+private MongoClient mongoClient;
+private MongoDatabase mongoDatabase;
+private MongoCollection<User> mongoCollection;
+
+类中定义 init()方法，给成员变量赋值：
+@Before
+public void init(){
+    /*编解码的注册中心，将java中数据类型转换为mongodb数据类型*/
+    List<CodecRegistry> codecRegistries = new ArrayList<>();
+    /*将默认的编解码器注册进去*/
+    codecRegistries.add(this.mongoClient.getDefaultCodecRegistry());
+    CodecRegistry pojoProviders = CodecRegistries.fromProviders(PojoCodecProvider.builder().automatic(true).build());
+    codecRegistries.add(pojoProviders);
+    CodecRegistry registry = CodecRegistries.fromRegistries(codecRegistries);
+
+    ServerAddress serverAddress = new ServerAddress("127.0.0.1",27017);
+    MongoClientOptions options = MongoClientOptions.builder().codecRegistry(registry).build();
+    this.mongoClient = new MongoClient(serverAddress,options);
+    this.mongoDatabase = this.mongoClient.getDatabase("lison");
+}
+类中定义 testInsert 方法，向mongodb中插入数据：
+@Test
+public void testInsert(){
+    User user = new User();
+    user.setName("Kobe");
+    user.setAge(40);
+    this.mongoCollection.insertOne(user);
+}
+③基于 spring 如下
+创建 com.dongnao.lison.mongo.test.QuickStartSpringPojoTest.java 类
+public class QuickStartSpringPojoTest {
+}
+类中注入 templae 对象：
+@Resource
+private MongoOperations template;
+
+java实体类entity要与mongodb的集合collection绑定：
+@Document(collection = "users")
+public class User {
+    private String name;
+    private Integer age;
+}
+
+

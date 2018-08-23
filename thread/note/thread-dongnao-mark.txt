@@ -1,0 +1,1787 @@
+***************************************************************************************
+线程想运行，先获得对象的锁；
+类中方法使用synchronized或者lock.lock()...locl.unlock，说明给这个类的对象上锁了，run()方法里面
+要想执行 synchronized块里面的语句或者lock.lock() locl.unlock之间的语句，就要获得被上锁对象的锁；
+给对象上锁；一个对象一把锁，线程获取到锁就执行，获取不到锁就等待；每个线程都有自己栈空间，各线程需要协
+作和通信；
+多个线程操作同一个资源(对象)，线程不安全，因此对象要上锁，一个对象有 state个锁，只有state个线程能获取
+到，其他线程等待；可以理解为 对象 里面有一个 状态值state 表示锁数量，1表示该对象还有1把锁，0表示该对象
+没有锁了，当各线程看到state=0时，就等待，看到 state>0时，就去获取锁，谁争到谁执行，其余等待；
+
+对象怎么上锁？①隐式锁 synchronized(对象)；②显式锁 lock()
+①synchronized(o){}给对象o上锁；类 User中 public void synchronized update(){}给 user对象上锁；
+当两个线程使用 user.update() 时，若user是同一个对象，只有其中一个能获取锁；若user不是同一个对象，两个
+线程都能获得锁；
+synchronized与wait() notify()联合使用；o.wait()将使线程释放锁，并等待在对象o上，o.notifyAll()
+唤醒等待在同一个对象o 上的线程去获取锁，但是notifyAll不会释放锁，要等synchronized执行完才释放锁；
+②类 User public void update(){lock.lock()...lock.unlock()} 给对象user上锁；
+当多个线程操作的是同一个 o对象或者user对象时，只有获取锁的执行，其他线程等待；但是多个线程操作的不是同
+一个 o对象或者user对象时，可以进入同步块，因为不同的每个对象都能提供一个锁；
+***************************************************************************************
+
+1、定义 ShowMainThread.java类，观察 main 线程：
+public class ShowMainThread {
+    public static void main(String[] args) {
+        /*jvm虚拟机线程管理接口*/
+             ThreadMXBean threadMXBean = ManagementFactory.getThreadMXBean();
+             /*不考虑线程的监视器跟锁信息，只拿线程跟线程的堆栈信息*/
+             ThreadInfo[] threadInfos = threadMXBean.dumpAllThreads(false,false);
+             for(ThreadInfo threadInfo:threadInfos){
+                 System.out.println("id : " + threadInfo.getThreadId() + " - " + "name : " + threadInfo.getThreadName());
+             }
+         }
+}
+打印结果：
+id : 6 - name : Monitor Ctrl-Break
+id : 5 - name : Attach Listener
+id : 4 - name : Signal Dispatcher
+id : 3 - name : Finalizer
+id : 2 - name : Reference Handler
+id : 1 - name : main
+2、如何创建并启动线程？
+
+3、线程如何中断？
+原理：wait()，sleep()等阻塞方法会循环检测阻塞在上面的线程对象的中断标志位，如果中断标志位为 true，
+则这些阻塞方法会抛出中断异常InterruptedException e，并将线程对象的中断标志位改为false；
+①run（）方法执行完成；②抛出一个未处理的异常导致线程的提前结束；③标志位停止线程
+
+定义 com.dongnao.mark.base.interrupt.FlagCancel.java 类，标志位终止线程：
+执行 main() 方法，观察结果，当run()方法中有阻塞方法wait()时，无法依靠标志位中断线程；当去掉run()方
+法中的阻塞方法wait()时，可以依靠标志位中断线程；
+
+定义 com.dongnao.mark.base.interrupt.Interrupt 类，解决 run()方法中有阻塞方法时，线程中断问题；
+BlockInterrupt类里面定义 2 个线程类：
+①WhileTryWhenBlock：run()方法中 try...catch块写在 while()循环里面；
+②TryWhileWhenBlock：run()方法中 while()写在 try...catch块循环里面
+注释掉下半部分，执行如下 main()
+public static void main(String[] args) throws InterruptedException {
+    WhileTryWhenBlock whileTryWhenBlock = new WhileTryWhenBlock();
+    whileTryWhenBlock.start();
+    Thread.sleep(100);
+    whileTryWhenBlock.cancel();
+    /*TryWhileWhenBlock tryWhileWhenBlock = new TryWhileWhenBlock();
+    tryWhileWhenBlock.start();
+    Thread.sleep(100);
+    tryWhileWhenBlock.cancel();*/
+}
+返回结果：
+当前执行线程id：10                 每个线程都有一个 id号，getId()方法获得；
+i=0
+当前执行线程的中断标志位：10:false   此时，当前执行线程是自己创建的线程；
+被中断的线程_10:true
+本方法所在线程实例：10
+执行本方法的线程：1
+分析注释见 BlockInterrupt类
+
+4、如何安全终止线程？
+使用线程中的中断方法：interrupt(),isInterrupted(),Thread.interrupted();
+
+7、线程的状态？
+新创建：线程被创建，但是没有调用start()方法；
+可运行(RUNNABLE)：不存在运行状态，只存在可运行状态，具体是不是在运行，由cpu决定；
+阻塞BLOCKING：线程被阻塞于锁，该线程等待锁，有锁就能运行，但是锁被其他线程拿到了；
+等待/计时等待（WAITING）：wait(),sleep()等待某些条件成熟；
+被终止：线程执行完毕；
+见 com.dongnao.mark.base.threadstate.ThreadState 类，启动 main()方法，点击照相机查看 dump：
+
+总结：线程状态没理解？？？
+
+8、线程优先级 priority~[1,10]，默认为5，一般不用，因为优先级一般由系统决定，很少用；
+
+9、Daemon 守护型线程，例如 gc线程，当程序里面没有 非Daemon 线程时，java程序会退出，很少用;
+见 com.dongnao.mark.baseDaemon类，thread.setDaemon(true)设置线程为守护线程;
+总结：守护线程是陪线程玩的，线程停了，守护线程也会随之消失；
+
+10、run()方法与start()方法：
+run()方法就是一个普通方法，真正作为线程执行是因为使用了线程的start()方法；
+
+11、Thread.sleep()不会释放锁，sleep()定义在synchronized(lock) {}里面，其他线程将拿不到锁，因此，
+Thread.sleep()要定义在 synchronized(lock) {} 外面，见 com.dongnao.mark.baseSleepTest 类；
+
+12、yield()：出让cpu，当前线程从正在运行状态 → 可运行状态，下一刻也有可能被cpu选中运行，不会释放锁；
+
+13、wait(),notify(),notifyAll()：与synchronized连用，调用以前，当前线程要获取锁，调用以后会释放锁；
+实际就是 等待通知机制：
+
+synchronized( O ){...}：隐式锁，进入synchronized修饰的代码就获得锁，走出相应的代码就释放锁;
+通信
+与Synchronized配套使用的通信方法通常有wait(),notifyAll()。
+wait()方法会立即释放当前锁，并进入等待状态，等待到相应的notify()并重新获得锁过后才能继续执行；notify()
+不会释放锁，必须要等notify()所在线程执行完synchronized块中的所有代码才会释放。
+
+synchronized(O){o.wait()}:
+进入synchronized块，表示线程获取 对象o 的锁，其他线程不能再获取 对象o 的锁；
+public void synchronized put(){}等价于 synchronized(this){} 表示当前对象的锁；
+
+线程 A 调用了对象 O 的 wait() 方法，线程 A 进入等待状态；线程 B 调用了对象 O 的 notify() 方法进行唤醒
+，唤醒的是在对象 O 上等待的线程（线程A）；
+notify与notifyAll：
+notify唤醒在对象 O 上面等待的 1 个线程；notifyAll唤醒在对象 O 上面等待的 全部线程；notifyAll常用；
+wait(),notify(),notifyAll()属于对象的方法，不属于线程的方法(Thread.xxx())，继承自 Object 类；
+o.wati()：线程会在对象o上面等待，直到下次被唤醒，接着 wait()方法执行；
+见 com.dongnao.mark.base.waitnotify.User 类；
+
+---------------------------------线程间协作和通信-----------------------------------------
+每个线程都有自己栈空间，独立运行，对我们没有价值，各线程需要协作和通信；
+1、volatile和synchronized：
+①volatile：
+java中方法运行时内存分析：
+a 每个方法(线程就是run()方法)运行时都有自己的栈内存空间，方法执行时，会把方法需要的变量从堆内存读到栈
+  内存空间；
+b 方法对自己栈内存中的变量进行操作；
+c 方法将自己栈内存中的变量写回到对内容；
+这样会存在一个问题：当两个线程a b同时执行时，同时将一个变量 x=0 从堆内存读到自己各自的栈内存空间时，
+如果 a线程改变变量x=1，并将x=1写回到堆内存时，另一个 b线程看不到，b线程依然使用自己栈内存空间中x=0；
+如果使用 volatile 修饰 x，线程a b(线程a b里面的run()方法)使用变量 x的时，会去堆内存刷新变量 x；
+见 com.dongnao.mark.base.volatile1.RunThread 类，当变量isRunning前面不加 volatile时，main()
+方法会陷入死循环；
+原因分析：
+现在有两个线程，RunThread线程，线程main线程；
+RunThread线程运行时，即run()方法运行时，会将isRunning变量从堆内存加载到自己栈内存空间中，值为true；
+然后main线程线程运行时，即main()方法运行时，将isRunning读取到main栈内存空间，然后修改isRunning值为
+false，再将变量isRunning写回堆内存，此时堆内存中isRunning=false；但是，线程会一直在自己的栈内存空间
+里面读取isRunning，始终值为true，因此陷入死循环；
+解决方法：
+使用 volatile 关键字修饰 成员变量isRunning；强制线程即run()方法从堆内存中取volatile修饰的变量；
+
+volatile修饰某个变量作用：强制方法使用堆内存中的这个变量，而不是使用自己栈内存空间中的这个变量；如果不
+扩展一下，当多个线程之间需要根据某个条件确定 哪个线程可以执行时，要确保这个条件在 线程 之间是可见的。
+一 可以用volatile修饰，使变量在多个线程之间可见；
+二 volatile关键字的不具有原子性；
+所谓原子性，就是某系列的操作步骤要么全部执行，要么都不执行；
+比如，变量的自增操作 i++，分三个步骤：
+①从内存中读取出变量 i 的值
+②将 i 的值加1
+③将 加1 后的值写回内存
+这说明 i++ 并不是一个原子操作。因为，它分成了三步，有可能当某个线程执行到了第②时被中断了，那么就意味着
+只执行了其中的两个步骤，没有全部执行。
+
+比如，假设 i自增问题，线程A从主内存中读取i，值为5，将它存储到自己的线程空间中，执行加1操作，值为6。此
+时，CPU切换到线程B执行，从主从内存中读取变量i的值。由于线程A还没有来得及将加1后的结果写回到主内存，线
+程B就已经从主内存中读取了i，因此，线程B读到的变量 i 值还是5，相当于线程B读取的是已经过时的数据了，从而
+导致线程不安全性，如果volatile具有原子性，就会加载变量i，i自增1，i写回堆内存要么一起都执行，要么都不
+执行；
+
+volatile 与 synchronized 的比较
+volatile强制线程每次从主内存中读取变量，而不是从线程的私有内存中读取变量，从而保证了数据的可见性；
+比较：
+a volatile轻量级，只能修饰变量；synchronized重量级，还可修饰方法；
+b volatile只能保证数据的可见性，不能用来同步，因为多个线程并发访问volatile修饰的变量不会阻塞；
+c synchronized不仅保证可见性，而且还保证原子性，因为，只有获得了锁的线程才能进入临界区，从而保证临界
+区中的所有语句都全部执行；多个线程争抢synchronized锁对象时，会出现阻塞；
+②sychronized：
+关键字synchronized可以修饰方法或者以同步块的形式来进行使用，它主要确保多个线程在同一个时刻，只能有一个
+线程处于方法或者同步块中，它保证了线程对变量访问的可见性和排他性，又称为内置锁机制。
+Synchronized的类锁和对象锁，本质上是两把锁，类锁实际锁的是每一个类的class对象。对象锁锁的是当前对象实
+例。
+
+sychronized(Demo.class)：类锁，对应 static静态方法 public sychronized static fun(){}
+sychronized(this)：实例对象锁，对应 对象方法 public sychronized fun(){}
+
+创建 com.dongnao.mark.base.syn.SynDetail 类，代码如下：
+public class SynDetail {
+    public static void main(String[] args) {
+        /**锁 SynDetail.class 对象，多个线程操作这个对象时，只有一个能进入这个synchronized块*/
+        synchronized (SynDetail.class){
+
+        }
+    }
+}
+执行 main()方法，将 SynDetail.java文件编译为SynDetail.class文件；cmd命令行执行命令：
+javap -v /...路径/SynDetail.class：返回部分内容如下：
+public static void main(java.lang.String[]);
+    descriptor: ([Ljava/lang/String;)V
+    flags: ACC_PUBLIC, ACC_STATIC
+    Code:
+      stack=2, locals=3, args_size=1
+         0: ldc           #2                  // class com/dongnao/mark/base/syn/SynDetail
+         2: dup
+         3: astore_1
+         4: monitorenter                        线程获取对象的锁
+         5: aload_1
+         6: monitorexit                         线程释放对象的锁
+         7: goto          15
+        10: astore_2
+        11: aload_1
+        12: monitorexit
+        13: aload_2
+        14: athrow
+        15: return
+}
+
+2、等待和通知机制
+假设有 2个线程，只有 1个能获取锁 执行；
+synchronized(o){
+    /*条件不满足则等待*/
+    while(条件不满足){
+        o.wait();
+    }
+    /*条件满足则执行逻辑处理*/
+    逻辑处理;
+    /*条件满足则唤醒其他等待线程*/
+    if(条件满足){
+        o.notifyAll();
+    }
+}
+synchronized(o){
+    /*条件不满足则等待*/
+    while(条件不满足){
+        /*等待超时，自动唤醒*/
+        o.wait(long waitTime);
+        return null;
+    }
+    /*条件满足则执行逻辑处理*/
+    逻辑处理;
+    /*条件满足则唤醒其他等待线程*/
+    if(条件满足){
+        o.notifyAll();
+    }
+}
+等待超时机制
+根据等待通知机制，定义有界阻塞队列，见 com.dongnao.mark.base.bq.BlockingQueueWN.java 类；
+
+3、管道输入输出流 ，很少用；
+文件输入输出，网络输入输出，管道输入输出流用于线程中间的数据传递，传输媒介的内存
+pipedOutputStream/input 面向的字节
+pipedReader/Writer 面向的是字符
+只适合线程间一对一的通信，适用范围较狭窄。
+4、join方法
+线程A的run()调用线程B的join()方法，会先执行线程B的run()方法，再执行线程A的run()方法，即线程B插队了
+
+threadA.run(){
+    /**线程B插队，等线程B run()方法执行完，再执行线程A run()方法*/
+    threadB.join();
+    System.out.println("ThreadA 线程A 开始运行");
+    System.out.println("ThreadA 线程A 结束运行");
+}
+见 com.dongnao.mark.base.join.JoinTest；
+5、ThreadLocal<T>
+本质是个map key：每个线程对象,value:每个线程所拥有的值 T；保存每个线程局部变量，线程运行结束，该局部
+变量自动回收；
+ThreadLocal拥有的这个变量，在线程之间很独立的，相互之间没有联系。内存占用相对来说比较大；
+常用方法：initialValue()；get()在run()中调用，取key为当前线程的value；set(x) key:当前线程,value:x；
+revmove()：将当前线程局部变量的值删除，这个方法是JDK 5.0新增的方法。当线程结束后，对应该线程的局部变
+量将自动被垃圾回收，所以显式调用该方法清除线程的局部变量并不是必须的操作，但它可以加快内存回收的速度；
+见 com.dongnao.mark.base.threadlocal.ThreadLocalTest.java 类；注意 threadLocal.set(t)，
+threadLocal.get()等方法要写在线程的 run()方法中，因为threadLocal要取当前线程作为 key；
+
+6、性能问题
+串行化、无锁化、异步化编程是趋势之一，比如node.js，Vert.x。
+黄金原则：编码时候不要考虑性能优化的事情，先正确实现业务，发现性能不行，这个时候再来考虑性能优化。
+见 com.dongnao.mark.PerfermentTest.java 类。
+
+7、数据库连接池超时：
+调用场景：调用一个方法时等待一段时间(一般来说是给定一个时间段)，如果该方法能够在给定的时间段之内得到结
+果，那么将结果立刻返回，反之，超时返回默认结果；
+允许等待时间 T(固定值)；
+超时时刻：future = t(开始等待时刻) + T(固定值)；
+剩余等待时间：remaining ；
+图：
+                remaining
+。            。——————————。
+t           当前时刻       future = t + T(固定值)
+
+// 对当前对象加锁；mills：允许等待时间；future：超时时刻；ramaining：剩余等待时间，当remaining=0
+时，等待总时间为T，将等待超时；
+
+wait(long timeout)等待超时，自动唤醒;
+
+public synchronized Object get(long mills) throws InterruptedException {
+    long future = System.currentTimeMillis() + mills;
+    long remaining = mills;
+    // 当超时大于0并且result返回值不满足要求
+    while ((result == null) && remaining > 0) {
+        wait(remaining);
+        //剩下还需要等待的时间
+        remaining = future - System.currentTimeMillis();
+    }
+    return result;
+}
+见 com.dongnao.mark.connectpool 包
+public void run(){
+    /*getConnction()方法已上锁，线程run()方法要先进入getConnection()方法，必须获得pool对象的锁；
+    pool对象只有一个锁，如果另一个run()方法已经获得 该pool的锁，这个run()方法就要阻塞；*/
+    pool.getConnection();
+}
+---------------------------------原子操作------------------------------------------------
+
+1、为什么要有CAS(源码里面大量使用CAS自旋进行原子操作；例如 ConcurrentHashMap就是利用CAS自旋实现的；)
+原子 atomic：不能进一步再分的最小粒子，一系列操作，要么都执行，要么都不执行；
+原子操作 atomic operaion：一系列操作，要么都执行，要么都不执行，不可中断执行；java中可以通过锁或者
+循环CAS的方式来实现原子操作；
+CAS（Compare and Swep）：比较 并且 交换；CPU已经支持CAS了；
+CAS的三个参数：①变量所在的内存地址 V；②变量应该的值 A；③将要修改的值 B；
+如果说V上的变量的值是A的话，就用B重新赋值，如果不是A，那就什么事也不做，操作的返回结果是原值。
+循环CAS：在一个（死）循环 for(;;)里不断进行CAS操作，直到成功为止(自旋操作)，类似于数据库的乐观锁；
+synchronized：类似于数据库中的悲观锁；
+2、CAS实现原子操作的三大问题
+1、	ABA问题：其他的线程把值改成了C，很快改成了A。解决ABA，引入版本号：1A-》2C-》3A
+2、	循环时间很长的话，cpu的负荷比较大
+3、	对一个变量进行操作可以，同时操作多个共享变量有点麻烦
+4、CAS线程安全
+通过硬件层面的阻塞实现原子操作的安全
+5、原子更新
+原子更新基本类型类，见 com.dongnao.mark.atomic.atomicInt 包；
+AtomicBoolean，AtomicInteger，AtomicLong
+AtomicInteger的常用方法如下
+·int addAndGet（int delta）：
+·boolean compareAndSet（int expect，int update）：
+·int getAndIncrement()： 原子递增，但是返回的是自增以前的值
+incrementAndGet原子递增，但是返回的是自增以后的值
+·int getAndSet（int newValue）：
+原子更新数组类
+AtomicIntegerArray，AtomicLongArray，AtomicReferenceArray
+AtomicIntegerArray类主要是提供原子的方式更新数组里的整型，
+其常用方法如下。
+·int addAndGet（int i，int delta）：
+·boolean compareAndSet（int i，int expect，int update）：
+数组通过构造方法传入，类会将数组复制一份，原数组不会发生变化。
+原子更新引用类型提供的类。
+·AtomicReference： 可以解决更新多个变量的问题
+·AtomicStampedReference：解决ABA问题
+·AtomicMarkableReference：解决ABA问题
+原子更新字段类，
+Atomic包提供了以下3个类进行原子字段更新。
+·AtomicReferenceFieldUpdater：
+·AtomicIntegerFieldUpdater：
+·AtomicLongFieldUpdater：
+---------------------------------Lock--------------------------------------------------
+public class Member{
+    private String name;
+    Lock lock = new ReentrantLock();
+    public void update(String name){
+        lock.lock()
+        this.name = name;
+        lock.unlock();
+    }
+}
+当创建一个Member类对象 member的时候，member对象里面创建了一个Lock类对象 lock，这个lock负责 调用这
+个member对象方法的线程的锁的获得与释放，lock对象中有一个成员变量state，表示锁的个数，当前线程如果获取
+到锁，state就减 1，并且执行这个方法，如果state=0，则线程会获取锁失败，并将当前线程封装到 Node中，待
+state>0时，再来获取锁；state表示锁的数量；
+synchronized获取锁和释放锁的方式：开始执行synchronized方法或代码块则获得锁，执行完毕自动释放锁；
+1、有了synchronized为什么还要Lock？
+①尝试非阻塞地获取锁；②获取锁的过程可以被中断；③超时获取锁；
+这三种 synchronized 都不支持，但是Lock支持；
+
+2、Lock的标准用法
+见 com.dongnao.mark.lock.LockTemplate.java 类
+Lock lock = new ReentrantLock();
+lock.lock();/*获取锁，写在try块外面*/
+try{
+
+}finally {
+    lock.unlock();/*释放锁，写在finally里面*/
+}
+
+3、Lock的常用API；Lock lock = new ReentrantLock();
+lock.lock()：获取锁；
+lock.lockInterruptibly()：可中断的获取锁；
+lock.tryLock()：尝试非阻塞地获取锁；
+lock.tryLock(long time,UnitTime unit)：尝试可超时的获取锁；
+lock.unlock()：释放锁；
+
+4、锁的可重入：递归的时候发生锁的重入，没有锁的可重入，就会死锁；
+
+5、公平和非公平锁：公平锁，先去获取锁的线程比后去获取锁的线程先获取锁；公平锁的效率比非公平锁效率要低；
+
+6、读写锁ReentrantReadWriteLock
+允许多个读线程同时进行，但是只允许一个写线程(当一个线程在写的时候，其他读线程和写线程都不能进行)，支持
+读多写少场景，性能会有提升；
+见 com.dongnao.mark.lock.RwLockTemplate.java 类；
+
+7、Condition接口有何用处？
+Object对象都有 wait()，notify()/notifyAll()方法，Condition接口和Lock接口配合来实现等待通知机制；
+见类 com.dongnao.mark.lock.condiction.ConditionTemplate.java类，代码如下：
+Lock lock = new ReentrantLock();
+Condition condition = lock.newCondition();
+condition.await();                              当前线程释放锁，等待唤醒；
+condition.signal();                             唤醒等待在该对象上面的线程，去争取锁；
+
+条件与当前符合：condition.signal();
+条件与当前不符：condition.await();
+
+8、结合ReentrantLock和Condition实现线程安全的有界队列：
+见 com.dongnao.mark.lock.LimitedBlockingQueue.BlockingQueueLC02.java 类
+---------------------------------AbstractQueuedSynchronizer----------------------------
+
+1、什么是AbstractQueuedSynchronizer？为什么我们要分析它？ JDK大多数同步都是基于这个同步器类实现的；
+跟AbstractQueuedSynchronizer，进入AbstractQueuedSynchronizer.java源码，右键→Go To→Impliment
+2、AQS的基本使用方法
+同步器的主要使用方式：子类通过继承同步器并实现它的抽象方法来管理同步状态；代码如下，ReentrantLock通过
+同步器AQS实现同步，实现方法，ReentrantLock类的子类 Sync实现 AQS类；
+public class ReentrantLock implements Lock{
+    class Sync extends AbstractQueuedSynchronizer{
+
+    }
+}
+
+AbstractQueuedSynchronizer里面可重写的方法如下，父类AQS中定义的 protected方法，都是让子类重写的；
+tryAcquire()  独占锁获取的时候需要覆写的方法
+tryRelease()   独占锁释放的时候需要覆写的方法
+tryAcquireShared()  共享锁获取的时候需要覆写的方法
+tryReleaseShared()  共享锁释放的时候需要覆写的方法
+isHeldExclusively() 快速判断被线程独占的时候需要覆写的方法
+
+同步器的设计是基于模板方法模式, 使用者需要继承同步器AQS并重写指定的方法，随后将同步器组合在自定义同步组
+件的实现中，并调用同步器提供的模板方法，而这些模板方法将会调用使用者重写的方法。
+对同步状态进行更改，这时就需要使用同步器提供的3个方法
+同步器AbstractQueuedSynchronizer的 state成员变量在锁的获取过程中起重要作用：
+getState() 获取锁数量；
+setState 设置锁数量；
+compareAndSetState 比较并设置锁的数量；
+3、自定义独占锁 com.dongnao.mark.aqs.SingleLock，实现 Lock 接口
+public class SingleLock implements Lock {
+    @Override
+    public void lock() {
+
+    }
+    @Override
+    public void lockInterruptibly() throws InterruptedException {
+
+    }
+    @Override
+    public boolean tryLock() {
+        return false;
+    }
+    @Override
+    public boolean tryLock(long time, TimeUnit unit) throws InterruptedException {
+        return false;
+    }
+    @Override
+    public void unlock() {
+
+    }
+    @Override
+    public Condition newCondition() {
+        return null;
+    }
+}
+①定义内部类 Sync 继承 AbstractQueuedSynchronized，覆写tryAcquire()方法，
+tryRelease()方法，实现独占锁的获取和释放：
+static class Sync extends AbstractQueuedSynchronizer{
+    /*获取独占锁*/
+    @Override
+    public boolean tryAcquire(int arg) {
+        /*state=1，表示独占锁*/
+        if (this.compareAndSetState(0,1)){
+            /*设置独占线程为当前线程*/
+            this.setExclusiveOwnerThread(Thread.currentThread());
+            return true;
+        }
+        return false;
+    }
+    /*释放独占锁*/
+    @Override
+    public boolean tryRelease(int arg) {
+        /*设置独占线程为 null*/
+        this.setExclusiveOwnerThread(null);
+        /*state=0，表示释放锁*/
+        this.setState(0);
+        return false;
+    }
+    @Override
+    protected boolean isHeldExclusively() {
+        /*state = 1 说明有线程独占了锁*/
+        return this.getState() == 1;
+    }
+    Condition newCondition(){
+        return new ConditionObject();
+    }
+}
+②创建完该内部类后，还不能使用，需要创建该类对象：Sync sync = new Sync();
+③覆写lock()方法：
+④测试：在TestMyLock中测试自定义独占锁 SingleLock，将TestMyLock类的test
+方法中的 ReentrantLock()该为 SingleLock：
+final Lock lock = new ReentrantLock();
+改为 final Lock lock = new SingleLock;
+
+注：共享锁：多个读线程可以共同获取；独占锁：只有一个写线程可以获取；
+
+
+4、AQS同步器中，当一个线程获取锁，其他线程怎么处理呢？了解LockSupport（park开头方法表示阻塞线程，
+unpark表示释放阻塞线程）例如，park()方法代码如下：
+public static void park(Object blocker) {
+    /*线程对象随时可以获取*/
+    Thread t = Thread.currentThread();
+    /*将没有获取到锁的线程对象放到队列中*/
+    setBlocker(t, blocker);
+    UNSAFE.park(false, 0L);
+    setBlocker(t, null);
+}
+跟 com.dongnao.mark.aqs.SingleLock.lock()里面的 sync.acquire(1);进入
+public final void acquire(int arg) {
+    /*判断条件含义：!tryAcquire(arg) 如果线程获取锁失败；acquireQueued(addWaiter(Node.EXCLUSIVE), arg)
+    就把当前线程打包成 Node，然后加入同步队列*/
+    if (!tryAcquire(arg) &&
+        acquireQueued(addWaiter(Node.EXCLUSIVE), arg))
+        selfInterrupt();
+}
+同步队列如图，AQS同步队列.png；
+跟AbstractQueuedSynchronizer类里面的 class Node：
+static final class Node {
+	/*共享锁则新创建一个节点 Node*/
+    static final Node SHARED = new Node();
+    static final Node EXCLUSIVE = null;
+    static final int CANCELLED =  1;
+    static final int SIGNAL    = -1;
+    static final int CONDITION = -2;
+    static final int PROPAGATE = -3;
+    volatile int waitStatus;
+    /*上一个节点*/
+    volatile Node prev;
+    /*下一个节点*/
+    volatile Node next;
+    /*当前线程，当前竞争锁失败的线程*/
+    volatile Thread thread;
+    /*头节点*/
+	private transient volatile Node head;
+	/*尾节点*/
+	private transient volatile Node tail;
+}
+跟 addWaiter(Node.EXCLUSIVE)方法
+private Node addWaiter(Node mode) {
+    /*将当前线程封装到节点Node中，mode为模式，独占，共享*/
+    Node node = new Node(Thread.currentThread(), mode);
+    Node pred = tail;
+    /*当前节点设置为尾节点*/
+    if (pred != null) {
+        node.prev = pred;
+        if (compareAndSetTail(pred, node)) {
+            pred.next = node;
+            return node;
+        }
+    }
+    enq(node);
+    return node;
+}
+跟 全面入队列操作enq(node);发现里面使用了CAS自旋模式即死循环，如果出现期望的值，就将其修改为要修改的值；
+private Node enq(final Node node) {
+    for (;;) {
+        Node t = tail;
+        if (t == null) { // Must initialize
+            if (compareAndSetHead(new Node()))
+                tail = head;
+        } else {
+            node.prev = t;
+            if (compareAndSetTail(t, node)) {
+                t.next = node;
+                return t;
+            }
+        }
+    }
+}
+跟 acquireQueued()，shouldParkAfterFailedAcquire(p, node)一直阻塞，直到被唤醒，唤醒之后，再去
+拿状态即getState()返回1，表示有 1个锁可以获取，然后将 state减1等于0了，表示有没有锁了，其他线程阻塞；
+final boolean acquireQueued(final Node node, int arg) {
+    boolean failed = true;
+    try {
+        boolean interrupted = false;
+        for (;;) {
+            final Node p = node.predecessor();
+            if (p == head && tryAcquire(arg)) {
+                setHead(node);
+                p.next = null; // help GC
+                failed = false;
+                return interrupted;
+            }
+            /*shouldParkAfterFailedAcquire(p, node)一直阻塞，直到被唤醒*/
+            if (shouldParkAfterFailedAcquire(p, node) &&
+                parkAndCheckInterrupt())
+                interrupted = true;
+        }
+    } finally {
+        if (failed)
+            cancelAcquire(node);
+    }
+}
+
+上面是独占锁，下面介绍共享锁，由AbstractQueuedSynchronizer类的 acquireShared()模板方法处理；
+public final void acquireShared(int arg) {
+    /*如果共享锁获取失败，进入doAcquireShared(arg)*/
+    if (tryAcquireShared(arg) < 0)
+        doAcquireShared(arg);
+}
+****************************************************************************************
+state：表示锁的个数；
+state真正含义：独占锁，state默认值为 1，表示只有一个线程可以获取锁，当有线程获取到锁以后，state减1等
+于0了，此时没有线程可以获取锁了；共享锁，state默认值为 3，表示有 3个线程可以获取锁，当有 1个线程获取到
+锁后，state就减 1，直到state = 0，表示没有线程可以获得锁了；
+****************************************************************************************
+跟 doAcquireShared(arg)，state真正含义：独占锁，state = 1，表示只有一个线程可以获取锁，当有线程获
+取到锁以后，state减1等于0了，此时没有线程可以获取锁了；共享锁，state = 3，表示有 3个线程可以获取锁，
+当有 1个线程获取到锁后，state就减 1，直到state = 0，表示没有线程可以获得锁了；
+private void doAcquireShared(int arg) {
+    final Node node = addWaiter(Node.SHARED);
+    boolean failed = true;
+    try {
+        boolean interrupted = false;
+        for (;;) {
+            final Node p = node.predecessor();
+            if (p == head) {
+                int r = tryAcquireShared(arg);
+                if (r >= 0) {
+                    setHeadAndPropagate(node, r);
+                    p.next = null; // help GC
+                    if (interrupted)
+                        selfInterrupt();
+                    failed = false;
+                    return;
+                }
+            }
+            if (shouldParkAfterFailedAcquire(p, node) &&
+                parkAndCheckInterrupt())
+                interrupted = true;
+        }
+    } finally {
+        if (failed)
+            cancelAcquire(node);
+    }
+}
+定义一个 只允许 2个线程共同执行的锁 com.dongnao.mark.aqs.TwoLock，该类里面定义内部类Sync extends
+AbstractQueuedSynchronizer，内部类中复写AQS 2个方法，tryAcquireShared()，tryReleaseShared()；
+/**Sync构造方法，设置锁个数*/
+Sync(int count){
+    setState(count);
+}
+以上 SingleLock类 和 TwoLock类锁没有可重入功能，因为没有判断当前线程是否为拿到锁的线程；
+
+LockSupport定义了一组的公共静态方法，这些方法提供了最基本的线程阻塞和唤醒功能，而LockSupport也成为构建
+同步组件的基础工具。LockSupport定义了一组以park开头的方法用来阻塞当前线程，以及unpark(Thread thread)
+方法来唤醒一个被阻塞的线程；
+
+5、同步队列
+同步器依赖内部的同步队列（一个FIFO双向队列）来完成同步状态的管理，当前线程获取同步状态失败时，同步器会将
+当前线程以及等待状态等信息构造成为一个节点（Node）并将其加入同步队列。同步器拥有首节点（head）和尾节点
+（tail），没有成功获取同步状态的线程将会成为节点加入该队列的尾部；
+6、独占式同步状态获取与释放
+通过调用同步器的acquire(int arg)方法可以获取同步状态，其主要逻辑是：首先调用自定义同步器实现的
+tryAcquire(int arg)方法，该方法保证线程安全的获取同步状态，如果同步状态获取失败，则构造同步节点（独占
+式Node.EXCLUSIVE，同一时刻只能有一个线程成功获取同步状态）并通过addWaiter(Node node)方法将该节点加入
+到同步队列的尾部，最后调用acquireQueued(Node node,int arg)方法，使得该节点以“死循环”的方式获取同步
+状态。如果获取不到则阻塞节点中的线程，而被阻塞线程的唤醒主要依靠前驱节点的出队或阻塞线程被中断来实现。
+7、共享式同步状态获取与释放
+共享式获取与独占式获取最主要的区别在于同一时刻能否有多个线程同时获取到同步状态。在acquireShared(int arg)
+方法中，同步器调用tryAcquireShared(int arg)方法尝试获取同步状态，tryAcquireShared(int arg)方法返回值为
+int类型，当返回值大于等于0时，表示能够获取到同步状态。因此，在共享式获取的自旋过程中，成功获取到同步状态
+并退出自旋的条件就是tryAcquireShared(int arg)方法返回值大于等于0。
+8、自定义共享锁 com.dongnao.mark.aqs.SharedLock.java 类
+public class SharedLock implements Lock {
+    @Override
+    public void lock() {
+
+    }
+    @Override
+    public void lockInterruptibly() throws InterruptedException {
+
+    }
+    @Override
+    public boolean tryLock() {
+        return false;
+    }
+    @Override
+    public boolean tryLock(long time, TimeUnit unit) throws InterruptedException {
+        return false;
+    }
+    @Override
+    public void unlock() {
+
+    }
+    @Override
+    public Condition newCondition() {
+        return null;
+    }
+}
+①定义内部类 Sync 继承 AbstractQueuedSynchronized：
+static class Sync extends AbstractQueuedSynchronizer {
+}
+②Sync类里面定义共享该锁的线程数：Sync(int count){ this.setState(count); }
+③覆写tryAcquireShared 获取共享锁方法，tryReleaseShared 释放共享锁方法：
+/*共享锁的获取*/
+@Override
+protected int tryAcquireShared(int arg) {
+    for (;;){/*自旋*/
+        int current = this.getState();/*看看还有几个锁可以拿*/
+        int newCurrent = current - arg;/*当前的锁的数量减去要拿的锁的数量等于剩余的锁的数量*/
+        //this.compareAndSetState(current,newCurrent);/*当前锁数量，拿完后剩余锁的数量，设置成功则返回true*/
+        if (newCurrent < 0 || this.compareAndSetState(current,newCurrent)){
+            return newCurrent;
+        }
+    }
+
+}
+/*共享锁的释放*/
+@Override
+protected boolean tryReleaseShared(int arg) {
+    for (;;){/*自旋*/
+        int current = this.getState();/*当前锁的数量*/
+        int newCurrent = current + arg;/*当前的锁的数量加上释放的锁的数量*/
+        //this.compareAndSetState(current,newCurrent);/*当前锁数量，拿完后剩余锁的数量，设置成功则返回true*/
+        if (this.compareAndSetState(current,newCurrent)){
+            return true;
+        }else {
+            return false;
+        }
+    }
+}
+④创建完该内部类后，还不能使用，需要创建该类对象：final Sync sync = new Sync();
+⑤测试：TestMyLock类中第一句换成 SharedLock(),三个一起打印，Shared初始设置的是三个；
+
+9、ReentrantLock 可重入锁：如何实现可重入的呢？
+public sychronized void fun(){
+    fun();/*递归调用，同步方法自己调用自己，如果获取的是可重入锁，则可以直接获得锁，再次运行*/
+}
+ReentrantLock的实现，可重入锁的实现：
+重进入是指任意线程在获取到锁之后能够再次获取该锁而不会被该锁所阻塞，该特性的实现需要解决以下两个问题。
+①线程再次获取锁：锁需要去识别获取锁的线程是否为当前占据锁的线程，如果是，则再次成功获取。
+②锁的最终释放：nonfairTryAcquire方法增加了再次获取同步状态的处理逻辑：通过判断当前线程是否为获取锁的
+线程来决定获取操作是否成功，如果是获取锁的线程再次请求，则将同步状态值进行增加并返回true，表示获取同步
+状态成功。同步状态表示锁被一个线程重复获取的次数。如果该锁被获取了n次，那么前(n-1)次
+tryRelease(int releases)方法必须返回false，而只有同步状态完全释放了，才能返回true。可以看到，该方法
+将同步状态是否为0作为最终释放的条件，当同步状态为0时，将占有线程设置为null，并返回true，表示释放成功。
+
+10、了解ReentrantReadWriteLock的实现
+读写锁的自定义同步器需要在同步状态（一个整型变量）上维护多个读线程和一个写线程的状态，使得该状态的设计
+成为读写锁实现的关键。如果在一个整型变量上维护多种状态，就一定需要“按位切割使用”这个变量，读写锁将变
+量切分成了两个部分，高16位表示读，低16位表示写。读状态是所有线程获取读锁次数的总和，而每个线程各自获取
+读锁的次数只能选择保存在ThreadLocal中，由线程自身维护。
+11、了解Condition的实现
+等待队列是一个FIFO的队列，在队列中的每个节点都包含了一个线程引用，该线程就是在Condition对象上等待的线程
+，如果一个线程调用了Condition.await()方法，那么该线程将会释放锁、构造成节点加入等待队列并进入等待状态。
+一个Condition包含一个等待队列，新增节点只需要将原有的尾节点nextWaiter指向它，并且更新尾节点即可。
+调用Condition的signal()方法，将会唤醒在等待队列中等待时间最长的节点（首节点），在唤醒节点之前，会将节点
+移到同步队列中。调用该方法的前置条件是当前线程必须获取了锁，可以看到signal()方法进行了isHeldExclusively()
+检查，也就是当前线程必须是获取了锁的线程。接着获取等待队列的首节点，将其移动到同步队列并使用LockSupport
+唤醒节点中的线程。通过调用同步器的enq(Node node)方法，等待队列中的头节点线程安全地移动到同步队列。
+Condition的signalAll()方法，相当于对等待队列中的每个节点均执行一次signal()方法，效果就是将等待队列中所
+有节点全部移动到同步队列中，并唤醒每个节点的线程。
+
+
+---------------------------------20171203 并发工具类和并发容器----------------------------
+
+1、定义类 com.dongnao.mark.concurrency.UseConcurrentHashMap.java：
+2、Hash的解释
+散列，任意长度的输入，通过一种算法，变换成固定长度的输出。属于压缩的映射。Md5，Sha，取余都是散列算法，
+ConcurrentHashMap中是wang/jenkins算法。
+面试：ConcurrentMap在JDK7里面采用分段锁的机制，在JDK1.8里面采用数组 + 链表 + 红黑树的结构，当链表长度
+大于8时，就会把链表转换成一个红黑树，转成红黑树目的是为了查找更快；
+ctr + N：查找 ConcurrentHashMap类，里面内容如下：
+子类Segment<K,V>
+static class Segment<K,V> extends ReentrantLock implements Serializable {
+    private static final long serialVersionUID = 2249069246763182397L;
+    final float loadFactor;
+    Segment(float lf) { this.loadFactor = lf; }
+}
+构造方法
+public ConcurrentHashMap(int initialCapacity,float loadFactor, int concurrencyLevel){}
+---------------------------------阻塞队列-----------------------------------------------
+
+1、什么是阻塞队列：写数据和读数据不满足要求时，会对线程进行阻塞；队列已满，写线程不能插入，要被阻塞；
+当队列为空时，读线程不能读取，要被阻塞；
+阻塞队列方法：
+
+方法  	抛出异常	        返回值	    一直阻塞	    超时退出
+插入	    Add	            offer	    put	        offer
+移除 	remove	        poll	    take	    poll
+检查	    element	        peek	    没有	        没有
+2、常用阻塞队列
+ArrayBlockingQueue： 数组结构组成有界阻塞队列。
+先进先出原则，初始化必须传大小，take和put时候用的同一把锁
+LinkedBlockingQueue：链表结构组成的有界阻塞队列
+先进先出原则，初始化可以不传大小，put，take锁分离
+PriorityBlockingQueue：支持优先级排序的无界阻塞队列，
+排序，自然顺序升序排列，更改顺序：类自己实现compareTo()方法，初始化PriorityBlockingQueue指定一个比较器Comparator
+DelayQueue： 使用了优先级队列的无界阻塞队列
+支持延时获取，队列里的元素要实现Delay接口。DelayQueue非常有用，可以将DelayQueue运用在以下应用场景。
+缓存系统的设计：可以用DelayQueue保存缓存元素的有效期，使用一个线程循环查询DelayQueue，一旦能从DelayQueue中获取元素时，表示缓存有效期到了。
+还有订单到期，限时支付等等。
+SynchronousQueue：不存储元素的阻塞队列
+每个put操作必须要等take操作
+LinkedTransferQueue：链表结构组成的无界阻塞队列
+Transfer,tryTransfer，生产者put时，当前有消费者take，生产者直接把元素传给消费者
+LinkedBlockingDeque：链表结构组成的双向阻塞队列
+可以在队列的两端插入和移除，xxxFirst头部操作,xxxLast尾部操作。工作窃取模式。
+
+DelayQueue举例，见 com.dongnao.mark.delayqueue.CacheBean
+DelayQueue队列不懂，Delayed接口不懂；
+
+4、生产者消费者模式
+在并发编程中使用生产者和消费者模式能够解决绝大多数并发问题。该模式通过平衡生产线程和消费线程的工作能力
+来提高程序整体处理数据的速度。
+在线程世界里，生产者就是生产数据的线程，消费者就是消费数据的线程。在多线程开发中，如果生产者处理速度很
+快，而消费者处理速度很慢，那么生产者就必须等待消费者处理完，才能继续生产数据。同样的道理，如果消费者的
+处理能力大于生产者，那么消费者就必须等待生产者。为了解决这种生产消费能力不均衡的问题，便有了生产者和消
+费者模式。
+生产者和消费者模式是通过一个容器来解决生产者和消费者的强耦合问题。生产者和消费者彼此之间不直接通信，而
+是通过阻塞队列来进行通信，所以生产者生产完数据之后不用等待消费者处理，直接扔给阻塞队列，消费者不找生产
+者要数据，而是直接从阻塞队列里取，阻塞队列就相当于一个缓冲区，平衡了生产者和消费者的处理能力。
+耦合问题解决方案：找中间第三方；
+5、Fork/Join框架介绍
+①什么是Fork/Join框架
+Fork/Join框架是Java7提供了的一个用于并行执行任务的框架， 是一个把大任务分割成若
+干个小任务，最终汇总每个小任务结果后得到大任务结果的框架。
+我们再通过Fork和Join这两个单词来理解下Fork/Join框架，Fork就是把一个大任务切分为
+若干子任务并行的执行，Join就是合并这些子任务的执行结果，最后得到这个大任务的结果。
+比如计算1+2+。。＋10000，可以分割成10个子任务，每个子任务分别对1000个数进行求和，
+最终汇总这10个子任务的结果。
+②工作窃取算法
+工作窃取（work-stealing）算法是指某个线程从其他队列里窃取任务来执行。
+那么为什么需要使用工作窃取算法呢？假如我们需要做一个比较大的任务，我们可以把这个
+任务分割为若干互不依赖的子任务，为了减少线程间的竞争，于是把这些子任务分别放到不
+同的队列里，并为每个队列创建一个单独的线程来执行队列里的任务，线程和队列一一对应，
+比如A线程负责处理A队列里的任务。但是有的线程会先把自己队列里的任务干完，而其他线
+程对应的队列里还有任务等待处理。干完活的线程与其等着，不如去帮其他线程干活，于是
+它就去其他线程的队列里窃取一个任务来执行。而在这时它们会访问同一个队列，所以为了
+减少窃取任务线程和被窃取任务线程之间的竞争，通常会使用双端队列，被窃取任务线程永
+远从双端队列的头部拿任务执行，而窃取任务的线程永远从双端队列的尾部拿任务执行。
+工作窃取算法的优点是充分利用线程进行并行计算，并减少了线程间的竞争，其缺点是在某
+些情况下还是存在竞争，比如双端队列里只有一个任务时。并且消耗了更多的系统资源，比
+如创建多个线程和多个双端队列。
+③Fork/Join框架的介绍
+我们已经很清楚Fork/Join框架的需求了，那么我们可以思考一下，如果让我们来设计一个
+Fork/Join框架，该如何设计？这个思考有助于你理解Fork/Join框架的设计。
+
+第一步分割任务。首先我们需要有一个fork类来把大任务分割成子任务，有可能子任务还是
+很大，所以还需要不停的分割，直到分割出的子任务足够小。
+第二步执行任务并合并结果。分割的子任务分别放在双端队列里，然后几个启动线程分别从
+双端队列里获取任务执行。子任务执行完的结果都统一放在一个队列里，启动一个线程从队
+列里拿数据，然后合并这些数据。
+Fork/Join使用两个类来完成以上两件事情：
+ForkJoinTask：我们要使用ForkJoin框架，必须首先创建一个ForkJoin任务。它提供在任
+务中执行fork()和join()操作的机制，通常情况下我们不需要直接继承ForkJoinTask类，
+而只需要继承它的子类，Fork/Join框架提供了以下两个子类：
+RecursiveAction：用于没有返回结果的任务；
+RecursiveTask ：用于有返回结果的任务；
+ForkJoinPool ：ForkJoinTask需要通过ForkJoinPool来执行，任务分割出的子任务会添
+加到当前工作线程所维护的双端队列中，进入队列的头部。当一个工作线程的队列里暂时没
+有任务时，它会随机从其他工作线程的队列的尾部获取一个任务。
+④使用Fork/Join框架
+让我们通过一个简单的需求来使用下Fork／Join框架，需求是：计算1+2+3+4的结果。
+使用Fork／Join框架首先要考虑到的是如何分割任务，如果我们希望每个子任务最多执行两
+个数的相加，那么我们设置分割的阈值是2，由于是4个数字相加，所以Fork／Join框架会把
+这个任务fork成两个子任务，子任务一负责计算1+2，子任务二负责计算3+4，然后再join两
+个子任务的结果。
+因为是有结果的任务，所以必须继承RecursiveTask，实现代码如下：
+创建 CountTask 类，继承RecursiveTask类：com.dongnao.mark.forkjoin.CountTask
+public class CountTask extends RecursiveTask {
+    private static final int THRESHOLD = 2;
+    private int start;
+    private int end;
+    public CountTask(int start,int end){
+        this.start = start;
+        this.end = end;
+    }
+    @Override
+    protected Object compute() {
+        Integer sum = 0;
+        boolean canCompute;
+        /*任务足够小就执行业务逻辑，否则再拆分*/
+        canCompute = (end - start) < THRESHOLD;
+        if (canCompute){
+            for (int i=start;i<=end;i++){
+                sum = sum + i;
+            }
+        }else {
+            /*任务大于阈值，再分*/
+            Integer mid = (start + end)/2;
+            CountTask left = new CountTask(start,mid);
+            CountTask right = new CountTask(mid+1,end);
+            /*fork()：把当前任务放到ForkJoinTask数组queue里面，然后再调用
+            ForkJoinPool的signalWork()方法唤醒或创建一个工作线程来执行任务*/
+            left.fork();
+            right.fork();
+            /*join()方法的主要作用是阻塞当前线程并等待获取结果。首先通过查看
+            任务的状态，看任务是否已经执行完了，如果执行完了，则直接返回任务
+            状态，如果没有执行完，则从任务数组里取出任务并执行。如果任务顺利
+            执行完成了，则设置任务状态为NORMAL，如果出现异常，则纪录异常，并
+            将任务状态设置为EXCEPTIONAL。*/
+            Object leftResult = left.join();
+            Object rightReslt = right.join();
+            //合并子任务
+            sum = (Integer) leftResult  + (Integer) rightReslt;
+        }
+        return sum;
+    }
+
+    public static void main(String[] args) {
+        /*创建forkJoinPool池，里面存ForkJoinTask数组和ForkJoinWorkerThread数组*/
+        ForkJoinPool forkJoinPool = new ForkJoinPool();
+        /*生成一个计算任务，负责计算1+2+3+4*/
+        CountTask task =new CountTask(1, 5);
+        /*向池中加人任务对象*/
+        Future result = forkJoinPool.submit(task);
+        try {
+            System.out.println(result.get());
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+    }
+}
+通过这个例子让我们再来进一步了解ForkJoinTask，ForkJoinTask与一般的任务的主要区别在于它需要实现compute
+方法，在这个方法里，首先需要判断任务是否足够小，如果足够小就直接执行任务。如果不足够小，就必须分割成两
+个子任务，每个子任务在调用fork方法时，又会进入compute方法，看看当前子任务是否需要继续分割成孙任务，如果
+不需要继续分割，则执行当前子任务并返回结果。使用join方法会等待子任务执行完并得到其结果。
+⑤Fork/Join框架的异常处理
+ForkJoinTask在执行的时候可能会抛出异常，但是我们没办法在主线程里直接捕获异常，所以ForkJoinTask提供了
+isCompletedAbnormally()方法来检查任务是否已经抛出异常或已经被取消了，并且可以通过ForkJoinTask的
+getException方法获取异常。使用如下代码：
+if(task.isCompletedAbnormally())
+{
+ System.out.println(task.getException());
+}
+getException方法返回Throwable对象，如果任务被取消了则返回CancellationException。如果任务没有完成或者
+没有抛出异常则返回null。
+⑥Fork/Join框架的实现原理
+ForkJoinPool由ForkJoinTask数组和ForkJoinWorkerThread数组组成，ForkJoinTask数组负责存放程序提交给
+ForkJoinPool的任务，而ForkJoinWorkerThread数组负责执行这些任务。
+
+ForkJoinTask的fork方法实现原理：
+当我们调用ForkJoinTask的fork方法时，程序会调用ForkJoinWorkerThread的pushTask方法异步的执行这个任务，
+然后立即返回结果。代码如下：
+public final ForkJoinTask fork() {
+     ((ForkJoinWorkerThread) Thread.currentThread())
+         .pushTask(this);
+     return this;
+}
+pushTask方法把当前任务存放在ForkJoinTask数组queue里。然后再调用ForkJoinPool的signalWork()方法唤醒或
+创建一个工作线程来执行任务。代码如下：
+final void pushTask(ForkJoinTask t) {
+     ForkJoinTask[] q; int s, m;
+     if ((q = queue) != null) {    // ignore if queue removed
+         long u = (((s = queueTop) & (m = q.length - 1)) << ASHIFT) + ABASE;
+         UNSAFE.putOrderedObject(q, u, t);
+         queueTop = s + 1;         // or use putOrderedInt
+         if ((s -= queueBase) <= 2)
+             pool.signalWork();
+         else if (s == m)
+             growQueue();
+     }
+ }
+ForkJoinTask的join方法实现原理：
+Join方法的主要作用是阻塞当前线程并等待获取结果，让我们一起看看ForkJoinTask的join方法的实现，代码如下：
+public final V join() {
+     if (doJoin() != NORMAL)
+         return reportResult();
+     else
+         return getRawResult();
+}
+private V reportResult() {
+     int s; Throwable ex;
+     if ((s = status) == CANCELLED)
+         throw new CancellationException();
+if (s == EXCEPTIONAL && (ex = getThrowableException()) != null)
+         UNSAFE.throwException(ex);
+     return getRawResult();
+}
+首先，它调用了doJoin()方法，通过doJoin()方法得到当前任务的状态来判断返回什么结果，任务状态有四种：
+已完成（NORMAL），被取消（CANCELLED），信号（SIGNAL）和出现异常（EXCEPTIONAL）。
+如果任务状态是已完成，则直接返回任务结果。
+如果任务状态是被取消，则直接抛出CancellationException。
+如果任务状态是抛出异常，则直接抛出对应的异常。
+让我们再来分析下doJoin()方法的实现代码：
+private int doJoin() {
+     Thread t; ForkJoinWorkerThread w; int s; boolean completed;
+     if ((t = Thread.currentThread()) instanceof ForkJoinWorkerThread) {
+         if ((s = status) < 0)
+return s;
+         if ((w = (ForkJoinWorkerThread)t).unpushTask(this)) {
+             try {
+                 completed = exec();
+             } catch (Throwable rex) {
+                 return setExceptionalCompletion(rex);
+             }
+             if (completed)
+                 return setCompletion(NORMAL);
+         }
+         return w.joinTask(this);
+     }
+     else
+         return externalAwaitDone();
+ }
+在doJoin()方法里，首先通过查看任务的状态，看任务是否已经执行完了，如果执行完了，则直接返回任务状态，如
+果没有执行完，则从任务数组里取出任务并执行。如果任务顺利执行完成了，则设置任务状态为NORMAL，如果出现异
+常，则纪录异常，并将任务状态设置为EXCEPTIONAL。
+6、CountDownLatch
+利用它可以实现类似计数器的功能，比如有一个任务A，它要等待其他4个线程执行完毕之后才能执行，此时就可以利用
+CountDownLatch来实现这种功能了。
+CountDownLatch主要方法
+public CountDownLatch(int count) {  };  //参数count为计数值
+public void await() throws InterruptedException { };   //调用await()方法的线程会被挂起，它会等待直到
+count值为0才继续执行；
+public boolean await(long timeout, TimeUnit unit) throws InterruptedException { };  //和await()类似
+，只不过等待一定的时间后count值还没变为0的话就会继续执行；
+public void countDown() { };  //某线程执行了，将count值减1；
+见 com.dongnao.mark.countdownlatch.Test.java 类：线程阻塞到latch.await()处，直
+到count变为0；
+
+public class Test {
+    /*计数器值为2，每个线程执行完毕时调用countDown()，计数器减1，计数器为0，
+    * 解除await()的阻塞；
+    * */
+    private static CountDownLatch latch = new CountDownLatch(2);
+
+    public static void main(String[] args) {
+        System.out.println("等待 2 个子线程执行完毕");
+        try {
+            latch.await();/*当计数器为0时，解除主线程阻塞*/
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+}
+该类中定义两个线程，每个线程执行完毕，调用latch的countDown()方法，计数器减1，当
+计数器为0时，解除latch.await()对线程的阻塞；
+7、CyclicBarrier
+字面意思回环栅栏，通过它可以实现让一组线程等待至某个状态之后再全部同时执行。叫做回环是因为当所有等待线程
+都被释放以后，CyclicBarrier可以被重用。我们暂且把这个状态就叫做barrier，当调用await()方法之后，线程就处
+于barrier了。
+CyclicBarrier类位于java.util.concurrent包下，CyclicBarrier提供2个构造器：
+public CyclicBarrier(int parties, Runnable barrierAction) {}
+public CyclicBarrier(int parties) {}
+参数parties指让多少个线程或者任务等待至barrier状态；
+参数barrierAction为当这些线程都达到barrier状态时会执行的内容。
+然后CyclicBarrier中最重要的方法就是await方法，它有2个重载版本：
+public int await() throws InterruptedException, BrokenBarrierException { };
+public int await(long timeout, TimeUnit unit){ }
+见 com.dongnao.mark.countdownlatch.Test.java类：每个有c.await()的线程都阻塞在这
+里，直到阻塞数达到 2，所有线程继续运行；
+public class Test {
+    static CyclicBarrier c = new CyclicBarrier(2);
+    public static void main(String[] args) throws InterruptedException, BrokenBarrierException {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                System.out.println(Thread.currentThread().getId() + " is waiting");
+                try {
+                    c.await();/*等在这里，等待数加1，直到等待数为2，继续运行*/
+
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                } catch (BrokenBarrierException e) {
+                    e.printStackTrace();
+                }
+                System.out.println(Thread.currentThread().getId() + " go on");
+            }
+        }).start();
+        Thread.sleep(2000);
+        System.out.println("main " + "is waiting");
+        c.await();/*等在这里，等待数加1，直到等待数为2，继续运行*/
+        System.out.println("main " + "go on");
+    }
+}
+
+CountDownLatch与CycliBarrier的区别：
+CountDownLatch一般用于阻塞主线程，工作线程执行 countDown()，当减为0时，主线程
+解除阻塞；
+CycliBarrier工作线程用await阻塞，当阻塞线程数达到时，所有线程一起解除阻塞；
+
+8、Semaphore
+Semaphore（信号量）是用来控制同时访问特定资源的线程数量，它通过协调各个线程，以保证合理的使用公共资源。
+应用场景 Semaphore可以用于做流量控制，特别是公用资源有限的应用场景，比如数据库连接。假如有一个需求，要读
+取几万个文件的数据，因为都是IO密集型任务，我们可以启动几十个线程并发地读取，但是如果读到内存后，还需要存
+储到数据库中，而数据库的连接数只有10个，这时我们必须控制只有10个线程同时获取数据库连接保存数据，否则会报
+错无法获取数据库连接。这个时候，就可以使用Semaphore来做流量控制。
+Semaphore的构造方法Semaphore（int permits）接受一个整型的数字，表示可用的许可证数量。
+Semaphore的用法也很简单，首先线程使用Semaphore的acquire()方法获取一个许可证，使用完之后调用release()方
+法归还许可证。还可以用tryAcquire()方法尝试获取许可证。
+Semaphore还提供一些其他方法，具体如下。
+·intavailablePermits()：返回此信号量中当前可用的许可证数。
+·intgetQueueLength()：返回正在等待获取许可证的线程数。
+·booleanhasQueuedThreads()：是否有线程正在等待获取许可证。
+·void reducePermits（int reduction）：减少reduction个许可证，是个protected方法。
+·Collection getQueuedThreads()：返回所有等待获取许可证的线程集合，是个protected方法。
+总结：
+Semaphore是信号量，用于管理一组资源。其内部是基于AQS的共享模式，AQS的状态表示许可证的数量，在许可证数量
+不够时，线程将会被挂起；而一旦有一个线程释放一个资源，那么就有可能重新唤醒等待队列中的线程继续执行。
+见 com.dongnao.mark.semaphore.Test.java类
+
+10、Exchanger
+Exchanger（交换者）是一个用于线程间协作的工具类。Exchanger用于进行线程间的数据交换。它提供一个同步点，在
+这个同步点，两个线程可以交换彼此的数据。这两个线程通过exchange方法交换数据，如果第一个线程先执行exchange()
+方法，它会一直等待第二个线程也执行exchange方法，当两个线程都到达同步点时，这两个线程就可以交换数据，将本
+线程生产出来的数据传递给对方。
+见类 com.dongnao.mark.exchanger.ExchangerCase.java 类
+public class ExchangerCase {
+
+}
+定义成员变量 exgr：
+/*List<String>为两个线程执行exchange()方法时，交换的内容*/
+private static final Exchanger<List<String>> exgr = new Exchanger<List<String>>();
+
+主方法main()中创建两个线程，返回内容 = exgr.exchange(交换内容)
+ new Thread(new Runnable() {
+    @Override
+    public void run() {
+        List<String> list = new ArrayList<String>();
+        list.add(Thread.currentThread().getName() + "insert A1");
+        list.add(Thread.currentThread().getName() + "insert A2");
+        try {
+            /*线程阻塞在exchange(交换内容)方法，直到另一个线程执行exchange(交换内容)方法*/
+            list = exgr.exchange(list);
+            /*查看 交换内容list是否发生变化*/
+            for (String str : list){
+                System.out.println(Thread.currentThread().getName() + ":" + str);
+            }
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+},"A").start();
+---------------------------------线程池和Exector框架-------------------------------------
+
+1、什么是线程池？
+①降低资源的消耗；
+②提高响应速度：
+单独使用线程分三步：创建线程时间，执行线程，销毁线程，线程池里只执行线程，不需要反复创建线程，销毁线程；
+③提高线程的可管理性：线程在系统中属于稀缺资源，new一个线程消耗系统资源；使用线程池可以统一分配，调优，
+监控：例如，一个服务器一天处理5万个请求，每个请求需要一个单独线程来完成，如果服务器不利用线程池处理这些
+请求，意味着服务器要创建5万个线程，再销毁这5万个线程，当请求并发量大的时候，服务器有可能性能很差，如果用
+线程池的话，当请求过来，直接来线程池获取线程处理请求即可，不需要临时创建，销毁线程；
+2、自定义线程池要做些什么？
+①线程容器：首先要有一个线程的容器，或管理器，这个容器创建并管理所有的线程，包括创建线程池，销毁线程池，
+添加任务；
+②工作线程：要有工作线程，一直等待在这个地方，来执行具体任务；
+③任务接口：工作线程要对外提供任务接口，可以让用户端提交任务；
+④任务容器：当任务数量超过工作线程数量，来不及处理的任务放在任务容器里面；
+3、自定义线程池类；定义任务队列，定义execute(Runnable task)方法向任务队列中存任务对象；定义工作线程
+，不断检查任务队列，如果有任务对象则取出并执行其run()方法，定义工作线程数组，存工作线程对象，并启动；
+
+见包 mythreadpool
+定义 com.dongnao.mark.mythreadpool.MyThreadPool.java 类
+public class MyThreadPool {
+}
+MyThreadPool类里面定义工作线程 WorkThread 内部类，/*工作线程：不断去任务队列中拿任务runnable，并
+执行 runnable.run()*/
+private class WorkThread extends Thread{
+    @Override
+    public void run() {
+
+    }
+}
+MyThreadPool类里面定义 工作线程数组 成员变量，存放工作线程对象
+private WorkThread[] workThreads;
+MyThreadPool类里面定义 工作线程容器容量 成员变量
+private Integer work_num = 5;
+MyThreadPool类里面定义 任务容器 成员变量，存放线程来不及执行的 任务线程对象
+private List<Runnable> taskQueue;
+MyThreadPool类里面定义 构造方法 ，对成员变量进行初始化
+public MyThreadPool(){
+    this.workThreads = new WorkThread[this.work_num];
+    this.taskQueue = new LinkedList<Runnable>();
+    /*创建 WorkThread 线程，添加到WorkThread[]线程池中*/
+    for (int i=0;i<this.work_num;i++){
+        this.workThreads[i] = new WorkThread();
+        /*启动线程*/
+        this.workThreads[i].start();
+    }
+
+}
+MyThreadPool类里面定义一个任务接口方法，可以让用户提交任务，接口方法为
+execute(Runnable task);
+public void execute(Runnable task){
+    /*多个线程修改一个共享成员变量时，线程不安全，可以锁定这个共享成员变量，保证线程安全*/
+    synchronized (task){
+        this.taskQueue.add(task);
+        /*线程启动以后，处于等待 wait 状态，要对其进行通知 notifyAll*/
+        this.taskQueue.notify();
+    }
+}
+
+WorkThread类里面，定义终止标志位 on 成员变量
+private volatile boolean on = true;/*true：线程运行，false：线程终止*/
+
+WorkThread类里面，定义线程 run()方法，工作线程：不断去任务队列中拿任务
+@Override
+public void run() {
+    Runnable runnable = null;
+    /*工作线程：不断去任务队列中拿任务*/
+    try {
+        while (this.on && !this.isInterrupted()){/*线程状态：运行*/
+            /*多线程同时修改同一个共享变量，线程不安全，要对这个共享变量进行锁定，只有一个线程可以执行*/
+            synchronized (taskQueue){
+                while (this.on && !this.isInterrupted() && taskQueue.isEmpty()){
+                    /*线程操作的对象可以让线程等待，或者唤醒线程*/
+                    /*wait(1000)等待超时机制：等待 1s 后自动唤醒，去获取队列任务*/
+                    taskQueue.wait(1000);
+                }
+                /*线程去任务队列获取任务*/
+                if (this.on && !this.isInterrupted() && !taskQueue.isEmpty()){
+                    runnable = taskQueue.remove(0);
+                }
+            }
+            /*线程安全，不需要 synchronized锁定*/
+            /*执行任务队列里面的线程，任务队列里面存任务线程对象*/
+            if (runnable != null){
+                System.out.println(this.getId() + "ready excute...");
+                runnable.run();/**/
+            }
+            runnable = null;/*释放runnable指向的堆内存空间*/
+        }
+    }catch (InterruptedException e){
+        System.out.println(Thread.currentThread().getId() + " is Interrupted");
+    }
+}
+
+WorkThread类里面，定义线程中断方法 stopWorkThread() 中断线程
+/*中断工作线程*/
+public void stopWorkThread(){
+    this.on = false;
+    /*interrupt()作用：①将中断标志位修改为 true；②让sleep(),wait()等方法抛出异常，当抛出异常
+    * 时，中断标志位为变为false；
+    * */
+    this.interrupt();
+}
+
+MyThreadPool类里面定义 destroy()方法 中断线程池
+public void destroy(){
+    System.out.println("Ready stop ThreadPool!");
+    /*对所有线程进行中断*/
+    for (int i=0;i<this.work_num;i++){
+        this.workThreads[i].stopWorkThread();
+        workThreads[i] = null;/*加速垃圾回收*/
+    }
+    this.taskQueue.clear();/*清理任务队列*/
+}
+
+创建测试类 TestMyThreadPool.java类
+
+4、线程池的主要处理流程
+1）线程池判断核心线程池里的线程是否都在执行任务。如果不是，则创建一个新的工作线程来执行任务。如果核心线
+程池里的线程都在执行任务，则进入下个流程；
+2）线程池判断工作队列是否已经满。如果工作队列没有满，则将新提交的任务存储在这个工作队列里。如果工作队列
+满了，则进入下个流程。
+3）线程池判断线程池的线程是否都处于工作状态。如果没有，则创建一个新的工作线程来执行任务。如果已经满了，
+则交给饱和策略来处理这个任务。
+
+5、ThreadPoolExecutor执行execute()方法的示意
+1）如果当前运行的线程少于corePoolSize，则创建新线程来执行任务（注意，执行这一步骤需要获取全局锁）。
+2）如果运行的线程等于或多于corePoolSize，则将任务加入BlockingQueue。
+3）如果无法将任务加入BlockingQueue（队列已满），则创建新的线程来处理任务（注意，执行这一步骤需要获取
+全局锁）。
+4）如果创建新线程将使当前运行的线程超出maximumPoolSize，任务将被拒绝，并调用
+RejectedExecutionHandler.rejectedExecution()方法。
+
+6、线程池的创建各个参数含义
+
+corePoolSize：表示线程提前创建好的线程个数
+
+public ThreadPoolExecutor(int corePoolSize,int maximumPoolSize,long keepAliveTime,TimeUnit unit,
+BlockingQueue<Runnable> workQueue,ThreadFactory threadFactory,RejectedExecutionHandler handler)
+corePoolSize：
+线程池中的核心线程数，当提交一个任务时，线程池创建一个新线程执行任务，直到当前线程数等于corePoolSize；
+如果当前线程数为corePoolSize，继续提交的任务被保存到阻塞队列中，等待被执行；
+如果执行了线程池的 prestartAllCoreThreads()方法，线程池会提前创建并启动所有核心线程；
+maximumPoolSize：
+线程池中允许的最大线程数。如果当前阻塞队列满了，且继续提交任务，则创建新的线程执行任务，前提是当前线程数
+小于maximumPoolSize；
+keepAliveTime：
+线程空闲时的存活时间，即当线程没有任务执行时，继续存活的时间。默认情况下，该参数只在线程数大于corePoolSize
+时才有用；
+TimeUnit：keepAliveTime的时间单位；
+workQueue：
+workQueue必须是BlockingQueue阻塞队列。当线程池中的线程数超过它的corePoolSize的时候，线程会进入阻塞队列
+进行阻塞等待。通过workQueue，线程池实现了阻塞功能；
+threadFactory
+创建线程的工厂，通过自定义的线程工厂可以给每个新建的线程设置一个具有识别度的线程名；
+Executors静态工厂里默认的threadFactory，线程的命名规则是“pool-数字-thread-数字”。
+
+7、RejectedExecutionHandler（饱和策略）
+线程池的饱和策略，当阻塞队列满了，且没有空闲的工作线程，如果继续提交任务，必须采取一种策略处理该任务，
+线程池提供了4种策略：
+（1）AbortPolicy：直接抛出异常，默认策略；
+（2）CallerRunsPolicy：用调用者所在的线程来执行任务；
+（3）DiscardOldestPolicy：丢弃阻塞队列中靠最前的任务，并执行当前任务；
+（4）DiscardPolicy：直接丢弃任务；
+当然也可以根据应用场景实现RejectedExecutionHandler接口，自定义饱和策略，如记录日志或持久化存储不能处
+理的任务；
+
+8、提交任务：execute：提交不需要返回值的任务；submit：提交需要返回值的任务，返回值是Future类型的对象，
+调用future的get()方法；
+创建 com.dongnao.mark.future.ComputerTask类，实现 Callable接口，覆写call()方法，该方法有返回值；
+创建 com.dongnao.mark.future.FutureSample类，将 Callable接口对象作为任务提交给线程池，线程池中
+工作线程触发 call()方法，返回 Future对象，重点，提交Callable的线程不用等待返回结果，直接调用
+Future.get()方法，即可获得返回结果
+
+8、关闭线程池：ShutDown():interrupt方法来终止线程；shutDownNow() 尝试停止所有正在执行的线程；
+
+9、合理地配置线程池
+线程数配置：
+任务：计算密集型，IO密集型，混合型
+计算密集型=计算机的cpu数或计算机的cpu数+1（应付页缺失）
+IO密集型=计算机的cpu数*2
+混合型，拆分成计算密集型，IO密集型
+Runtime.getRuntime().availableProcessors();当前机器中的cpu核心个数
+尽量有界队列，不要使用无界队列
+
+10、JDK线程池的使用，见schedule包
+创建 com.dongnao.mark.schedule.UseThreadPool.java 类
+public class UseThreadPool {
+}
+UseThreadPool类里面定义 MyTask 任务线程类，任务线程类对象提交给线程池
+/*定义线程任务类，线程任务对象提交给线程池*/
+private static class MyTask implements Runnable{
+    private String name;
+    public MyTask(String name){
+        this.name = name;
+    }
+    @Override
+    public void run() {
+        System.out.println(this.name + " is Running!");
+        try {
+            Thread.sleep(1000 + new Random().nextInt(1000));
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        System.out.println(this.name + " is Finished!");
+    }
+}
+UseThreadPool类里面定义 main()方法 ，里面创建线程池类对象
+public static void main(String[] args) {
+    /*corePoolSize:核心线程数，线程池中实际线程数小于核心线程数时，对于新提交任务，直接创建线程执行；
+    * 如果线程池中实际线程数等于核心线程数时，对于新提交任务，保存到任务队列；
+    * 如果任务队列已满，创建新线程执行该任务，但是总线程数不能超过最大线程数maximumPoolSize；
+    * maximumPoolSize：最大线程数
+    * keepAliveTime：线程如果一直空闲，过60秒就被干掉
+    * new ArrayBlockingQueue<Running>(10)：线程任务类对象的存储队列
+    * */
+    ThreadPoolExecutor threadPoolExecutor = new ThreadPoolExecutor(2,4,
+            60, TimeUnit.SECONDS,new ArrayBlockingQueue<Runnable>(10));
+    for (int i=0;i<5;i++){
+        /*创建线程任务类对象*/
+        MyTask myTask = new MyTask("Thread_" + i);
+        System.out.println("A Task will add:" + myTask.getName());
+        /*将线程任务类对象保存到任务队列中，任务队列通知工作线程去任务队列中取线程任务类对象；
+        * 获取到线程任务类对象后，调用其run()方法；
+        * */
+        threadPoolExecutor.execute(myTask);
+
+    }
+}
+
+11、Executor框架调度模型
+在HotSpot VM的线程模型中，Java线程（java.lang.Thread）被一对一映射为本地操作系统线程。Java线程启动时会
+创建一个本地操作系统线程；当该Java线程终止时，这个操作系统线程也会被回收。操作系统会调度所有线程并将它们
+分配给可用的CPU。
+在上层，Java多线程程序通常把应用分解为若干个任务，然后使用用户级的调度器（Executor框架）将这些任务映射
+为固定数量的线程；
+在底层，操作系统内核将这些线程映射到硬件处理器上。
+从图中可以看出，应用程序通过Executor框架控制上层的调度；而下层的调度由操作系统内核控制，下层的调度不受
+应用程序的控制。
+
+12、Excutor框架三大组成部分：任务，任务的执行，异步计算的结果
+任务：
+包括被执行任务需要实现的接口：Runnable接口或Callable接口；
+任务的执行：
+包括任务执行机制的核心接口Executor，以及继承自Executor的ExecutorService接口。Executor框架有两个关键类
+实现了ExecutorService接口（ThreadPoolExecutor和ScheduledThreadPoolExecutor）；
+异步计算的结果：
+包括接口Future和实现Future接口的FutureTask类。
+
+13、Executor框架的成员结构图
+Executor是一个接口，它是Executor框架的基础，它将任务的提交与任务的执行分离开来。
+ExecutorService接口继承了Executor，在其上做了一些shutdown()、submit()的扩展，可以说是真正的线程池接口；
+AbstractExecutorService抽象类实现了ExecutorService接口中的大部分方法；
+ThreadPoolExecutor是线程池的核心实现类，用来执行被提交的任务。
+ScheduledExecutorService接口继承了ExecutorService接口，提供了带"周期执行"功能ExecutorService；
+ScheduledThreadPoolExecutor是一个实现类，可以在给定的延迟后运行命令，或者定期执行命令。
+ScheduledThreadPoolExecutor比Timer更灵活，功能更强大。
+Future接口和实现Future接口的FutureTask类，代表异步计算的结果。
+Runnable接口和Callable接口的实现类，都可以被ThreadPoolExecutor或Scheduled-ThreadPoolExecutor执行。
+
+14、Executor框架基本使用流程
+主线程首先要创建实现Runnable或者Callable接口的任务对象。
+工具类Executors可以把一个Runnable对象封装为一个Callable对象（Executors.callable（Runnable task）或
+Executors.callable（Runnable task，Object resule））。然后可以把Runnable对象直接交给ExecutorService
+执行（ExecutorService.execute（Runnablecommand））；或者也可以把Runnable对象或Callable对象提交给
+ExecutorService执行（Executor-Service.submit（Runnable task）或ExecutorService.submit（Callable<T>task））。
+如果执行ExecutorService.submit（…），ExecutorService将返回一个实现Future接口的对象（到目前为止的JDK
+中，返回的是FutureTask对象）。由于FutureTask实现了Runnable，程序员也可以创建FutureTask，然后直接交给
+ExecutorService执行。
+最后，主线程可以执行FutureTask.get()方法来等待任务执行完成。主线程也可以执行
+FutureTask.cancel（boolean mayInterruptIfRunning）来取消此任务的执行。
+ThreadPoolExecutor通常使用工厂类Executors来创建。Executors可以创建3种类型的ThreadPoolExecutor：
+SingleThreadExecutor、FixedThreadPool和CachedThreadPool。
+
+15、FixedThreadPool详解
+创建使用固定线程数的FixedThreadPool的API。适用于为了满足资源管理的需求，而需要限制当前线程数量的应用场
+景，适用于负载比较重的服务器。FixedThreadPool的corePoolSize和maximumPoolSize都被设置为创建FixedThreadPool
+时指定的参数nThreads。
+当线程池中的线程数大于corePoolSize时，keepAliveTime为多余的空闲线程等待新任务的最长时间，超过这个时间
+后多余的线程将被终止。这里把keepAliveTime设置为0L，意味着多余的空闲线程会被立即终止。
+FixedThreadPool使用无界队列LinkedBlockingQueue作为线程池的工作队列（队列的容量为Integer.MAX_VALUE）。使用无界队列作为工作队列会对线程池带来如下影响。
+1）当线程池中的线程数达到corePoolSize后，新任务将在无界队列中等待，因此线程池中的线程数不会超过
+corePoolSize。
+2）由于1，使用无界队列时maximumPoolSize将是一个无效参数。
+3）由于1和2，使用无界队列时keepAliveTime将是一个无效参数。
+4）由于使用无界队列，运行中的FixedThreadPool（未执行方法shutdown()或shutdownNow()）不会拒绝任务（不会
+调用RejectedExecutionHandler.rejectedExecution方法）。
+自己记录：跟 Executors 类
+类中 工厂方法 newFixedThreadPool() 创建 ExecutorService 对象
+public static ExecutorService newFixedThreadPool(int nThreads) {
+    return new ThreadPoolExecutor(nThreads, nThreads,
+                                  0L, TimeUnit.MILLISECONDS,
+                                  new LinkedBlockingQueue<Runnable>());
+}
+
+16、SingleThreadExecutor详解
+创建使用单个线程的SingleThread-Executor的API，适用于需要保证顺序地执行各个任务；并且在任意时间点，不会
+有多个线程是活动的应用场景。
+corePoolSize和maximumPoolSize被设置为1。其他参数与FixedThreadPool相同。SingleThreadExecutor使用无界
+队列LinkedBlockingQueue作为线程池的工作队列（队列的容量为Integer.MAX_VALUE）。
+
+自己记录：跟 Executors 类
+类中 工厂方法 newSingleThreadExecutor() 创建 ExecutorService 对象：
+public static ExecutorService newSingleThreadExecutor() {
+    return new FinalizableDelegatedExecutorService
+        (new ThreadPoolExecutor(1, 1,
+                                0L, TimeUnit.MILLISECONDS,
+                                new LinkedBlockingQueue<Runnable>()));
+}
+
+17、CachedThreadPool详解
+创建一个会根据需要创建新线程的CachedThreadPool的API。大小无界的线程池，适用于执行很多的短期异步任务的小
+程序，或者是负载较轻的服务器。
+corePoolSize被设置为0，即corePool为空；maximumPoolSize被设置为Integer.MAX_VALUE，即maximumPool是无界
+的。这里把keepAliveTime设置为60L，意味着CachedThreadPool中的空闲线程等待新任务的最长时间为60秒，空闲线
+程超过60秒后将会被终止。
+FixedThreadPool和SingleThreadExecutor使用无界队列LinkedBlockingQueue作为线程池的工作队列。
+CachedThreadPool使用没有容量的SynchronousQueue作为线程池的工作队列，但CachedThreadPool的maximumPool
+是无界的。这意味着，如果主线程提交任务的速度高于maximumPool中线程处理任务的速度时，CachedThreadPool
+会不断创建新线程。极端情况下，CachedThreadPool会因为创建过多线程而耗尽CPU和内存资源。
+
+18、WorkStealingPool
+利用所有运行的处理器数目来创建一个工作窃取的线程池，使用forkjoin实现。
+自己记录：跟 Executors 类的 newWorkStealingPool()方法：
+public static ExecutorService newWorkStealingPool(int parallelism) {
+    return new ForkJoinPool
+        (parallelism,
+         ForkJoinPool.defaultForkJoinWorkerThreadFactory,
+         null, true);
+}
+
+19、FixedThreadPool，SingleThreadExecutor，CachedThreadPool，WorkStealingPool的使用：通过工厂类
+Executors 获取池对象，见类 com.dongnao.mark.schedule.UseThreadPool的main()方法：
+/*线程池中提前创建好线程，线程数固定为n，任务队列为无界队列，当任务数超过现有线程数时，在队列中等待*/
+ExecutorService fixedThreadPool = Executors.newFixedThreadPool(3);
+/*线程池中提前创建好线程，线程数固定为1，任务队列为无界队列，当任务数超过现有线程数时，在队列中等待*/
+ExecutorService singleThreadExecutor = Executors.newSingleThreadExecutor();
+/*corePoolSize=0说明线程池不提前创建好线程，maximumPoolSize=Integer.MAX_VALUE说明线程池会不断创建新线
+* 程来处理任务 keepAliveTime=60L说明线程池中线程空闲60s就会被干掉；
+* */
+ExecutorService cacheThreadExecutor = Executors.newCachedThreadPool();
+ExecutorService workSteelThreadExecutor = Executors.newWorkStealingPool();
+
+20、ScheduledThreadPoolExecutor 线程池详解
+使用工厂类Executors来创建。Executors可以创建2种类
+型的ScheduledThreadPoolExecutor，如下。
+·ScheduledThreadPoolExecutor。包含若干个线程的ScheduledThreadPoolExecutor。
+·SingleThreadScheduledExecutor。只包含一个线程的ScheduledThreadPoolExecutor。
+ScheduledThreadPoolExecutor适用于需要多个后台线程执行周期任务，同时为了满足资源管理的需求而需要限制后
+台线程的数量的应用场景。
+SingleThreadScheduledExecutor适用于需要单个后台线程执行周期任务，同时需要保证顺序地执行各个任务的应用
+场景。
+具体步骤的说明：
+1）线程1从DelayQueue中获取已到期的ScheduledFutureTask（DelayQueue.take()）。到期任务是指
+ScheduledFutureTask的time大于等于当前时间。
+2）线程1执行这个ScheduledFutureTask。
+3）线程1修改ScheduledFutureTask的time变量为下次将要被执行的时间。
+4）线程1把这个修改time之后的ScheduledFutureTask放回DelayQueue中（Delay-Queue.add()）。
+
+有关提交定时任务的四个方法：
+//向定时任务线程池提交一个延时Runnable任务（仅执行一次）
+public ScheduledFuture<?> schedule(Runnable command, long delay, TimeUnit unit);
+//向定时任务线程池提交一个延时的Callable任务（仅执行一次）
+public <V> ScheduledFuture<V> schedule(Callable<V> callable, long delay, TimeUnit unit);
+//向定时任务线程池提交一个固定时间间隔执行的任务;
+public ScheduledFuture<?> scheduleAtFixedRate(Runnable command, long initialDelay,long period,
+TimeUnit unit);
+//向定时任务线程池提交一个固定延时间隔执行的任务
+public ScheduledFuture<?> scheduleWithFixedDelay(Runnable command, long initialDelay,long delay,
+TimeUnit unit);
+固定时间间隔的任务不论每次任务花费多少时间，下次任务开始执行时间是确定的，当然执行任务的时间不能超过执行
+周期。
+固定延时间隔的任务是指每次执行完任务以后都延时一个固定的时间。由于操作系统调度以及每次任务执行的语句可能
+不同，所以每次任务执行所花费的时间是不确定的，也就导致了每次任务的执行周期存在一定的波动。
+注意：定时或延时任务中所涉及到时间、周期不能保证实时性及准确性，实际运行中会有一定的误差。
+
+scheduleAtFixedRate定时任务超时问题
+若任务处理时长超出设置的定时频率时长,本次任务执行完才开始下次任务,下次任务已经处于超时状态,会马上开始执行.
+若任务处理时长小于定时频率时长,任务执行完后,定时器等待,下次任务会在定时器等待频率时长后执行
+如下例子:
+设置定时任务每60s执行一次
+若第一次任务时长80s,第二次任务时长20ms,第三次任务时长50ms
+第一次任务第0s开始,第80s结束;
+第二次任务第80s开始,第110s结束;(上次任务已超时,本次不会再等待60s,会马上开始),
+第三次任务第150s开始,第200s结束.
+第四次任务第210s开始.....
+
+ScheduleThreadPoolExecutor与Timer相比的优势。
+（1）Timer是基于绝对时间的延时执行或周期执行，当系统时间改变，则任务的执行会受到的影响。而ScheduleThreadPoolExecutore中，任务时基于相对时间进行周期或延时操作。
+（2）Timer也可以提交多个TimeTask任务，但只有一个线程来执行所有的TimeTask，这样并发性受到影响。而ScheduleThreadPoolExecutore可以设定池中线程的数量。
+（3）Timer不会捕获TimerTask的异常，只是简单地停止，这样势必会影响其他TimeTask的执行。而ScheduleThreadPoolExecutore中，如果一个线程因某些原因停止，线程池可以自动创建新的线程来维护池中线程的数量。
+
+使用举例：
+创建 com.dongnao.mark.schedule.SheduleTask 类，实现 Runnable接口(归接口统一管理)
+public class SheduleTask implements Runnable{
+    @Override
+    public void run() {
+
+    }
+}
+SheduleTask 类里面定义枚举类 OperType ，用来定义操作类型代号
+private static enum OperType{
+    None,
+    OnlyThrowException,
+    CacheException
+}
+SheduleTask 类里面定义成员变量 operType 并定义其构造方法，由调用线程初始化 operType 成员变量：
+private OperType operType;
+public SheduleTask(OperType operType){
+    this.operType = operType;
+}
+SheduleTask 类里面定义成员变量 sdf ，格式化时间：
+public SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+SheduleTask 类里面定义 run() 方法
+@Override
+public void run() {
+    switch (this.operType){
+        case OnlyThrowException:
+            System.out.println("Exception not Catche! " + this.sdf.format(new Date()));
+            throw new RuntimeException("OnlyThrowException");
+        case CacheException:
+            try {
+                throw new RuntimeException("CacheException");
+            }catch (RuntimeException e){
+                System.out.println("Exception is Caught! " + this.sdf.format(new Date()));
+            }
+            break;/*终止线程*/
+        case None:
+            System.out.println("None! " + this.sdf.format(new Date()));
+    }
+}
+
+定义测试类 com.dongnao.mark.schedule.TestShedule，主线程创建线程池，然后利用线程池提供的接口方法，向线
+程池中提交任务线程对象，线程池中工作线程对象获取到任务线程对象后，按照延迟时候，时间间隔，不停执行任务线
+程：
+public class TestSchedule {
+    public static void main(String[] args) {
+        /*创建线程池*/
+        ScheduledThreadPoolExecutor poolExecutor = new ScheduledThreadPoolExecutor(1);
+        /*线程池向自己DelayQueue任务队列中添加任务，工作线程获取任务后延迟 1s 执行，然后每隔 5s 执行异常*/
+        poolExecutor.scheduleAtFixedRate(new ScheduleTask(ScheduleTask.OperType.None),
+                1000,5000, TimeUnit.MILLISECONDS);
+        poolExecutor.scheduleAtFixedRate(new ScheduleTask(ScheduleTask.OperType.OnlyThrowException),
+                1000,5000, TimeUnit.MILLISECONDS);
+        poolExecutor.scheduleAtFixedRate(new ScheduleTask(ScheduleTask.OperType.CacheException),
+                1000,5000, TimeUnit.MILLISECONDS);
+        /*每隔 5s 执行一次，每次延迟 1s 执行*/
+        poolExecutor.scheduleWithFixedDelay(new Runnable() {
+            @Override
+            public void run() {
+                System.out.println("scheduleWithFixedDelay start at : " + ScheduleTask.sdf.format(new Date()));
+                try {
+                    Thread.sleep(2000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                System.out.println("scheduleWithFixedDelay end at : " + ScheduleTask.sdf.format(new Date()));
+            }
+        },1000,5000,TimeUnit.MILLISECONDS);
+        /*只执行 1 次*/
+        poolExecutor.schedule(new Runnable() {
+            @Override
+            public void run() {
+                System.out.println("schedule is Running!");
+            }
+        },1000,TimeUnit.MILLISECONDS);
+    }
+}
+
+21、Callable（会返回结果，Runnable不会返回结果）、Future和FutureTask详解
+Future接口和实现Future接口的FutureTask类用来表示异步计算的结果。
+当我们把Runnable接口或Callable接口的实现类提交（submit）给ThreadPoolExecutor或
+ScheduledThreadPoolExecutor时，ThreadPoolExecutor或ScheduledThreadPoolExecutor会向我们返回一个
+FutureTask对象。
+Runnable接口和Callable接口的实现类，都可以被ThreadPoolExecutor或Scheduled-ThreadPoolExecutor执行。
+它们之间的区别是Runnable不会返回结果，而Callable可以返回结果。
+除了可以自己创建实现Callable接口的对象外，还可以使用工厂类Executors来把一个Runnable包装成一个Callable。
+Executors提供的，把一个Runnable包装成一个Callable的API。
+public static Callable<Object> callable(Runnable task)  // 假设返回对象Callable1
+Executors提供的，把一个Runnable和一个待返回的结果包装成一个Callable的API。
+public static <T> Callable<T> callable(Runnable task, T result)  // 假设返回对象Callable2
+当任务成功完成后FutureTask.get()将返回该任务的结果。例如，如果提交的是对象Callable1，FutureTask.get()方法将返回null；如果提交的是对象Callable2，FutureTask.get()方法将返回result对象。
+FutureTask除了实现Future接口外，还实现了Runnable接口。因此，FutureTask可以交给Executor执行，也可以由调用线程直接执行（FutureTask.run()）。
+当FutureTask处于未启动或已启动状态时，执行FutureTask.get()方法将导致调用线程阻塞；当FutureTask处于已完成状态时，执行FutureTask.get()方法将导致调用线程立即返回结果或抛出异常。
+当FutureTask处于未启动状态时，执行FutureTask.cancel()方法将导致此任务永远不会被执行；当FutureTask处于已启动状态时，执行FutureTask.cancel（true）方法将以中断执行此任务线程的方式来试图停止任务；当FutureTask处于已启动状态时，执行FutureTask.cancel（false）方法将不会对正在执行此任务的线程产生影响（让正在执行的任务运行完成）；当FutureTask处于已完成状态时，执行FutureTask.cancel（…）方法将返回false。
+
+自己记录：跟 FutureTask(relied on AbstractQueuedSynchronizer 依赖 AQS)，内部类 WaitNode 采取链表形式
+static final class WaitNode {
+    volatile Thread thread;
+    volatile WaitNode next;
+    WaitNode() { thread = Thread.currentThread(); }
+}
+
+定义 com.dongnao.mark.future.ComputerTask 类，实现 Callable 接口
+public class ComputerTask implements Callable<Integer> {
+    @Override
+    public Integer call() throws Exception {
+        return null;
+    }
+}
+ComputerTask 类里面定义成员变量，并初始化，成员变量被各个方法共有
+private Integer result = 0;
+private String taskName = "";
+public ComputerTask(Integer result, String taskName) {
+    this.result = result;
+    this.taskName = taskName;
+}
+ComputerTask 类里面定义 call()方法
+@Override
+public Integer call() throws Exception {
+    for (int i=0;i<100;i++){
+        this.result += i;
+    }
+    Thread.sleep(2000);
+    System.out.println("子任务已完成");
+    return this.result;
+}
+
+定义 com.dongnao.mark.future.FutureSample 类
+public class FutureSample {
+    public static void main(String[] args) throws ExecutionException, InterruptedException {
+        FutureSample futureSample = new FutureSample();
+        /*创建任务列表*/
+        List<FutureTask<Integer>> taskList = new ArrayList<FutureTask<Integer>>();
+        /*Executors工厂类创建线程连接池*/
+        ExecutorService pool = Executors.newFixedThreadPool(5);
+        for (int i=0;i<10;i++){
+            /*FutureTask是Future接口的实现类，有 get()方法，获得任务线程对象的返回结果*/
+            FutureTask<Integer> ft = new FutureTask<Integer>(new ComputerTask(i,"gy_" + i));
+            taskList.add(ft);
+            /*提交任务*/
+            pool.submit(ft);/*绝对重点：主线程提交完任务线程对象后，不必等待返回结果，而是通过ft.get()获取结果*/
+        }
+        System.out.println("主线程已经提交任务，做自己的事情");
+        Integer totalResult = 0;
+        for (FutureTask<Integer> ft : taskList){
+            totalResult += ft.get();
+        }
+        System.out.println("totalResult = " + totalResult);
+        /*关闭线程池*/
+        pool.shutdown();
+    }
+}
+
+22、CompletionService详解
+自己理解：线程1调用另一个线程2，有返回值：同步，线程1等线程2执行完，返回结果；异步，线程1继续执行，线程2
+执行完后，将返回结果存在列表里，线程1去列表里面取；
+CompletionService实际上可以看做是Executor和BlockingQueue（放任务线程执行结果）的结合体。
+CompletionService在接收到要执行的任务时，通过类似BlockingQueue的put和take获得任务执行的结果。
+CompletionService的一个实现是ExecutorCompletionService，ExecutorCompletionService把具体的计算任务交
+给Executor完成。在实现上，ExecutorCompletionService在构造函数中会创建一个BlockingQueue（使用的基于链
+表的无界队列LinkedBlockingQueue），该BlockingQueue的作用是保存Executor执行的结果。当计算完成时，调用
+FutureTask的done方法。当提交一个任务到ExecutorCompletionService时，首先将任务包装成QueueingFuture，
+它是FutureTask的一个子类，然后改写FutureTask的done方法，之后把Executor执行的计算结果放入BlockingQueue中。
+与ExecutorService最主要的区别在于submit的task不一定是按照加入时的顺序完成的。
+CompletionService对ExecutorService进行了包装，内部维护一个保存Future对象的BlockingQueue。只有当这个
+Future对象状态是结束的时候，才会加入到这个Queue中，take()方法其实就是Producer-Consumer中的Consumer。
+它会从Queue中取出Future对象，如果Queue是空的，就会阻塞在那里，直到有完成的Future对象加入到Queue中。
+所以，先完成的必定先被取出。这样就减少了不必要的等待时间。
+总结：
+使用方法一，自己创建一个集合来保存Future存根并循环调用其返回结果的时候，主线程并不能保证首先获得的是最先
+完成任务的线程返回值。它只是按加入线程池的顺序返回。因为take方法是阻塞方法，后面的任务完成了，前面的任务
+却没有完成，主程序就那样等待在那儿，只到前面的完成了，它才知道原来后面的也完成了。
+使用方法二，使用CompletionService来维护处理线程不的返回结果时，主线程总是能够拿到最先完成的任务的返回值
+，而不管它们加入线程池的顺序。
+
+重要：CompletionService与ExecutorService类似都可以用来执行线程池的任务submit()，前者对后者进行了封装
+功能增强，即前者通过构造函数封装后者，并创建一些函数，进行功能增强；
+创建任务线程类 com.dongnao.mark.completionService.WorkTask 实现 Callable<String> 接口，该线程有返回
+值 类型为 String
+public class WorkTask implements Callable<String>{
+    private String threadName;
+    public WorkTask() {
+    }
+    public WorkTask(String threadName) {
+        this.threadName = threadName;
+    }
+    @Override
+    public String call() throws Exception {
+        /*定义任务线程随机休眠时间，表示线程执行时间*/
+        int sleepTime = new Random().nextInt(5000);
+        Thread.sleep(sleepTime);
+        String str = this.threadName + "work time : " + sleepTime;
+        System.out.println(str + " finished");
+        return str;
+    }
+}
+定义 com.dongnao.mark.completionService.CompletionTest 类
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

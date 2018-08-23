@@ -1,0 +1,189 @@
+创建三个包：
+注册中心 com.gupaoedu.rpc.registry，注册中心就是 netty 的服务端；
+消费  者 com.gupaoedu.rpc.consumer，消费者就是 netty 的客户端；
+生产  者 com.gupaoedu.rpc.provider，生产者就是 接口的实现；
+接口规范 com.gupaoedu.rpc.api，里面定义远程调用的接口方法，提供者 provider 实现 api 里面的方法
+
+创建远程调用api接口 com.gupaoedu.rpc.api.IRpcHello.java 接口
+public interface IRpcHello {
+    public abstract void hello(String name);
+}
+创建提供者类，com.gupaoedu.rpc.provider.RpcHello.java 类，实现api接口方法，并注册到远程 register上
+public class RpcHello implements IRpcHello {
+    @Override
+    public String hello(String name) {
+        return "Hello " + name + "!!!";
+    }
+}
+创建 com.gupaoedu.rpc.registry.RpcRegistry.java 类
+public class RpcRegistry {
+}
+
+类中创建 main() 方法，启动 netty 服务端：
+public static void main(String[] args) {
+    new RpcRegistry(8080).start();
+}
+类中创建start()方法，通过序列化进行编解码：
+.childHandler(new ChannelInitializer<SocketChannel>() {/*配置具体的数据处理方式*/
+    @Override              /*每个客户端与服务端连接成功都将产生一个socketchannel*/
+    public void initChannel(SocketChannel ch) throws Exception {
+        ChannelPipeline pipeline = ch.pipeline();
+        /**/
+        pipeline.addLast(new LengthFieldPrepender(4));
+        /*服务器接收到的内容要解码，使用netty提供的 ObjectDecoder 类*/
+        pipeline.addLast("decoder", new ObjectDecoder(Integer.MAX_VALUE, ClassResolvers.cacheDisabled(null)));
+        /*服务器发送出去的内容要进行编码，使用netty提供的 ObjectEncoder 类*/
+        pipeline.addLast("encoder", new ObjectEncoder());
+        /*定义自己的处理逻辑*/
+        pipeline.addLast(new RegistryHandler());
+    }
+});
+创建 com.gupaoedu.rpc.registry.RegistryHandler.java 类进行自己业务逻辑的处理，即注册中心业务处理：
+public class RegistryHandler extends ChannelInboundHandlerAdapter {
+
+}
+类中创建一个容器，存放注册的服务信息 ConcurrentHashMap<String,Object> registryMap；
+复写 channelRead()方法，exceptionCaught() 方法
+@Override
+public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
+
+}
+
+@Override
+public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
+    super.exceptionCaught(ctx, cause);
+}
+dubbo是spring中的，因此简单写一下IOC容器
+约定：com.gupaoedu.rpc.provider包下面的类都认为是一个可以对外提供服务的实现类
+类中创建 scannerClass() 方法，扫描出所有 *.class 文件，然后取完整类名，然后利用反射创建对象 Class.forName("完成类名")
+private void scannerClass(String packageName){
+    URL url = this.getClass().getClassLoader().getResource(packageName.replaceAll("\\.", "/"));
+    File dir = new File(url.getFile());
+    for (File file : dir.listFiles()) {
+        //如果是一个文件夹，继续递归
+        if(file.isDirectory()){
+            scannerClass(packageName + "." + file.getName());
+        }else{
+            classCache.add(packageName + "." + file.getName().replace(".class", "").trim());
+        }
+    }
+}
+类中创建 doRegister() 方法，将服务名（接口名）作为key，将对应接口实现类的对象引用作为value，注册到map
+private void doRegister(){
+    if(classCache.size() == 0){ return; }
+
+    for (String className : classCache) {
+        try {
+            Class<?> clazz = Class.forName(className);
+
+            Class<?> interfaces = clazz.getInterfaces()[0];
+
+            registryMap.put(interfaces.getName(), clazz.newInstance());
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+}
+类中创建构造方法，在构造方法中，执行scannerClass()，doRegister()
+回到 RegistryHandler 类的channelRead()方法，因为在RpcRegistry类中使用 ObjectDecoder类，ObjectEncoder类
+进行编解码，所以channelRead()方法返回 Object result = new Object();
+channelRead(ChannelHandlerContext ctx, Object msg)
+需要封装一个msg，即在 Netty服务端与 Netty客户端传递的是一个 InvokeMsg对象，即，客户端将发送信息封装
+到 InvokeMsg对象中，然后序列化编码为二进制数据，传输到服务端，服务端接收到二进制数据后，进行解码，将二
+进制数据解码为 InvokeMsg对象；
+因此 创建 com.gupaoedu.rpc.core.msg.InvokerMsg.java 类
+public class InvokerMsg implements Serializable {
+    private String className;//调用的服务名称，这里使用的是接口名称
+    private String methodName;//调用接口即服务中的哪个方法
+    private Class<?>[] parames;//由于方法有重载，所以将参数类型传递过来
+    private Object[] values;//对应参数值
+}
+回到 channelRead()方法，完整代码如下：
+/*消费者来调用服务端及Registry注册中心已注册的服务(接口)中方法*/
+@Override
+public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
+    Object result = new Object();
+    /*将客户端发送过来的 msg 转成自己需要的形式*/
+    InvokerMsg request = (InvokerMsg)msg;
+    /*先判断registryMap是否有这个服务即接口名称*/
+    if(registryMap.containsKey(request.getClassName())){
+        /*从注册中心取出 服务*/
+        Object obj = registryMap.get(request.getClassName());
+        Method method = obj.getClass().getMethod(request.getMethodName(), request.getParames());
+        result = method.invoke(obj, request.getValues());
+    }
+    /*将返回值写会给客户端即消费者*/
+    ctx.writeAndFlush(result);
+    ctx.close();
+}
+创建 com.gupaoedu.rpc.consumer.RpcConsumer.java 类，客户端调用远程服务方法
+public class RpcConsumer {
+    public static void main(String[] args) {
+        /*正常情况下，即在同一个 JVM 下，这样调用*/
+        IRpcHello rpcHello =  new RpcHello();
+        String result = rpcHello.hello("Tom");
+        System.out.println(result);
+    }
+}
+RPC远程调用，即不在一个 JVM情况下调用一个接口实现方法，因为跟提供者不在一个jvm中，因此通过动态代理方式，
+将请求发送给注册中心，然后获得处理结果；
+因此创建 com.gupaoedu.rpc.consumer.proxy.RpcProxy.java类
+public class RpcProxy {
+
+	@SuppressWarnings("unchecked")
+	/*                         clazz为接口反射类对象*/
+	public static <T> T create(Class<?> clazz){
+        MethodProxy methodProxy = new MethodProxy(clazz);
+		T result = (T)Proxy.newProxyInstance(clazz.getClassLoader(),new Class[] { clazz },methodProxy);
+        return result;
+    }
+}
+RpcProxy类中创建内部类 MethodProxy.java 进行远程调用
+class MethodProxy implements InvocationHandler {
+	private Class<?> clazz;
+	public MethodProxy(Class<?> clazz){
+		this.clazz = clazz;
+	}
+
+	@Override
+    public Object invoke(Object proxy, Method method, Object[] args)  throws Throwable {
+        //如果传进来是一个已实现的具体类（本次演示略过此逻辑)
+        if (Object.class.equals(method.getDeclaringClass())) {
+            try {
+                return method.invoke(this, args);
+            } catch (Throwable t) {
+                t.printStackTrace();
+            }
+        //如果传进来的是一个接口（核心)，就走远程调用，远程调用使用 rpcInvoke()方法
+        } else {
+            return rpcInvoke(proxy,method, args);
+        }
+        return null;
+    }
+}
+测试：先启动 RpcRegistry.java类，再启动RpcConsumer.java类
+public class RpcConsumer {
+    public static void main(String[] args) {
+        /*正常情况下，即在同一个 JVM 下，这样调用*/
+//        IRpcHello rc =  new RpcHello();
+//        String result = rc.hello("Tom");
+//        System.out.println(result);
+        /*RPC远程调用情况下，调用一个接口实现方法，通过动态代理方式，将请求发送给注册中心，然后获得处理结果*/
+        /*将接口反射类对象传递进去，返回一个接口实现类实例*/
+        IRpcHello rpcHello = RpcProxy.create(IRpcHello.class);
+        String result = rpcHello.hello("James");
+        System.out.println(result);
+    }
+}
+流程总结：
+①启动 RpcRegistry类，在 pipeline.addLast(new RegistryHandler())这里，调用RegistryHandler
+类构造方法，构造方法里面将 com.gupaoedu.rpc.provider包下面的类的类全名保存起来，并将服务名称即接口名称
+和接口实现类的引用注册到map中；
+②启动 RpcConsumer类，会启动 netty客户端，future.channel().writeAndFlush(msg).sync();并将msg
+编码后发送给 注册中心即netty服务端；
+③netty服务端 RegistryHandler的channelRead()方法取出msg里面封装的服务名称，方法名称，参数列表，
+参数值，并调用map中的实现类引用，得到结果，最后，将结果返回给 netty客户端即RpcConsumer
+存在问题：目前只是把 注册中心 RpcRegistry 与 消费者 RpcConsumer 分离了，还没有实现注册中心与生产者分离
+
+

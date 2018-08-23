@@ -1,0 +1,153 @@
+------------------------单例模式---------------------------------------
+单例模式目的：资源共享，即 单例对象的成员变量只赋值或初始化一次，大家就可以重复利用这个单例对象；
+应用场景：监听器 Listener 对象，日历 Calendar 对象，spring ioc 容器（ioc容器：所有对象都往一个地方存，
+也从这一个地方取）的对象 配置信息 config 都是单例的；
+技术方案：保证整个运行过程只有一份，饿汉式，懒汉试，注册登记式，枚举式，反序列化如何保证单例？
+解决问题：恶劣环境（程序的健全性）
+*****************************************************************************************
+线程不安全：多个run()方法里面操作同一个对象就不安全；
+*****************************************************************************************
+饿汉式线程绝对安全：类对象在类加载链接初始化的时候就创建了，线程来拿对象就是调 getInstance()方法时，直接就返回了，
+不会临时创建；
+public class Hungry {
+    private Hungry(){}
+    //先静态、后动态
+    //先属性、后方法
+    //先上后下
+    /*final指修饰的引用不能变，只能指向一个地址，不是指地址指向堆内存空间不能变*/
+    private static final Hungry hungry = new Hungry();
+    public static Hungry getInstance(){
+        return  hungry;
+    }
+}
+懒汉式线程不安全：lazy = null，lazy默认是null，当一个线程来拿对象就是调 getInstance()方法时，临时创
+建一个对象，如果这个对象还没创建完的时候，另一个线程又来拿，发现还是没有，又会创建一个；
+//懒汉式单例
+//在外部需要使用的时候才进行实例化
+public class LazyOne {
+    private LazyOne(){}
+    //静态块，公共内存区域
+    private static LazyOne lazy = null;
+    public static LazyOne getInstance(){
+        //调用方法之前，先判断
+        //如果没有初始化，将其进行初始化,并且赋值
+        //将该实例缓存好
+        if(lazy == null){
+            //两个线程都会进入这个if里面
+            lazy = new LazyOne();
+        }
+        //如果已经初始化，直接返回之前已经保存好的结果
+        return lazy;
+    }
+}
+
+************************************************************
+synchronized 修饰方法：public void synchronized fun(){...}
+synchronized 修饰变量：synchronized(person){...}
+表示：一个线程操作完{...}里面的所有语句后，其他线程才能进入；
+************************************************************
+使用 synchronized 关键字解决懒汉式的线程安全问题，但是效率很慢；
+public class LazyTwo {
+    private LazyTwo(){}
+    private static LazyTwo lazy = null;
+    public static synchronized LazyTwo getInstance(){ //方法加 synchronized 关键字，即加所同步
+        if(lazy == null){
+            lazy = new LazyTwo();
+        }
+        return lazy;
+    }
+}
+使用静态内部类解决 饿汉式占内存，懒汉式效率高时线程不安全，线程安全时效率低的问题：
+内部类特点：只有当外部类调用的时候，内部类才会加载，代码如下：
+
+public class LazyThree {
+    private boolean initialized = false;
+    //默认使用LazyThree的时候，会先初始化内部类
+    //如果没使用的话，内部类是不加载的
+    private LazyThree(){
+        synchronized (LazyThree.class){
+            if(initialized == false){
+                initialized = !initialized;
+            }else{
+                throw new RuntimeException("单例已被侵犯");
+            }
+        }
+    }
+    //每一个关键字都不是多余的
+    //static 是为了使单例的空间共享
+    //保证这个方法不会被重写，重载
+    public static final LazyThree getInstance(){
+        //在返回结果以前，一定会先加载内部类
+        return LazyHolder.LAZY;
+    }
+    //内部类默认不加载
+    private static class LazyHolder{
+        private static final LazyThree LAZY = new LazyThree();
+    }
+}
+测试代码：
+public class LazyThreeTest {
+    public static void main(String[] args) {
+        try{
+            //很无聊的情况下，进行破坏
+            Class<?> clazz = LazyThree.class;
+            //通过反射拿到私有的构造方法
+            Constructor c = clazz.getDeclaredConstructor(null);
+            //强制访问，强吻，不愿意也要吻
+            c.setAccessible(true);
+            //暴力初始化
+            Object o1 = c.newInstance();
+            //调用了两次构造方法，相当于new了两次
+            //犯了原则性问题，
+            Object o2 = c.newInstance();
+            System.out.println(o1 == o2);
+//            Object o2 = c.newInstance();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+}
+
+注册登记式：直接来集合中拿对象(即调用getBean()方法)，如果有则直接拿走，如果没有，就创建，并保存到集合中
+public class BeanFactory {
+    private BeanFactory(){}
+    //ConcurrentHashMap 线程安全
+    private static Map<String,Object> ioc = new ConcurrentHashMap<String,Object>();
+    public static Object getBean(String beanName){
+        if(!ioc.containsKey(beanName)){
+            Object obj = null;
+            try {
+                obj = Class.forName(beanName).newInstance();
+                ioc.put(beanName,obj);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return obj;
+        }else{
+            return ioc.get(beanName);
+        }
+    }
+}
+
+反序列化时，破坏单例问题：
+序列化：内存中的状态转换成字节码，通过 I/O 流写入其他地方（磁盘，网络IO），将内存中的状态永久保存下来；
+反序列化：根据字节码重新创建对象；
+public class Seriable implements Serializable {
+    //序列化就是说把内存中的状态通过转换成字节码的形式
+    //从而转换一个IO流，写入到其他地方(可以是磁盘、网络IO)
+    //内存中状态给永久保存下来了
+    //反序列化
+    //讲已经持久化的字节码内容，转换为IO流
+    //通过IO流的读取，进而将读取的内容转换为Java对象
+    //在转换过程中会重新创建对象new
+    public  final static Seriable INSTANCE = new Seriable();
+    private Seriable(){}
+    public static  Seriable getInstance(){
+        return INSTANCE;
+    }
+    private  Object readResolve(){
+        return  INSTANCE;
+    }
+}
+测试代码：test.SeriableTest 类
+

@@ -1,0 +1,117 @@
+浏览器 → http字符串协议 ← Tomcat服务器 → Servlet接口协议 ← Java应用程序 → JDBC协议 ← 数据库
+创建 Tomcat 服务端启动类 BootStrap
+public class BootStrap {
+    /**程序入口*/
+    public static void main(String[] args) {
+
+    }
+    public static void start(){
+        /**创建服务端套接字 serverSocket，并监听端口*/
+        try {
+            ServerSocket serverSocket = new ServerSocket(8080);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+}
+Tomcat服务端监听端口号，配置到 base/conf/server.xml 配置文件中；
+<?xml version="1.0" encoding="UTF-8"?>
+<server>
+    <service>
+        <connector port="8080"></connector>
+    </service>
+</server>
+core包中创建 ServerParser 类，解析 server.xml配置文件，获得 端口值；
+public class ServerParser {
+	/**获取服务器的端口号*/
+	public static int getPort(){
+		//设置服务器默认端口号：8080
+		int port = 8080;
+		try {
+			//创建解析器
+			SAXReader saxReader = new SAXReader();
+			//通过解析器的read方法将配置文件读取到内存中，生成一个Document[org.dom4j]对象树
+			Document document = saxReader.read("conf/server.xml");
+			//获取connector节点元素的路径：server -> service -> connector
+			//获取connector节点元素的xpath路径：/server/service/connector
+			//获取connector节点元素的xpath路径：server//connector
+			//获取connector节点元素的xpath路径：//connector
+			Element connectorElt = (Element) document.selectSingleNode("//connector");
+			//获取port属性的值
+			port = Integer.parseInt(connectorElt.attributeValue("port"));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return port;
+	}
+}
+修改 BootStrap类的 start()方法：
+ServerSocket serverSocket = new ServerSocket(ServerParser.getPort());
+
+下一步，写一个小的Java应用程序，部署到Tomcat服务器中，通过浏览器可以访问到该Java应用程序；
+修改start()方法，获取客户端连接对象 clientSocket 对象，并获取里面的http字符串协议内容：
+public void start(){
+    ServerSocket serverSocket = null;
+     Socket clientSocket = null;
+     BufferedReader br = null;
+     try {
+         /**创建服务端套接字 serverSocket，并监听端口*/
+         serverSocket = new ServerSocket(ServerParser.getPort());
+         System.out.println("服务器已启动！！！");
+         while(true){
+             /**阻塞直到获取客户端连接对象*/
+             clientSocket = serverSocket.accept();
+             /*接收客户端消息*/
+             br = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+             String temp = null;
+             while((temp = br.readLine()) != null){
+                 System.out.println(temp);
+             }
+         }
+     } catch (IOException e) {
+         e.printStackTrace();
+     }
+ }
+测试：启动BootStrap类，并在浏览器中输入 http://localhost:8080/oa/index.html
+获得浏览器发送的http协议字符串如下：
+GET /oa/index.html HTTP/1.1
+Host: localhost:8080
+Connection: keep-alive
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.132 Safari/537.36
+Accept-Encoding: gzip, deflate, br
+Accept-Language: zh-CN,zh;q=0.9,en;q=0.8
+
+目前只有一个主线程，如果多用户访问，怎么用多线程处理？
+core包中创建 HandlerRequest 多线程类，处理客户端请求，将处理逻辑放到 run()方法中来：
+BootStrap类的start()方法调用线程类的run()方法；
+new Thread(new HandlerRequest(clientSocket)).start();
+
+现在可以获得客户端发送来的http协议字符串了，从这个字符串中解析出 uri，例如 /oa/index.html，服务器要
+给浏览器返回uri指向的内容，其中 oa 代表上下文即部署在tomcat中的Java项目，index.html代表oa项目中的页面，
+创建 base/oa/index.html文件，HandlerRequest类的run方法获得 uri 后，通过responseStaticPage()方法
+将 uri 指向的先读取到内存中，再从内存写入输出流中；
+
+以上为服务端响应客户端静态请求，以下为服务端响应客户端动态请求：即服务端通过浏览器请求找到相应Java程序；
+当浏览器发送 http://localhost:8080/oa/login?username=admin&password=123 这样的请求时如何处理呢?
+那么，登录的表单页面由谁来写呢？应该由Java开发人员来写，由服务器来调用；
+在 HandlerRequest类的 run()方法中，判断是请求静态还是动态
+if(requestURI.endsWith(".html") || requestURI.endsWith(".htm")){
+    请求中包含 html或htm 就认为是静态资源，要根据请求路径找到应用程序中的页面
+    responseStaticPage(requestURI,out);
+}else{不包含 html或htm 就是动态资源，要根据请求路径找到应用程序中的Java处理程序
+    应用程序创建 WEB-INF/web.xml 文件，在里面配置 url与servlet的映射
+    服务器去应用程序(oa)的 WEB-INF/web.xml中读取
+}
+在服务器的core包中创建 WebParser 类，解析应用程序的 web.xml 文件；在BootStrap类的start()方法中调用
+WebParser.parser(webAppNames);方法来读取web.xml配置文件;
+在servlet包中创建 Servlet 接口和 LoginServlet类；
+测试：
+启动 BootStrap类，浏览器访问：http://localhost:8080/oa/login?username=admin&password=123
+
+Tomcat流程：
+①获得客户端连接对象 clientSocket，并获得http协议字符串，解析出里面的 uri (/oa/login 或者/oa/index.html)；
+②解析出项目名称 oa；如果 uri 中包含 html 则为静态请求，将页面读到内存中再写到输出流中响应给浏览器；
+如果 uri 中不包含 html 则为动态请求，应该找到请求对应的处理程序servlet；
+③首先，扫描oa项目下面的 WEB-INF/web.xml，得到 url：className 的 map；
+④由url获得 className，利用反射创建 Servlet 对象，并调用 servlet.service()方法；
+⑤service()方法的参数为 ServletRequest，ServletResponse；

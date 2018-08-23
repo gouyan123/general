@@ -1,0 +1,157 @@
+*****************************************************************************************
+事务：不使用事务，各命令分别执行；使用事务，提交事务前，事务中的命令不会执行，提交事务后，事务中的命令
+一起执行，要么都执行，要么都不执行，不存在一部分执行，一部分不执行；
+*****************************************************************************************
+-----------------------spring事务操作原理------------------------------------------------
+java中的事务操作指的是服务层 Service，而不是数据层 Dao
+数据库事务：自动提交autoCommit时，执行insert，update，delete，select命令的数据直接更新到数据库中；
+手动提交时，执行这些命令后，这些数据只是保存在一个地方，数据库并不会变化，只有数据库执行提交commit后，
+这些数据才会更新到数据库，当数据库执行回滚时，这些数据不会更新到数据库；
+数据库事务：外部客户端对数据库进行 增删改查 操作，数据库通过事务控制这些操作，当数据库提交事务commit时，
+外部数据会更新到数据库，当数据库回滚时，外部数据不会更新到数据库；
+
+观察com.gupaoedu.vip.spring.transaction.dao.MemberDao类的setDataSource()方法：所有事务都是针
+对 Connection 做的操作；
+
+客户端都是通过连接对象操作服务端，java定义了一个Connection接口，但并没有实现，具体实现由各数据库公司完
+成，即各数据库自己写Connection接口的实现类，java引入相应包即可；
+package java.sql;
+public interface Connection  extends Wrapper, AutoCloseable {
+    ...
+}
+如上所示，java只提供一个数据库连接接口Connection，实现类由各数据库公司自己写；
+
+DataSource就是对Connection的包装，增强功能：动态切换，事务统一管理；
+package javax.sql;
+public interface DataSource  extends CommonDataSource, Wrapper {
+    ...
+}
+如上所示，java只提供一个数据库连接源 接口DataSource，实现类由各数据库公司自己写；
+
+spring框架中 DataSourceTransactionManager类的 doBegin()方法中如下操作，将事务自动提交
+改成手动提交，所有事务框架都会把自动提交设为false
+if (connection.getAutoCommit()) {
+    connection.setAutoCommit(false);
+}
+
+spring开启事务：DataSourceTransactionManager类的prepareTransactionalConnectio()方法
+protected void prepareTransactionalConnection(Connection con, TransactionDefinition definition) throws SQLException {
+    Statement stmt = con.createStatement();/*创建语句集相当于开启事务*/
+}
+**************************************************************************************
+开启事务时创建客户端 socket 对象；execute()的时候，就和服务端建立连接
+**************************************************************************************
+spring中全部的事务操作都封装在 DataSourceTransactionManager类中，那么谁来创建这个类的
+对象，并调用里面的方法呢？
+<tx:advice id="transactionAdvice" transaction-manager="transactionManager"> ctr + 单击
+advice跟进去，来到spring-tx.xsd文件，发现TransactionInterceptor类，ctr + N，查找该类文
+件，invoke()方法中 AopUtils.getTargetClass()
+public Object invoke(MethodInvocation invocation) throws Throwable {
+    Class<?> targetClass = invocation.getThis() != null ? AopUtils.getTargetClass(invocation.getThis()) : null;
+    Method var10001 = invocation.getMethod();
+    invocation.getClass();
+    return this.invokeWithinTransaction(var10001, targetClass, invocation::proceed);
+}
+注意，服务层的方法要使用 throws Exception声明方法可能会抛出异常，而不能使用 try...catch 捕获处理异常
+，如果自己捕获处理异常了，异常就不存在了，异常不会传到该方法调用处了，就不会回滚了；如果使用 throws Exception
+，异常会传递到该服务层方法的调用处，如果设置了回滚，就会回滚；
+@Service
+public class MemberService {
+    @Autowired private MemberDao memberDao;
+    public List<Member> queryAll() throws Exception{
+        return  memberDao.selectAll();
+    }
+}
+
+
+/*transactionManager管理所有的数据库连接*/
+<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+    <property name="dataSource" ref="dataSource"/>
+</bean>
+
+<!-- 配置事务通知属性 -->
+<tx:advice id="transactionAdvice" transaction-manager="transactionManager">
+    <tx:attributes>
+        <tx:method name="add*" propagation="REQUIRED" rollback-for="Exception,RuntimeException,SQLException"/>
+        <tx:method name="remove*" propagation="REQUIRED" rollback-for="Exception,RuntimeException,SQLException"/>
+        <tx:method name="edit*" propagation="REQUIRED" rollback-for="Exception,RuntimeException,SQLException"/>
+        <tx:method name="login" propagation="NOT_SUPPORTED"/>
+        <!-- 这句话的意思就是说只读，不要进行commit操作，不要进行rollback操作  -->
+        <tx:method name="query*" read-only="true"/>
+    </tx:attributes>
+</tx:advice>
+
+<aop:config>
+    <aop:advisor advice-ref="transactionAdvice" pointcut-ref="transactionPointcut"/>
+    <aop:aspect ref="dataSource">
+        <aop:pointcut id="transactionPointcut" expression="execution(public * com.gupaoedu..*.service..*Service.*(..))" />
+    </aop:aspect>
+</aop:config>
+
+----------------------手写spring事务操作------------------------------------------
+*****************************************************************************************
+重点：java客户端相当于 Socket端，数据库服务器相当于 ServerSocket端，客户端向服务端发送 jdbc协议，服
+务端ServerSocket接收到客户端 Socket对象后，取出其输入流中的 jdbc协议，进行相应操作，并将操作结果通过
+客户端输出流写回给客户端；
+*****************************************************************************************
+数据库中从表中弄到内存中的部分不允许修改，使用锁；如果整个表的内容都缓存到内存中，则使用表锁；如果表中某
+几行缓存都数据库内存中，那么使用行锁，锁定缓存的那几行不允许修改；
+查询select不锁表，只有增删改锁表；
+
+回滚：根据日志记录一步一步倒退，把数据恢复，例如mysql使用binlog日志回滚恢复数据，mysql中的自增id无法
+回滚恢复，会一直增加；
+
+----------------------手写 ORM ------------------------------------------
+src/test/java 目录中创建 JdbcTest 类，将数据库返回数据封装到对象中，由于写框架的时候还没有 entity对
+象，所以利用反射，只要使用框架的时候把反射类对象传进去就可以；
+
+String columnName = rs.getMetaData().getColumnName(i);
+Field field = entityClass.getDeclaredField(columnName);
+field.setAccessible(true);
+
+com.gupaoedu.vip.orm.demo.model包中创建 entity 类 Member
+@Entity
+@Table(name="t_member")
+public class Member implements Serializable{
+    @Id private Long id;
+    private String name;
+    private String addr;
+    private Integer age;
+    ...
+}
+
+最底层的类：①统一方法名 insert delete update select；②统一参数；③统一返回结果；
+①统一方法名：
+约定：如果是增，删，改，以ID为唯一检索条件，如果没有ID，那么要新查出来得到ID；
+②统一参数：
+如果做查询操作，自己封装QueryRule；
+批量更新和插入，方法名以All结尾，参数为 List；
+删，改，插入一条数据，参数用 T；
+
+③统一返回结果：
+创建 framework 包，创建公共包 javax；
+创建 javax.core.common.Page 类作为顶层设计，所有分页操作都返回 Page 对象；所有集合查询返回 List；
+所有单条查询返回 T；所有的ID查询返回 Long；所有增，删，改返回 Boolean；
+创建 javax.core.common.ResultMsg 类为顶层设计，上述所有返回值都用 ResultMsg 封装；
+只要与spring相关的，都用 application-开头；
+
+创建 com.gupaoedu.vip.orm.framework.BaseDaoSupport 抽象类，抽象类里面可以写一些默认的功能，但是
+不能被实例化，被实例化之前必须把动态参数配置好，例如创建连接对象时的链接；
+通过子类继承父类，然后 new 子类，就会先new父类，子类把配置信息传递给父类，父类里面的功能就会生效；
+里面创建 setDataSource(DataSource dataSource)抽象方法，由各实现子类去实现；
+
+创建 com.gupaoedu.vip.orm.demo.dao.MemberDao 类，继承 BaseDaoSupport类
+
+初衷：①单表查询不写一句SQL，自动生成；②查询的结果自动映射为Java对象；
+我要传一个复杂的查询条件，怎么传？  想到了用对象来传，但是有问题
+a)、跨表联查的条件；b)、无法携带判断逻辑的运算符；c)、or 或者 and 无法区分；
+因此创建 com.gupaoedu.vip.orm.framework.QueryRule 类
+在 test/java 包中创建 OrmTest 类，类中创建 testQueryRule()方法
+
+创建 QueryRuleSqlBuilder 类，利用QueryRule来拼凑 sql语句
+SQL注入
+1、首先将QueryRule构建好，把所有的查询条件保存到一个ruleList中;
+2、再写一个工具类QueryRuleSqlBuilder，循环ruleList对每一个条件分别处理processAnything，主要是构建
+where后面语句;
+3、process以后propertisList  保存诸如 and name = ? ， values  tom,利用索引位置相同，来进行一一对
+应;

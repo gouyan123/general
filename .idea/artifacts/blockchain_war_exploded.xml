@@ -1,0 +1,40 @@
+<component name="ArtifactManager">
+  <artifact type="exploded-war" name="blockchain:war exploded">
+    <output-path>$PROJECT_DIR$/blockchain/target/blockchain</output-path>
+    <root id="root">
+      <element id="directory" name="WEB-INF">
+        <element id="directory" name="classes">
+          <element id="module-output" name="blockchain" />
+        </element>
+        <element id="directory" name="lib">
+          <element id="library" level="project" name="Maven: com.sparkjava:spark-core:2.7.2" />
+          <element id="library" level="project" name="Maven: org.eclipse.jetty:jetty-server:9.4.8.v20171121" />
+          <element id="library" level="project" name="Maven: org.eclipse.jetty:jetty-http:9.4.8.v20171121" />
+          <element id="library" level="project" name="Maven: org.eclipse.jetty:jetty-util:9.4.8.v20171121" />
+          <element id="library" level="project" name="Maven: org.eclipse.jetty:jetty-io:9.4.8.v20171121" />
+          <element id="library" level="project" name="Maven: org.eclipse.jetty:jetty-webapp:9.4.8.v20171121" />
+          <element id="library" level="project" name="Maven: org.eclipse.jetty:jetty-xml:9.4.8.v20171121" />
+          <element id="library" level="project" name="Maven: org.eclipse.jetty:jetty-servlet:9.4.8.v20171121" />
+          <element id="library" level="project" name="Maven: org.eclipse.jetty:jetty-security:9.4.8.v20171121" />
+          <element id="library" level="project" name="Maven: org.eclipse.jetty.websocket:websocket-server:9.4.8.v20171121" />
+          <element id="library" level="project" name="Maven: org.eclipse.jetty.websocket:websocket-common:9.4.8.v20171121" />
+          <element id="library" level="project" name="Maven: org.eclipse.jetty.websocket:websocket-client:9.4.8.v20171121" />
+          <element id="library" level="project" name="Maven: org.eclipse.jetty:jetty-client:9.4.8.v20171121" />
+          <element id="library" level="project" name="Maven: org.eclipse.jetty.websocket:websocket-servlet:9.4.8.v20171121" />
+          <element id="library" level="project" name="Maven: org.eclipse.jetty.websocket:websocket-api:9.4.8.v20171121" />
+          <element id="library" level="project" name="Maven: com.sparkjava:spark-kotlin:1.0.0-alpha" />
+          <element id="library" level="project" name="Maven: org.jetbrains.kotlin:kotlin-stdlib:1.1.2-2" />
+          <element id="library" level="project" name="Maven: org.jetbrains:annotations:13.0" />
+          <element id="library" level="project" name="Maven: commons-codec:commons-codec:1.9" />
+          <element id="library" level="project" name="Maven: log4j:log4j:1.2.17" />
+          <element id="library" level="project" name="Maven: org.slf4j:slf4j-api:1.6.6" />
+          <element id="library" level="project" name="Maven: org.slf4j:slf4j-log4j12:1.6.6" />
+        </element>
+      </element>
+      <element id="directory" name="META-INF">
+        <element id="file-copy" path="$PROJECT_DIR$/blockchain/target/blockchain/META-INF/MANIFEST.MF" />
+      </element>
+      <element id="javaee-facet-resources" facet="blockchain/web/Web" />
+    </root>
+  </artifact>
+</component>

@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="NettyNio:war">
+    <output-path>$PROJECT_DIR$/NettyNio/target</output-path>
+    <root id="archive" name="NettyNio.war">
+      <element id="artifact" artifact-name="NettyNio:war exploded" />
+    </root>
+  </artifact>
+</component>

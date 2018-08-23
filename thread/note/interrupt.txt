@@ -1,0 +1,329 @@
+取消/关闭的场景
+
+我们知道，通过线程的start方法启动一个线程后，线程开始执行run方法，run方法运行结束后线程退出，那为什么还
+需要结束一个线程呢？有多种情况，比如说：
+很多线程的运行模式是死循环，比如在生产者/消费者模式中，消费者主体就是一个死循环，它不停的从队列中接受任务
+，执行任务，在停止程序时，我们需要一种”优雅”的方法以关闭该线程。
+在一些图形用户界面程序中，线程是用户启动的，完成一些任务，比如从远程服务器上下载一个文件，在下载过程中，
+用户可能会希望取消该任务。
+在一些场景中，比如从第三方服务器查询一个结果，我们希望在限定的时间内得到结果，如果得不到，我们会希望取消
+该任务。
+有时，我们会启动多个线程做同一件事，比如类似抢火车票，我们可能会让多个好友帮忙从多个渠道买火车票，只要有
+一个渠道买到了，我们会通知取消其他渠道。
+
+取消/关闭的机制
+Java的Thread类定义了如下方法：
+public final void stop()
+这个方法看上去就可以停止线程，但这个方法被标记为了过时，简单的说，我们不应该使用它，可以忽略它。
+
+在Java中，停止一个线程的主要机制是中断，中断并不是强迫终止一个线程，它是一种协作机制，是给线程传递一个
+取消信号，但是由线程来决定如何以及何时退出，本节我们主要就是来理解Java的中断机制。
+
+Thread类定义了如下关于中断的方法：
+public boolean isInterrupted()
+public void interrupt()
+public static boolean interrupted()
+
+这三个方法名字类似，比较容易混淆，我们解释一下。isInterrupted()和interrupt()是实例方法，调用它们需要
+通过线程对象，interrupted()是静态方法，实际会调用Thread.currentThread()操作当前线程。
+
+每个线程都有一个标志位，表示该线程是否被中断了。
+isInterrupted：就是返回对应线程的中断标志位是否为true。
+interrupted：返回当前线程的中断标志位是否为true，但它还有一个重要的副作用，就是清空中断标志位，也就是说，
+连续两次调用interrupted()，第一次返回的结果为true，第二次一般就是false (除非同时又发生了一次中断)。
+interrupt：表示中断对应的线程，中断具体意味着什么呢？下面我们进一步来说明。
+
+线程对中断的反应
+interrupt()对线程的影响与线程的状态和在进行的IO操作有关，我们先主要考虑线程的状态：
+RUNNABLE：线程在运行或具备运行条件只是在等待操作系统调度
+WAITING/TIMED_WAITING：线程在等待某个条件或超时
+BLOCKED：线程在等待锁，试图进入同步块
+NEW/TERMINATED：线程还未启动或已结束
+
+RUNNABLE
+如果线程在运行中，且没有执行IO操作，interrupt()只是会设置线程的中断标志位，没有任何其它作用。线程应该在
+运行过程中合适的位置检查中断标志位，比如说，如果主体代码是一个循环，可以在循环开始处进行检查，如下所示：
+
+public class InterruptRunnableDemo extends Thread {
+    @Override
+    public void run() {
+        while (!Thread.currentThread().isInterrupted()) {
+            // ... 单次循环代码
+        }
+        System.out.println("done ");
+    }
+
+    public static void main(String[] args) throws InterruptedException {
+        Thread thread = new InterruptRunnableDemo();
+        thread.start();
+        Thread.sleep(1000);
+        thread.interrupt();
+    }
+}
+WAITING/TIMED_WAITING
+线程执行如下方法会进入WAITING状态：
+public final void join() throws InterruptedException
+public final void wait() throws InterruptedException
+
+执行如下方法会进入TIMED_WAITING状态：
+public final native void wait(long timeout) throws InterruptedException;
+public static native void sleep(long millis) throws InterruptedException;
+public final synchronized void join(long millis) throws InterruptedException
+
+在这些状态时，对线程对象调用interrupt()会使得该线程抛出InterruptedException，需要注意的是，抛出异常后，
+中断标志位会变成false。比如说，执行如下代码：
+
+Thread t = new Thread (){
+    @Override
+    public void run() {
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            System.out.println(isInterrupted());
+        }
+    }
+};
+t.start();
+try {
+    Thread.sleep(100);
+} catch (InterruptedException e) {
+}
+t.interrupt();
+
+程序的输出为false。
+
+InterruptedException是一个受检异常，线程必须进行处理。我们在异常处理中介绍过。
+处理异常的基本思路：如果你知道怎么处理，就进行处理，如果不知道，就应该向上传递。
+通常情况下，你不应该做的是，捕获异常然后忽略。
+
+捕获到InterruptedException，通常表示希望结束该线程，线程大概有两种处理方式：
+①向上传递该异常，这使得该方法也变成了一个可中断的方法，需要由该方法调用者进行处理。
+②有些情况，不能向上传递异常，比如Thread的run方法，它的声明是固定的，不能抛出任何受检异常，这时，应该捕获
+异常，进行合适的清理操作，清理后，一般应该调用Thread的interrupt方法设置中断标志位，使得其他代码有办法知
+道它发生了中断。
+
+第一种方式的示例代码如下：
+
+public void interruptibleMethod() throws InterruptedException{//向上传递，由该方法调用者处理
+    // ... 包含wait, join 或 sleep 方法
+    Thread.sleep(1000);
+}
+
+第二种方式的示例代码如下：
+观察 InterruptWaitingDemo.java 类，分别注释跟不注释掉最后一句 thread.interrupt();
+分别观察：
+注释掉thread.interrupt();以后，sleep()方法不会抛出异常，会一直循环；
+不注释掉thread.interrupt();，它首先会把中断标志位改为 true，然后让sleep()抛出异常，sleep()抛出以后后，
+会将中断标志位修改为 false；
+interrupt()作用：①修改中断标志位为 true；②让 sleep()/wait()等方法抛出异常，且抛异常时，将中断标志位
+改为false；
+public class InterruptWaitingDemo extends Thread {
+    @Override
+    public void run() {
+        System.out.println("id : " + Thread.currentThread().getId() + " state " +
+                this.isInterrupted());
+        int i = 0;
+        while (!this.isInterrupted()) {
+            try {
+                // 模拟任务代码
+                System.out.println("进入while循环" + i++);
+                Thread.sleep(2000);
+            } catch (InterruptedException e) {
+                // ... 清理操作
+                // 重设中断标志位
+
+                System.out.println("前 id : " + Thread.currentThread().getId() + " state " +
+                Thread.currentThread().isInterrupted());
+                Thread.currentThread().interrupt();
+                System.out.println("后 id : " + Thread.currentThread().getId() + " state " +
+                Thread.currentThread().isInterrupted());
+            }
+        }
+        System.out.println(this.isInterrupted());/*InterruptWaitingDemo这个线程类*/
+    }
+
+    public static void main(String[] args) {
+        InterruptWaitingDemo thread = new InterruptWaitingDemo();
+        thread.start();
+        try {
+            Thread.sleep(10000);
+        } catch (InterruptedException e) {
+        }
+        /*对线程调用 interrupt 方法，wait/sleep/等方法会抛出异常*/
+        thread.interrupt();
+    }
+}
+
+BLOCKED
+如果线程在等待锁，对线程对象调用interrupt()只是会设置线程的中断标志位，线程依然会处于BLOCKED状态，也就是说，interrupt()并不能使一个在等待锁的线程真正”中断”。我们看段代码：
+
+public class InterruptSynchronizedDemo {
+    private static Object lock = new Object();
+
+    private static class A extends Thread {
+        @Override
+        public void run() {
+            synchronized (lock) {
+                while (!Thread.currentThread().isInterrupted()) {
+                }
+            }
+            System.out.println("exit");
+        }
+    }
+
+    public static void test() throws InterruptedException {
+        synchronized (lock) {
+            A a = new A();
+            a.start();
+            Thread.sleep(1000);
+
+            a.interrupt();
+            a.join();
+        }
+    }
+
+    public static void main(String[] args) throws InterruptedException {
+        test();
+    }
+}
+
+test方法在持有锁lock的情况下启动线程a，而线程a也去尝试获得锁lock，所以会进入锁等待队列，随后test调用线程a的interrupt方法并等待线程线程a结束，线程a会结束吗？不会，interrupt方法只会设置线程的中断标志，而并不会使它从锁等待队列中出来。
+
+我们稍微修改下代码，去掉test方法中的最后一行a.join，即变为：
+
+public static void test() throws InterruptedException {
+    synchronized (lock) {
+        A a = new A();
+        a.start();
+        Thread.sleep(1000);
+
+        a.interrupt();
+    }
+}
+这时，程序就会退出。为什么呢？因为主线程不再等待线程a结束，释放锁lock后，线程a会获得锁，然后检测到发生了中断，所以会退出。
+
+在使用synchronized关键字获取锁的过程中不响应中断请求，这是synchronized的局限性。如果这对程序是一个问题，应该使用显式锁，后面章节我们会介绍显式锁Lock接口，它支持以响应中断的方式获取锁。
+
+NEW/TERMINATE
+如果线程尚未启动(NEW)，或者已经结束(TERMINATED)，则调用interrupt()对它没有任何效果，中断标志位也不会被设置。比如说，以下代码的输出都是false。
+
+public class InterruptNotAliveDemo {
+    private static class A extends Thread {
+        @Override
+        public void run() {
+        }
+    }
+
+    public static void test() throws InterruptedException {
+        A a = new A();
+        a.interrupt();
+        System.out.println(a.isInterrupted());
+
+        a.start();
+        Thread.sleep(100);
+        a.interrupt();
+        System.out.println(a.isInterrupted());
+    }
+
+    public static void main(String[] args) throws InterruptedException {
+        test();
+    }
+}
+IO操作
+如果线程在等待IO操作，尤其是网络IO，则会有一些特殊的处理，我们没有介绍过网络，这里只是简单介绍下。
+如果IO通道是可中断的，即实现了InterruptibleChannel接口，则线程的中断标志位会被设置，同时，线程会收到异常ClosedByInterruptException。
+如果线程阻塞于Selector调用，则线程的中断标志位会被设置，同时，阻塞的调用会立即返回。
+
+我们重点介绍另一种情况，InputStream的read调用，该操作是不可中断的，如果流中没有数据，read会阻塞 (但线程状态依然是RUNNABLE)，且不响应interrupt()，与synchronized类似，调用interrupt()只会设置线程的中断标志，而不会真正”中断”它，我们看段代码。
+
+public class InterruptReadDemo {
+    private static class A extends Thread {
+        @Override
+        public void run() {
+            while(!Thread.currentThread().isInterrupted()){
+                try {
+                    System.out.println(System.in.read());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            System.out.println("exit");
+        }
+    }
+
+    public static void main(String[] args) throws InterruptedException {
+        A t = new A();
+        t.start();
+        Thread.sleep(100);
+
+        t.interrupt();
+    }
+}
+线程t启动后调用System.in.read()从标准输入读入一个字符，不要输入任何字符，我们会看到，调用interrupt()不会中断read()，线程会一直运行。
+
+不过，有一个办法可以中断read()调用，那就是调用流的close方法，我们将代码改为：
+
+public class InterruptReadDemo {
+    private static class A extends Thread {
+        @Override
+        public void run() {
+            while (!Thread.currentThread().isInterrupted()) {
+                try {
+                    System.out.println(System.in.read());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            System.out.println("exit");
+        }
+
+        public void cancel() {
+            try {
+                System.in.close();
+            } catch (IOException e) {
+            }
+            interrupt();
+        }
+    }
+
+    public static void main(String[] args) throws InterruptedException {
+        A t = new A();
+        t.start();
+        Thread.sleep(100);
+
+        t.cancel();
+    }
+}
+
+我们给线程定义了一个cancel方法，在该方法中，调用了流的close方法，同时调用了interrupt方法，这次，程序会输出：
+
+-1
+exit
+1
+2
+也就是说，调用close方法后，read方法会返回，返回值为-1，表示流结束。
+
+如何正确地取消/关闭线程
+
+有三种方法可以使终止线程。
+
+1.  使用退出标志，使线程正常退出，也就是当run方法完成后线程终止。
+
+2.  使用stop方法强行终止线程（这个方法不推荐使用，因为stop和suspend、resume一样，也可能发生不可预料的结果）。
+
+3.  使用interrupt方法中断线程。
+以上，我们可以看出，interrupt方法不一定会真正”中断”线程，它只是一种协作机制，如果不明白线程在做什么，不应该贸然的调用线程的interrupt方法，以为这样就能取消线程。
+
+对于以线程提供服务的程序模块而言，它应该封装取消/关闭操作，提供单独的取消/关闭方法给调用者，类似于InterruptReadDemo中演示的cancel方法，外部调用者应该调用这些方法而不是直接调用interrupt。
+
+Java并发库的一些代码就提供了单独的取消/关闭方法，比如说，Future接口提供了如下方法以取消任务：
+boolean cancel(boolean mayInterruptIfRunning);
+
+再比如，ExecutorService提供了如下两个关闭方法：
+void shutdown();
+List shutdownNow();
+
+Future和ExecutorService的API文档对这些方法都进行了详细说明，这是我们应该学习的方式。关于这两个接口，我们后续章节介绍。
+
+小结
+本节主要介绍了在Java中如何取消/关闭线程，主要依赖的技术是中断，但它是一种协作机制，不会强迫终止线程，我们介绍了线程在不同状态和IO操作时对中断的反应，作为线程的实现者，应该提供明确的取消/关闭方法，并用文档描述清楚其行为，作为线程的调用者，应该使用其取消/关闭方法，而不是贸然调用interrupt。

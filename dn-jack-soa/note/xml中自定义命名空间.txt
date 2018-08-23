@@ -1,0 +1,80 @@
+扩展 Schema，与spring无缝整合；
+gouyan.xml文件里面定义命名空间xmlns:gouyan="http://code.loup.com/schema/gouyan"：
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	   xmlns:gouyan="http://code.loup.com/schema/gouyan"
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+		http://code.loup.com/schema/gouyan
+		http://code.loup.com/schema/gouyan/gouyan.xsd">
+
+	<gouyan:user id="gy" name="gou" age="29"/>
+</beans>
+spring容器加载配置文件 gouyan.xml过程：
+①spring容器通过xmlns:gouyan="http://code.loup.com/schema/gouyan"去 META-INF/spring.handler
+文件(http\://code.loup.com/schema/gouyan=com.gouyan.MyNamespaceHandler)中找 命名空间处理器类，
+com.gouyan.MyNamespaceHandler类，该类将 gouyan.xsd中定义的对象元素与对应解析器UserBeanDefinitionParser
+绑定在一起，具体如下：
+
+package com.gouyan;
+public class MyNamespaceHandler extends NamespaceHandlerSupport {
+    @Override
+    public void init() {
+        /**将gouyan.xsd中<xsd:element name="user">元素对象的解析交给UserBeanDefinitionParser类
+         * 对象，参数 User.class表示将 gouyan.xsd中的属性封装到该类成员变量中*/
+        registerBeanDefinitionParser("user", new UserBeanDefinitionParser(User.class));
+    }
+}
+②spring容器通过http://code.loup.com/schema/gouyan映射到http://code.loup.com/schema
+/gouyan/gouyan.xsd，然后去 META-INF/spring.shemas(http\://code.loup.com/schema/gouyan
+/gouyan.xsd=META-INF/gouyan.xsd)文件中找到 gouyan.xsd文件，该文件为xml文件的约束文件，内容如下：
+
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<xsd:schema xmlns="http://code.loup.com/schema/gouyan"
+            xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+            /*目标命名空间*/
+            targetNamespace="http://code.loup.com/schema/gouyan"
+            elementFormDefault="qualified">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace"></xsd:import>
+    <!--gouyan.xsd中 user元素 映射 User对象-->
+    <xsd:element name="user">
+        <xsd:complexType>
+            <!--User user = (User)context.getBean("id")-->
+            <xsd:attribute name="id" type="xsd:ID"></xsd:attribute>
+            <xsd:attribute name="name" type="xsd:string"></xsd:attribute>
+            <xsd:attribute name="age" type="xsd:int"></xsd:attribute>
+        </xsd:complexType>
+    </xsd:element>
+</xsd:schema>
+该 gouyan.xsd文件约束下 gouyan.xml文件的定义如下：<gouyan:user id="gy" name="gou" age="29"/>
+
+③gouyan.xsd文件解析类 UserBeanDefinitionParser如下，将gouyan.xsd内容封装到 BeanDefinition中：
+package com.gouyan;
+public class UserBeanDefinitionParser implements BeanDefinitionParser {
+    private Class<?> beanClass;
+    public UserBeanDefinitionParser(Class<?> beanClass) {
+        this.beanClass = beanClass;
+    }
+    @Override
+    public BeanDefinition parse(Element element, ParserContext parserContext) {
+        String id = element.getAttribute("id");
+        String name = element.getAttribute("name");
+        String age = element.getAttribute("age");
+
+        RootBeanDefinition beanDefinition = new RootBeanDefinition();
+        beanDefinition.setBeanClass(beanClass);
+        beanDefinition.getPropertyValues().addPropertyValue("name", name);
+        beanDefinition.getPropertyValues().addPropertyValue("age", Integer.valueOf(age));
+        parserContext.getRegistry().registerBeanDefinition(id, beanDefinition);
+        return beanDefinition;
+    }
+}
+④测试，创建 Test类，加载 gouyan.xml文件，获得 context容器
+public class Test {
+    public static void main(String[] args) {
+        ApplicationContext context = new ClassPathXmlApplicationContext("classpath:gouyan.xml");
+        User user = (User) context.getBean("gy");
+        System.out.println("------------" + JSON.toJSONString(user));
+    }
+}

@@ -1,0 +1,16 @@
+枚举类定义，举例如下
+public enum Weekday {
+    /* 第 1 行：必须定义常量对象，每个常量对象都是 Weekday类型的*/
+    /* MONDAY 等价于 private static final Weekday MONDAY = new Weekday(变量名,位置序号);*/
+    MONDAY,TUESDAY,WEDNESDAY,THURSDAY,FRIDAY,SATURDAY,SUNDAY;
+    /*下面代码 正常按类进行定义 即可*/
+}
+
+public enum Weekday {...} 等价于 public class Weekday extends Enum{...}
+反编译后发现实际就是 Weekday 类继承 Enum 抽象类；
+
+*****************************************************************************************
+继承中的方法问题：子类重写父类方法，按重写的执行，子类不重写父类方法，默认调用父类方法 super.fun();
+*****************************************************************************************
+
+枚举就是在第一行创建几个现成的类对象，其他地方可以直接拿来用；

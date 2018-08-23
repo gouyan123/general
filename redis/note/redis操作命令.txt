@@ -1,0 +1,361 @@
+----------------------Redis的API--------------------------------------------------
+redis启动（配置文件启动）：redis-server redis.conf
+redis客户端连接服务端：redis-cli -h ip -p port -a auth
+redis停止服务：127.0.0.1:6379 > shutdown，shutdown命令停止redis服务时，会生成持久化文件，相对安全；
+
+----------------------Redis指令使用------------------------------------------------
+1、全局命令：
+查看所有键：keys *
+键总数 dbsize  //2个键，如果存在大量键，线上禁止使用此指令
+检查键是否存在：exists key  //存在返回1，不存在返回0
+删除键：del key  //del hello school, //返回删除键个数，删除不存在键返回0
+键过期：expire key seconds；查看剩余的过期时间：ttl key
+键的数据结构类型：type key //type hello，返回string,键不存在返回none
+
+2、单线程架构：？？？
+列举例子：三个客户端同时执行命令，客户端1：set name test，客户端2：incr num，客户端3：incr num；
+执行过程：发送指令－〉执行命令－〉返回结果
+执行命令：单线程执行，所有命令进入队列，按顺序执行，使用I/O多路复用解决I/O问题，后面有介绍(通过select/
+poll/epoll/kqueue这些I/O多路复用函数库，我们解决了一个线程处理多个连接的问题)；
+单线程快原因：纯内存访问， 非阻塞I/O（使用多路复用），单线程避免线程切换和竞争产生资源消耗；
+问题：如果某个命令执行，会造成其它命令的阻塞？
+
+字符串类型，hash类型，列表类型
+
+3、字符串<String>  基本格式：命令 + key + value
+字符串类型：实际上可以是字符串（包括XML JSON），还有数字（整形 浮点数），二进制（图片 音频 视频），最大
+不能超过512MB；
+设值命令：set age 23 ex 10 //10秒后过期 或者 expire age 10；
+setnx name test  //系统中不存在键name时，设置成功返回1；系统中存在的话失败0；场景：如果有多客户同时执
+行setnx,只有一个能设置成功，可做分布式锁；分布式锁？？？
+获值命令：get age //存在则返回value, 不存在返回nil；
+批量设值：mset country China city BeiJing；//country，city为key，China，BeiJing为value；
+批量获取：mget country city address //返回China  BeigJin, address为nil；若没有mget命令，则要执行
+n次get命令，使用mget等于1次网络请求加n次redis内部查询；
+incr age //必须为整数自加1，非整数返回错误，无age键从0自增返回1；decr age //整数age减1；incrby age 2
+//整数age+2；decrby age 2//整数age -2；incrbyfloat score 1.1 //浮点型score+1.1；
+append追加指令：set name hello; append name world //追加后成helloworld；
+strlen字符串长度：set hello “世界”；strlen hello//结果6，每个中文占3个字节
+getrange截取字符串：set name helloworld ; getrange name 2 4//返回 llo
+应用场景：
+键值设计：业务名:对象名:id:[属性]
+数据库为order, 用户表user，对应的键可为 order:user:1 或order:user:1:name；
+注意：redis目前处于受保护模式，不允许非本地客户端链接，可以通过给redis设置密码，然后客户端链接的时候，
+写上密码就可以了127.0.0.1:6379> config set requirepass 123456临时生效；或者修改redis.conf
+requirepass 123456,启动时./redis-server redis.conf指定conf./redis-cli -p 6379 -a 12345678
+//需要加入密码才能访问；
+
+4、哈希hash：是一个string类型的field和value的映射表，hash特适合用于存储对象；
+user:1:name → James；user:1:age → 34；user:1  → {name:James,age:34}；
+基本格式：h+命令 key field value；即 h命令 + 对象的key + 属性 + 属性值；
+设值：hset user:1 name james         //成功返回1，失败返回0
+取值：hget user:1 name               //返回james
+删值：hdel user:1 age                //返回删除的个数
+属性个数：hset user:1 name james; hset user:1 age 23; hlen user:1 //返回2，user:1有两个属性值
+批量设值：hmset user:2 name james age 23 sex boy //返回OK；
+批量取值：hmget user:2 name age sex   //返回三行：james 23 boy；
+判断field是否存在：hexists user:2 name //若存在返回1，不存在返回0；
+获取所有属性field: hkeys user:2            // 返回name age sex三个field；
+获取key为user:1的所有value：hvals user:2     // 返回james 23 boy；
+获取key为user:1所有field与value：hgetall user:2 //name age sex james 23 boy值；
+增加1：hincrby user:2 age 1      //age+1；
+内部编码：ziplist<压缩列表>和hashtable<哈希表>。当field个数少且没有大的value时，内部编码为ziplist，
+如：hmset user:3 name james age 24; object encoding user:3 //返回ziplist；当value大于64字节，
+内部编码由ziplist变成hashtable；如：hset user:4 address “fsgst64字节”; object encoding user:3
+//返回hashtable
+应用场景：比如将关系型数据表转成redis存储；
+关系型数据：
+id      name        age        city
+1       James       34          USA
+2       Jordan      40          USA
+使用 hash 存储：
+user：1 → {name:James,age:34,city:USA}，语句：hmset user:1 name James age 34 city USA
+user：2 → {name:Jordan,age:40,city:USA}，语句：hmset user:2 name Jordan age 40 city USA
+
+5、列表<list> 第一个元素默认放在索引为0处，用来存储多个有序的字符串，一个列表最多可存2的32次方减1个元素，
+因为有序，可以通过索引下标获取元素或某个范围内元素列表，列表元素可以重复；
+列表命令：增 rpush/lpush/linsert key value；删 lpop/rpop key value；改 lset；查 lrang/lindex
+添加：rpush james c b a //从右向左插入c再插入b再插入a, 返回值3，注意，0,-1代表所有列表值；
+遍历：lrange james 0 -1 //从左到右获取列表所有元素 返回 c b a
+插入：linsert james before b teacher //在b之前插入teacher, after为之后，使用lrange james 0 -1 查看：c teacher b a
+lrange key start end //索引下标特点：从左到右为0到N-1
+lindex james -1 //返回最右末尾a，-2返回b
+llen james    //返回当前列表长度
+lpop james   //把最左边的第一个元素c删除，并返回弹出元素；
+rpop james   //把最右边的元素a删除，并返回弹出元素；
+lrem james 4 b  //从左向右开始删除 b元素，删除4个；
+ltrim james 1 3  //只保留从第2到第4的元素，其它全删；
+lset james z java // 把第3个元素z替换成java
+
+******************************************************************************************
+redis.conf配置文件：bind 127.0.0.1表示只能被本机连接，应该注释掉
+******************************************************************************************
+应用场景设计： cacheListHashApplicationTest用例
+每个用户有多个订单key为 order:1   order:2  order:3, 结合hmset1,
+hmset order:1 orderId 1 money 36.6 time 2018-01-01
+hmset order:2 orderId 2 money 38.6 time 2018-01-01
+hmset order:3 orderId 3 money 39.6 time 2018-01-01
+
+把订单信息的key放到队列中 ，队列存hash的key：lpush user:1:order order:1 order:2 order:3；
+每新产生一个订单：hmset order:4 orderId 4 money 40.6 time 2018-01-01；
+追加一个order:4放入队列第一个位置：lpush user:1:order order:4；
+当需要查询用户订单记录时：
+List orderKeys = lrange user:1:order 0 -1 //查询user:1:order 的所有 订单key值
+for(Order order: orderKeys){
+   hmget order:1
+}
+
+列表内部编码：
+在3.2版本以后，redis提供了quicklist内部编码，它结合了ziplist和linkedlist两者的优势，之前的ziplist
+是存在BUG的，使用quicklist内部编码效率更高，所以我们现在3.2以后看不到这两个编码，只看到quicklist；
+
+6、无序集合<SET> 用户标签，社交，查询有共同兴趣爱好的人,智能推荐；基本结构 s命令 + key + value(元素值)
+保存多元素，与列表不一样的是不允许有重复元素，且集合是无序，一个集合最多可存2的32次方减1个元素，除了支持
+增删改查，还支持集合交集、并集、差集；
+命令：
+sadd user a b c     //向user插入3个元素，返回3
+sadd user a b       //若再加入相同的元素，则重复无效，返回0
+smembers user       //获取user的所有元素,返回结果无序
+srem user a         //返回1，删除a元素
+scard user          //返回2，计算元素个数
+sismember user a    //判断元素是否在集合存在，存在返回1，不存在0
+srandmember user 2  //随机返回2个元素，2为元素个数
+spop user 2         //随机返回2个元素a b,并将a b从集合中删除
+smembers user       //查看集合所有元素 此时已没有a b, 只有c
+集合的交集：
+sadd user:1 zhangsan 24 girl
+sadd user:2 james 24 boy//初始化两个集合
+sinter user:1 user:2     //求两集合交集， 此时返回24
+集合的并集（集合合并去重）：
+sunion user:1 user:2   //两个集合合并(并集)，去重24
+sdiff user:1 user:2//1和2差集(1去掉2中含有的元素),(zhangsan 24 girl)-(james 24 boy)=zhangsan girl
+将交集(jj)、并集(bj)、差集(cj)的结果保存：
+sinterstore user_jj user:1 user:2  //将user:1 user:2的交集保存到user_jj
+sunionstore user_bj user:1 user:2 //将user:1 user:2的(并)合集保存user_bj
+sdiffstore user_cj user:1 user:2  //将user:1-user:2的差集保存user_cj
+smemebers user_cj // 返回zhangsan girl
+内部编码：
+sadd user 1 2 3 4 //当元素个数少(小于512个)且都为整数，redis使用intset减少内存的使用
+sadd user 1 2...513 //当超过512个或不为整数（比如a b）时，编码为hashtable
+object encoding user //hashtables
+使用场景：标签，社交，查询有共同兴趣爱好的人,智能推荐
+使用方式：给用户添加标签：
+sadd user:1:fav basball fball pq
+sadd user:2:fav basball fball
+............
+或给标签添加用户
+sadd basball:users user:1 user:3
+sadd fball:users user:1 user:2 user:3
+........
+计算出共同感兴趣的人：sinter user:1:fav user2:fav
+规则：sadd (常用于标签)  spop/srandmember(随机，比如抽奖)
+sadd+sinter (用于社交，查询共同爱好的人，匹配)
+
+7、有序集合: 常用于排行榜，如视频网站需要对用户上传视频做排行榜，或点赞数；与集合有联系，不能有重复的成员
+基本语法：z命令 + score + member
+zadd key score member [score member......]
+zadd user:zan 200 james //james的点赞数1, 返回操作成功的条数1
+zadd user:zan 200 james 120 mike 100 lee// 返回3
+zadd test:1 nx 100 james   //键test:1必须不存在，主要用于添加 nx新增
+zadd test:1 xx incr 200 james   //键test:1必须存在，主用于修改,此时为300 xx修改
+zadd test:1 xx ch incr -299 james //返回操作结果1，300-299=1
+zrange test:1 0 -1 withscores  //查看点赞（分数）与成员名
+zcard test:1     //计算成员个数， 返回1
+查点赞数
+zadd test:2 nx 100 james //新增一个集合
+zscore test:2 james     //查看james的点赞数（分数），返回100
+排名：
+zadd user:3 200 james 120 mike 100 lee//先插入数据
+zrange user:3 0 -1 withscores //查看分数与成员
+lee	mike	james
+100	120	    200
+
+zrank user:3 james  //返回名次：第3名返回2，从0开始到2，共3名
+zrevrank user:3 james //返回0， 反排序，点赞数越高，排名越前
+
+删除成员：
+zrem user:3 jame mike //返回成功删除2个成员，还剩lee
+
+
+增加分数：
+zincrby user:3 10 lee     //成员lee的分数加10
+zadd user:3 xx incr 10 lee //和上面效果一样
+
+返回指定排名范围的分数与成员
+zadd user:4 200 james 120 mike 100 lee//先插入数据
+zrange user:4 0 -1 withscores //返回结果如下图
+zrevrange user:4 0 -1 withscores   //倒序，结果如下图
+
+返回指定分数范围的成员
+zrangebyscore user:4 110 300 withscores //返回120 lee ,200 James, 由低到高
+zrevrangebyscore user:4 300 110 withscores //返回200james 120lee,由高到低
+
+zrangebyscore user:4 (110 +inf withscores//110到无限大，120mike 200james
+zrevrangebyscore user:4 (110 -inf withscores//无限小到110，返回100 lee
+
+返回指定分数范围的成员个数：
+zcount user:4 110 300  //返回2，由mike120和james200两条数据
+
+删除指定排名内的升序元素：
+zremrangebyrank user:4 0 1 //分数升序排列，删除第0个与第1个，只剩james
+
+删除指定分数范围的成员
+zadd user:5 200 james 120 mike 100 lee//先插入测试数据
+zremrangebyscore user:5 100 300     //删除分数在100与300范围的成员
+zremrangebyscore user:5 (100 +inf    //删除分数大于100(不包括100),还剩lee
+
+
+有序集合交集：
+格式：zinterstore destination numkeys key ... [WEIGHTS weight] [AGGREGATE SUM|MIN|MAX]
+destination:交集产生新的元素存储键名称
+numkeys:  要做交集计算的键个数
+key :元素键值
+weights:每个被选中的键对应值乘weight, 默认为1
+初始化数据：
+zadd user:7 1 james 2 mike 4 jack 5 kate      //初始化user:7数据
+zadd user:8 3 james 4 mike 4 lucy 2 lee  6 jim  //初始化user:8数据
+交集例子：
+zinterstore user_jj 2 user:7 user:8 aggregate sum //2代表键合并个数，
+//aggregate sum可加也不可加上，因为默认是sum
+//结果user_jj：4james(1+3), 6mike(2+4)
+
+zinterstore user_jjmax 2 user:7 user:8 aggregate max 或min
+//取交集最大的分数，返回结果 3james  4mike, min取最小
+weights:
+zinterstore user_jj weight 2 user:7 user:8 weights 8 4 aggregate max
+//1,取两个成员相同的交集，user:7->1 james  2 mike;  user:8->3 james  4 mike
+//2,将user:7->james 1*8=8,  user:7->mike 2*8 =16,
+最后user:7结果 8 james  16 mike;
+//3,将user:8-> james 3*4=12, user:8->mike 4*4=16
+最后user:8结果12 james  16 mike
+//4,最终相乘后的结果，取最大值为  12 james 16mike
+//5, zrange user_jjweight 0 -1 withscores 查询结果为  12 james 16mike
+总结：将user:7成员值乘8，将user:8成员值乘4，取交集，取最大
+
+有序集合并集（合并去重）：
+格式：zunionstore destination numkeys key ... [WEIGHTS weight] [AGGREGATE SUM|MIN|MAX]
+destination:交集产生新的元素存储键名称
+numkeys:  要做交集计算的键个数
+key :元素键值
+weights:每个被选中的键对应值乘weight, 默认为1
+zunionstore user_jjweight2 2 user:7 user:8 weights 8 4 aggregate max
+//与以上zinterstore一样，只是取并集，指令一样
+
+有序集合内部编码
+1，ziplist:  zadd user:9 20 james 30 mike 40 lee
+object encoding user:init
+//当元素个数少（小于128个），元素值小于64字节时，使用ziplist编码，可有效减少内存的使用
+2，skiplist:  zadd user:10 20 james......
+//大于128个元素或元素值大于64字节时为skiplist编码
+
+使用场景：
+排行榜系统，如视频网站需要对用户上传的视频做排行榜
+点赞数：zadd user:1:20180106 3 mike  //mike获得3个赞
+再获一赞：zincrby user:1:20180106 1 mike  //在3的基础上加1
+用户作弊，将用户从排行榜删掉：zrem user:1:20180106 mike
+展示赞数最多的5个用户：
+zadd user:4:20160101 9 jack 10 jj 11 dd 3 james 4 lee 6 mark 7 kate
+zrevrangebylex user:4:20160101 + - limit 0 5
+
+查看用户赞数与排名：
+zscore user:1:20180106 mike   zrank user:1:20180106 mike
+
+8、redis键管理
+键重命名
+rename oldKey newkey    //格式
+键的遍历
+redis提供了两个命令来遍历所有的键：
+①键全量遍历：keys * //返回所有的键, *匹配任意字符多个字符；
+②渐进式遍历：scan 游标 matcher * count 2；
+除scan字符串外：还有以下，用法和scan一样；
+SCAN 命令用于迭代当前数据库中的数据库键。
+SSCAN 命令用于迭代集合键中的元素。
+HSCAN 命令用于迭代哈希键中的键值对。
+ZSCAN 命令用于迭代有序集合中的元素（包括元素成员和元素分值）
+
+9、redis数据库管理
+select 0   //select切换数据库，共16个库， 0 －－15，不建议切换数据库；
+flushdb: 只清空当前数据库的键值对，dbsiz  0
+flushall:  清空所有库的键值对，（这两个指令慎用！！！！）
+----------------------Redis功能细解------------------------------------------------
+慢查询原因分析，与mysql一样，当执行时间超过阀值，会将发生时间 耗时 命令记录；
+||||||||               ||||||||||||||||||
+|客户端 | → 1 发送命令 → | cmd3 cmd2 cmd1→|→ → 3 执行命令 → 4 返回结果给 Redis 客户端；
+||||||||               ||||||||||||||||||
+                       2 Redis服务端排队
+1 Redis客户端实际是一个Socket socket = new Socket(ip,port); out = socket.getWriter()；
+out.write("命令")；即服务端是一个 socket ，将命令字符串发送到Redis服务端；
+2 服务端接收到客户端发送命令 socketClient = socketServer.accept(); in = socketClient.getInputStream();
+in.read(cmd) 将客户端命令字符串读到内存中，并保存到队列中，一次执行；
+3 执行后，将结果返回给客户端；
+
+redis命令生命周期：发送 排队 执行 返回
+
+预设阀值：redis.conf修改：找到slowlog-log-slower-than 10000 ，修改保存即可；
+获取队列里慢查询的命令：slowlog get
+
+Pipeline:
+pipeline出现的背景：
+redis客户端执行一条命令分4个过程：发送命令－〉命令排队－〉命令执行－〉返回结果
+这个过程称为Round trip time(简称RTT, 往返时间)，mget mset有效节约了RTT，但大部分命令（如hgetall，
+并没有mhgetall）不支持批量操作，需要消耗N次RTT ，这个时候需要pipeline来解决这个问题；
+
+使用pipeline：一次性发送N条命令给服务端，服务端都执行完后，再将所有结果统一返回；
+
+原生的批命令（mset, mget等）与pipeline的对比：
+one: 原生批命令是原子性，pipeline是非原子性，  (原子性概念:一个事务是一个不可分割的最小工作单位,要么都
+成功要么都失败。原子操作是指你的一个业务逻辑必须是不可拆分的. 处理一件事情要么都成功要么都失败；
+two: 原生批命令一命令多个key, 但pipeline支持多命令（存在事务），非原子性；
+three: 原生批命令是服务端实现，而pipeline需要服务端与客户端共同完成；
+pipeline正确使用方式：
+使用pipeline组装的命令个数不能太多，不然数据量过大，增加客户端的等待时间，还可能造成网络阻塞，可以将大量
+命令的拆分多个小的pipeline命令完成；
+
+事务：
+pipeline是多条命令的组合，为了保证它的原子性，redis提供了简单的事务，什么是事务？事务是指一组动作的执行，
+有一个动作失败就全失败，所有动作都成功才成功；
+①redis的简单事务，将一组需要一起执行的命令放到multi和exec两个命令之间，其中multi代表事务开始，exec
+代表事务结束（提交），中间命令代表入列但未真正执行；redis不支持事务回滚；
+
+*****************************************************************************************
+开启事务与不开启事务的区别？？？
+不开启事务，每个命令直接执行；开启事务，事务里面的命令先不执行，等提交时再一起执行，有一个命令执行失败，
+其他已执行命令回滚，所有命令都执行成功才最终成功；
+*****************************************************************************************
+
+----------------------Redis持久化------------------------------------------------
+redis支持RDB和AOF两种持久化机制，持久化可以避免因进程退出而造成数据丢失；
+①RDB持久化把当前进程数据生成快照（.rdb）文件(/usr/local/redis/bin/dump.rdb)保存到硬盘的过程；
+bgsave命令进行持久化：
+redis进程执行fork操作创建子线程，由子线程完成持久化，阻塞时间很短（微秒级），是save的优化,
+在执行 redis-cli；通过redis-cli连接到redis服务端后，执行shutdown，可关闭redis服务时（不仅退出客
+户端，服务器端也会关闭），如果没有开启AOF持久化，自动执行bgsave;
+RDB文件的操作：
+redis.conf中配置：①文件名设置 dbfilename "dump.rdb"；②路径设置 dir "/usr/local/bin"; 当redis
+重新启动的时候，会把该路径下的该文件内容加载到内存中；当redis关闭(客户端执行 shutdown )时，redis会把
+内存中的内容保存到该路径下的该 文件中；
+
+②AOF持久化：针对RDB不适合实时持久化，redis提供了AOF持久化方式来解决；
+redis.conf设置：
+1 appendonly yes  (默认不开启，为no)；2 默认文件名：appendfilename "appendonly.aof"
+流程说明：
+1，所有的写入命令(set hset)会append追加到aof_buf缓冲区中
+2，AOF缓冲区向硬盘做sync同步
+3，随着AOF文件越来越大，需定期对AOF文件rewrite重写，达到压缩
+4，当redis服务重启，可load加载AOF文件进行恢复
+
+如何从AOF恢复？
+1. 设置appendonly yes；
+2. 将appendonly.aof放到dir参数指定的目录；
+3. 启动Redis，Redis会自动加载appendonly.aof文件；
+
+----------------------Redis主从配置------------------------------------------------
+主从复制：
+主节点可以读，可以写；从节点只可以读，主节点写入后，数据同步给从节点；
+
+
+
+
+
+
+

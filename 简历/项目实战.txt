@@ -1,0 +1,213 @@
+需求：
+用户进行抽奖，先去判断是否已登录，如果没有登录则跳转到登录页面，如果已经登录则判断是否已支付，如果没有支付
+则跳转到支付页面，如果已经支付则可以进行抽奖了；
+
+业务领域划分：产品服务 + 业务服务 + 支撑服务；
+产品服务 = 登录 + 个人中心(抽奖记录) + 收银台(判断支付) + 运营平台(转盘抽奖)；
+业务服务 = 用户服务 + 营销服务 + 支付服务 + 清洁算/对账 +第三方服务(支付网关)；
+支撑服务 = 短信 + 监控报警 + OSS存储 + 数据分析 + 第三方服务(短信网关，云存储)；
+
+技术选型：
+
+代码实现：
+创建 user-service的maven项目，然后创建子模块maven项目 user-api项目，user-provider项目；
+user-api项目：
+创建 com.gupaoedu.user.dto.UserLoginRequest类，封装登录信息
+public class UserLoginRequest implements Serializable {
+    private static final long serialVersionUID = 686223598602505582L;
+    private String userName;
+    private String password;
+    getter,setter省略
+}
+user-api项目：
+创建 com.gupaoedu.user.abs.AbstractResponse类，封装登录操作返回的状态码和相应含义解释；
+public abstract class AbstractResponse implements Serializable {
+    private static final long serialVersionUID = 7505997295595095971L;
+    private String code;
+    private String msg;
+    getter,setter省略
+}
+user-api项目：
+创建 com.gupaoedu.user.dto.UserLoginResponse类，封装登录操作的返回信息
+public class UserLoginResponse extends AbstractResponse {
+    private static final long serialVersionUID = -4339900472381840119L;
+    private Integer uid;
+    private String avatar;
+    private String mobile;
+    getter,setter省略
+}
+user-api项目：
+创建 com.gupaoedu.user.IUserCoreService登录接口，被dubbo-provider和dubbo-consumer导入该包，查看
+接口，其中provider端实现该接口，consumer端调用该接口；
+public interface IUserCoreService {
+    UserLoginResponse login(UserLoginRequest request);
+}
+user-provider项目：
+创建 com.gupaoedu.user.services.UserCoreServiceImpl实现 user-api中接口
+@Service("userCoreService")
+public class UserCoreServiceImpl implements IUserCoreService {
+    @Autowired
+    UserMapper userMapper;/*UserMapper接口的代理对象，由user-common.xml文件中MapperScannerConfigure
+    这个bean后处理器产生代理对象*/
+    @Override
+    public UserLoginResponse login(UserLoginRequest request) {
+        Log.info("login request:"+request);
+        UserLoginResponse response=new UserLoginResponse();
+        try {
+            /*验证请求参数*/
+            beforeValidate(request);
+            User user=userMapper.getUserByUserName(request.getUserName());
+            if(user==null||!user.getPassword().equals(request.getPassword())){
+                response.setCode(ResponseCodeEnum.USERORPASSWORD_ERRROR.getCode());
+                response.setMsg(ResponseCodeEnum.USERORPASSWORD_ERRROR.getMsg());
+                return response;
+            }
+            response.setUid(user.getId());
+            response.setAvatar(user.getAvatar());
+            response.setCode(ResponseCodeEnum.SUCCESS.getCode());
+            response.setMsg(ResponseCodeEnum.SUCCESS.getMsg());
+        }catch (Exception e){
+            Log.error("login occur exception :"+e);
+            ServiceException serviceException=(ServiceException) ExceptionUtil.handlerException4biz(e);
+            response.setCode(serviceException.getErrorCode());
+            response.setMsg(serviceException.getErrorMessage());
+        }finally {
+            Log.info("login response->"+response);
+        }
+
+        return response;
+    }
+    /*验证请求参数*/
+    private void beforeValidate(UserLoginRequest request){
+        if(request==null){
+            throw new ValidateException("请求对象为空");
+        }
+        if(StringUtils.isEmpty(request.getUserName())){
+            throw new ValidateException("用户名为空");
+        }
+        if(StringUtils.isEmpty(request.getPassword())){
+            throw new ValidateException("密码为空");
+        }
+    }
+}
+user-provider项目：
+创建 com.gupaoedu.user.dal.entity实体类
+public class User {
+    private int id;
+    private String username;
+    private String password;
+    private String realname;
+    private String avatar;
+    private String mobile;
+    private String sex;
+    private int status;
+    private String create_time;
+    getter，setter省略
+}
+user-provider项目：
+创建 com.gupaoedu.user.dal.persistence.UserMapper接口，用于DAO层数据操作；
+@Reposity
+public interface UserMapper {
+    User getUserByUserName(String userName);
+}
+user-provider项目：
+创建 resources\META-INF\spring目录，里面创建 service-common.xml文件，service-provider.xml文件，
+service-user.xml文件；
+service-common.xml内容如下：
+<?xml version="1.0" encoding="UTF-8"?>
+<beans ...>
+	<context:property-placeholder location="classpath:application.properties" />
+	/*配置mysql数据库数据源(里面封装数据库客户端连接服务端对象)*/
+	<bean id="userDataSource" class="com.alibaba.druid.pool.DruidDataSource" init-method="init" destroy-method="close"
+		  p:url="${datasource.user.url}"
+		  p:username="${datasource.user.username}"
+		  p:password="${datasource.user.password}"
+		  p:initialSize="${datasource.user.initialSize}"
+		  .../>
+	</bean>
+	/*利用mysql数据源dataSoruce，配置mybatis的连接工厂sqlSessionFactory*/
+	<bean id="userSqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="userDataSource" />
+		<property name="typeAliasesPackage"
+				  value="com.gupao.vip.mic.dubbo.dal.entity" />
+		<property name="mapperLocations" value="classpath*:com/gupaoedu/user/dal/persistence/*Mapper.xml" />
+	</bean>
+	/*为com./../.persistence包下的dao层接口创建dao层代理类*/
+	<bean name="userMapperScannerConfigurer" class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<property name="basePackage"
+				  value="com.gupaoedu.user.dal.persistence" />
+		<property name="sqlSessionFactory" ref="userSqlSessionFactory" />
+	</bean>
+	<context:component-scan base-package="com.gupaoedu.user.dal" />
+	<context:component-scan base-package="com.gupaoedu.user.services" />
+</beans>
+
+user-api项目中：
+创建 com.gupaoedu.user.ResponseCodeEnum类，第一行 ; 前都是枚举对象，即ResponseCodeEnum类的对象；
+user-provider项目中 exception类的定义需要
+public enum ResponseCodeEnum {
+    USERORPASSWORD_ERRROR("001001","用户名或密码不存在"),
+    SUCCESS("000000","成功"),
+    SYS_PARAM_NOT_RIGHT("001002","请求参数错误"),
+    SYSTEM_BUSY("001099","系统繁忙，请稍候重试");
+    private final String code;
+    private final  String msg;
+    ResponseCodeEnum(String code, String msg) {
+        this.code = code;
+        this.msg = msg;
+    }
+    public String getCode() {
+        return code;
+    }
+    public String getMsg() {
+        return msg;
+    }
+}
+user-provider项目中：
+创建 com.gupaoedu.user.main.Bootstrap启动类
+import com.alibaba.dubbo.container.Main;
+public class Bootstrap {
+    public static void main(String[] args) {
+        /*Main.main()为阿里dubbo的启动方法*/
+        Main.main(args);
+    }
+}
+user-provider项目中：
+创建 resources/MET-INF/service-provider.xml文件，进行dubbo配置，内容如下
+<?xml version="1.0" encoding="UTF-8"?>
+<beans ...
+	   xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+	   xsi:schemaLocation="http://www.springframework.org/schema/beans
+	   http://code.alibabatech.com/schema/dubbo
+	   http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
+	<!--提供方信息-->
+	<dubbo:application name="${application.name}" owner="${dubbo.application.owner}"/>
+	配置注册中心
+	<dubbo:registry protocol="zookeeper" address="${dubbo.zk.servers}"
+					group="${dubbo.zk.group}"
+					file="${dubbo.cache.dir}/user-service.cache"/>
+	<dubbo:protocol name="dubbo"
+					port="${dubbo.service.provider.port}"
+					accesslog="${dubbo.protocol.accesslog}"/>
+</beans>
+user-provider项目中：
+创建 resources/MET-INF/service-user.xml文件，进行dubbo配置，内容如下
+<?xml version="1.0" encoding="UTF-8"?>
+<beans ...>
+    向注册中心registry提供服务
+	<dubbo:service interface="com.gupaoedu.user.IUserCoreService"
+				   ref="userCoreService" timeout="3000"/>
+</beans>
+user-api项目中：
+创建 resources/MET-INF/client/user-reference.xml文件
+<?xml version="1.0" encoding="UTF-8"?>
+<beans ...">
+	<context:annotation-config/>
+	<dubbo:reference id="userCoreService"
+					 interface="com.gupaoedu.user.IUserCoreService"/>
+</beans>
+user-provider项目中：
+运行 com.gupaoedu.user.main.Bootstrap类的主方法，将dubbo服务注册到zookeeper，可通过zookeepr节点
+查看 ls /
+-----------------------------------------------------------------------------------------
+创建新的maven web项目 gpmall-sso，

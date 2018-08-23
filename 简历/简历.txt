@@ -1,0 +1,55 @@
+Java：
+1、了解JVM运行原理和类加载全过程，了解内存模型；
+3、了解各种容器的使用及原理，会手写简单 ArrayList，LinkedList，HashMap，HashSet；
+4、会手写简单Tomcat服务器，基于Socket套接字，IO流，多线程；熟悉Servlet规范；
+5、会手写JDK动态代理类 Proxy；熟悉工厂模式；适配器模式；单例模式；装饰器模式；观察者设计模式；模版模式；
+12、熟悉多线程操作，熟悉锁机制，会手写简单线程池，阻塞队列，等待超时数据库连接池，会使用AQS自定义锁；
+框架：
+Spring：
+2、对Spring源码有过研究，能手写实现Spring的IOC容器，依赖注入DI，AOP，SpringMVC；
+6、基于springJDBC手写orm框架，统一API，统一参数，统一返回值，在不用写sql的条件下，实现增删改查，其中，
+通过 QueryRule 来封装查询信息即 where部分sql；
+13、会搭建SSM开发环境，并使用spring + springMVC + mybatis 开发项目；
+Netty：
+了解NIO原理；会使用Netty框架，基于websocket协议，http协议，自定义协议，开发简单聊天项目；
+数据库：
+7、熟悉redis基本操作命令，会使用 Jedis，RedisTemplate操作redis数据库；会使用redis中的pipeline操作，
+熟悉redis中的事务；
+8、熟悉mongodb基本操作命令，会使用spring整合及使用mongodb；
+分布式：
+9、熟悉zookeeper基本操作命令，会使用ZooKeeper实现服务器动态列表，实现分布式锁；
+10、手写过Dubbo框架，包括，扩展schema自定义命名空间与spring整合，Service将服务注册到注册中心Registry，
+Reference从注册中心获取服务内容，创建代理实例远程调用Service端等内容；
+--------------------------面试------------------------------------------------------------
+1、面试前准备
+①了解自己：学会STAR自我介绍法；
+situation：进公司时的情况；target：需要我达成的目标；action：在这个公司我完成了哪些任务；result：结果如何
+②了解应聘公司：
+③了解应聘岗位：6w2h解析职位关键信息；
+who：团队成员 + 汇报对象；why：为什么招这个岗位？新增or替补；what：主要做什么；which：用人标准；where：
+工作地点；when：何时工作；how much？工资；
+④学会使用工具：正确有效的评估自己在市场的定位；
+2、常见面试问题
+你有什么问题要问？谁来带我。
+
+注意事项：
+各种表格中薪酬都写面议；
+必须有书面offer，口头offer不可以；
+
+问题：
+谁带我，是在一起办公吗？
+双休？
+五险一金，还有社保所交地点？
+
+培训期间学习特点：
+所有代码都自己手写过，并提交到git；
+每一步都有笔记，并且会整理回顾；
+
+数据库数据迁移：
+接口注意事项：
+
+redis，mongodb，rabbitmq，zookeeper使用场景；
+
+
+
+

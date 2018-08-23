@@ -1,0 +1,86 @@
+------------------------------bjsxt----------------------------------------
+适配器模式：将一个接口（插孔接口）转换成另一个客户端想要的接口（USB接口）；
+适配器模式中的角色：
+目标接口 Target：客户端希望的接口，即USB接口；
+需要适配的类（Adaptee）：插孔接口
+适配器（Adapter）：通过包装一个需要适配的对象（插孔），把原接口转换成新接口，即一根有插槽和USB接口的线；
+--------------------------------------------------------------------------
+适配器两种类比：1、新类代替老类；2、插座上的每个孔都是一个适配器都要定义一个适配器类 *Adapter.java
+新类代替老类：①新类新方法1,2,3...里面调用老类老方法，保持原来老类的功能；②新类新方法4,5,6...实现新需求；
+插座插孔：
+主要有两种适配器 adapter：
+① 类适配器模式（使用继承的适配器）；
+② 对象适配器模式（使用委托的适配器）；
+---------------------
+① 类适配器模式（使用继承的适配器）；
+电源类比：
+            电源比喻     事例程序
+实际情况     交流100V     Banner类（showWithParen()给字符串加括号，showWithAster()给字符串加星号）
+需求         直流12V     Print接口（printWeak（里面调用原来的showWithParen），printStrong（里面调用原来的showWithAster），printOrigin(输出原始输入的内容)）
+变换装置      适配器      PrintBanner类 继承老类，实现新需求接口
+---------------------
+定义老类Banner：输出的 标语 上加 ()或者 **
+public class Banner {
+    private String slogan;/*标语*/
+    public Banner(String slogan) {
+        this.slogan = slogan;
+    }
+    public void showWithParen(){
+        System.out.println("(" + this.slogan + ")");
+    }
+    public void showWithAster(){
+        System.out.println("*" + this.slogan + "*");
+    }
+}
+
+定义新需求接口 Print：
+public interface Print {
+    public abstract void printWeak();/*调用老类的showWithParen()方法*/
+    public abstract void printStrong();/*调用老类的showWithAster()方法*/
+    public abstract void printOrigin();
+}
+
+定义 变换装置类 PrintBanner：
+public class PrintBanner extends Banner implements Print {
+    public PrintBanner(String slogan) {
+        super(slogan);
+    }
+
+    @Override
+    public void printWeak() {
+        super.showWithParen();
+    }
+
+    @Override
+    public void printStrong() {
+        super.showWithAster();
+    }
+    @Override
+    public void printOrigin() {
+        System.out.println(super.getSlogan());
+    }
+}
+
+定义 Test 类进行测试：
+public class Test {
+    public static void main(String[] args) {
+        /*创建新的类替代老类*/
+        PrintBanner printBanner = new PrintBanner("Hello");
+        /*调用新的需求方法*/
+        printBanner.printWeak();
+        printBanner.printStrong();
+    }
+}
+
+类适配器：
+老类，新需求（所有需求都是方法解决，因此有新需求就定义新接口）接口；
+新类 = 继承 老类 实现 新需求接口
+新类替代老类
+---------------------
+② 对象适配器模式（使用委托的适配器）；
+①中新的类继承老类属于继承 is-a关系，②中新类持有老类对象属于聚合 has-a关系；
+新类中定义方法分为两种：①新类新方法里面 调用老类老方法；②新类新方法实现新需求；
+这样，一个新的类就可以完全取代老类了；
+---------------------
+
+

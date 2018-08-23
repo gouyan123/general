@@ -1,0 +1,33 @@
+开启 zookeeper服务器端：
+# zkServer.sh start
+查看 zookeeper服务器端状态：
+# zkServer.sh status
+zookeeper客户端连接服务器端：
+# zkCli.sh -server zcf
+
+客户端连接到服务器端后：
+查找节点里面到节点：
+ls /mldndata
+查找节点里面到数据：
+get /mldndata
+
+节点相当于一个文件夹；节点 = 节点路径 + 节点内容；
+
+创建 mldndata节点，里面存hello，相当于创建/mldndata文件夹：
+create /mldndata hello
+创建 mldndata节点的子节点
+create /mldndata/bigdata world
+
+删除节点，必须先删除子节点，再删父节点
+delete /mldndata/bigdata
+delete /mldndata
+
+创建临时序列子节点：在子节点路径上面自动加序号；
+各个客户端都可以操作服务器端节点；处于监听情况下，服务器端节点变化时，会向客户端发送一个事件通知，但是通知
+是一次性的，通知后就失效；
+zookeeper服务端节点是同步的，follower节点和observer节点要去找leader进行节点数据同步；
+zookeeper与mysql数据库类似，都是保存数据，区别在于，zookeeper是一个集群，集群各点之间数据同步；
+watcher只能监听一次，监听一次后就失效；
+事务：开启事务后，事务里面的命令不直接执行，而是等到提交事务时，一起执行，如果有一个命令执行失败，其他命令
+都回滚，只有所有命令都执行成功，才算成功；
+zookeeper其实就是各服务器共享文件夹，可以通过客户端进行文件夹的增删改查；

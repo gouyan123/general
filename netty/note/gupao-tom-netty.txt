@@ -1,0 +1,547 @@
+-------------------------Netty手写Tomcat------------------------------------------------------
+创建 com.gupaoedu.catalina.netty.server.GPTomcat.java 类
+GPTomcat里面定义 start()方法
+public void start(int port){
+
+}
+GPTomcat里面定义 main()方法，作为程序启动执行入口，里面调用start()方法
+public static void main(String[] args) {
+    new GPTomcat().start(8080);
+}
+回到 start()方法，使用netty主从模型，手写Tomcat
+public void start(int port) throws Exception {
+    EventLoopGroup bossGroup = new NioEventLoopGroup();/*创建boss线程*/
+    EventLoopGroup workerGroup = new NioEventLoopGroup();/*创建worker线程*/
+    try {
+        ServerBootstrap bootstrap = new ServerBootstrap();/*启动Netty服务引擎*/
+        /*给Netty服务引擎分配两个线程，group()代表单线程，group(EventLoopGroup group)，
+        group(EventLoopGroup parentGroup,EventLoopGroup childGroup)主从线程*/
+        /*主线程channel()利用反射实现主线程处理类NioServerSocketChannel*/
+        /*子线程childHandler(子线程处理类)，有客户端连接进来以后要做业务逻辑处理，只要有客户端连接上来，
+        就会触发这样一个事件，new ChannelInitializer<SocketChannel>() {...}是一个接口匿名对象，作为
+        childHandler()方法参数，会在childHandler()方法中当满足条件时被调用，称为回调*/
+        /*option配置主线程永远不停止，childOption()配置子线程*/
+        bootstrap.group(bossGroup,workerGroup).channel(NioServerSocketChannel.class).
+                childHandler(new ChannelInitializer<SocketChannel>() {
+                    @Override
+                    protected void initChannel(SocketChannel socketChannel) throws Exception {
+                        /*无锁化串行编程，体现在 addLast()上，按顺序，从后到前依次执行*/
+
+                        //服务端发送的是httpResponse，所以要使用HttpResponseEncoder进行编码
+                        socketChannel.pipeline().addLast(new HttpResponseEncoder());
+                        //服务端接收到的是httpRequest，所以要使用HttpRequestDecoder进行解码
+                        socketChannel.pipeline().addLast(new HttpRequestDecoder());
+                        //最后处理自己的逻辑
+                        socketChannel.pipeline().addLast(new GPTomcatHandler());
+                    }
+                }).option(ChannelOption.SO_BACKLOG, 128).
+                childOption(ChannelOption.SO_KEEPALIVE, true);
+        /*启动服务ServerBootstrap，bind()绑定端口，sync()等待*/
+        ChannelFuture f = bootstrap.bind(port).sync();
+        System.out.println("HTTP服务已启动，监听端口:" + port);
+        /*开始接收客户*/
+        f.channel().closeFuture().sync();
+    }finally {
+        /*最后关闭线程*/
+        workerGroup.shutdownGracefully();
+        bossGroup.shutdownGracefully();
+    }
+}
+创建 com.gupaoedu.catalina.netty.server.GPTomcatHandler.java 类
+覆写 channelRead()方法
+@Override
+public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
+    if (msg instanceof HttpRequest) {
+        HttpRequest r = (HttpRequest) msg;
+        GPRequest request = new GPRequest(ctx,r);
+        GPResponse response = new GPResponse(ctx,r);
+        ...
+    }
+}
+覆写 exceptionCaught()方法
+@Override
+public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
+
+}
+channelRead()方法需要自己创建 com.gupaoedu.catalina.http.GPServlet.java 类
+public abstract class GPServlet {
+    public void doGet(GPRequest request, GPResponse response){};
+    public void doPost(GPRequest request, GPResponse response){};
+}
+需要自己创建 GPRequest , GPResponse，在http包中
+回到 GPTomcatHandler类的channelRead()方法，调用自定义 MyServlet，在servlets包里
+public class MyServlet extends GPServlet {
+    @Override
+    public void doGet(GPRequest request, GPResponse response) {
+
+    }
+
+    @Override
+    public void doPost(GPRequest request, GPResponse response) {
+
+    }
+}
+回到 GPTomcatHandler类的channelRead()方法，Tomcat在接收到msg请求后转成我们的GPServlet
+@Override
+public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
+    if (msg instanceof HttpRequest){
+        HttpRequest r = (HttpRequest)msg;
+        GPRequest request = new GPRequest();
+        GPResponse response = new GPResponse();
+        new MyServlet().doGet(request,response);
+    }
+}
+GPRequest request = new GPRequest();
+GPResponse response = new GPResponse();
+都需要传递参数 ctx，r，因此，去定义GPRequest()，GPResponse()
+public class GPRequest {
+    private ChannelHandlerContext ctx;
+    private HttpRequest request;
+
+    public GPRequest(ChannelHandlerContext ctx,HttpRequest request){
+        this.ctx = ctx;
+        this.request = request;
+    }
+
+    ...其他方法
+}
+public class GPResponse {
+    private ChannelHandlerContext ctx;
+    private HttpRequest request;
+    public GPResponse(ChannelHandlerContext ctx,HttpRequest request){
+        this.ctx = ctx;
+        this.request = request;
+    }
+
+    ...write()方法
+}
+回到 MyServlet类 doGet()方法如下
+@Override
+public void doGet(GPRequest request, GPResponse response) {
+    response.write(request.getParameter("name"),200);
+}
+至此 代码完毕，运行 GPTomcat的main()方法，并在浏览器中访问：http://localhost:8080?name="James"
+
+---------------------------Netty实现聊天--------------------------------------------------
+总体流程：
+netty服务端，客户端代码格式固定，只需要在 initChannel()中添加功能类即可，如下，增加 SocketHandler类
+childHandler(new ChannelInitializer<SocketChannel>() {
+    @Override
+    public void initChannel(SocketChannel ch) throws Exception {
+
+            ChannelPipeline pipeline = ch.pipeline();
+            pipeline.addLast(new IMDecoder());解码
+            pipeline.addLast(new IMEncoder());编码
+            pipeline.addLast(new SocketHandler());处理
+    }
+});
+该聊天系统使用了 3个协议；
+①http协议：浏览器发送 localhost/chat.html请求到 SocketHandler类的channelRead0()方法，该方法将
+resources/webroot/chat.html文件加载到程序中，然后写入客户端连接通道 ctx.channel().writeAndFlush()，
+将页面文件内容输出给浏览器；
+②websocket协议：
+当 客户端登陆时即CHAT.login()时，会调用里面的 CHAT.init()方法，该方法会创建 CHAT.socket = new WebSocket(CHAT.serverAddr);
+，当创建 CHAT.socket时，会调用 CHAT.socket.onopen()方法，该方法基于websocket向服务端发送信息(协议)，
+CHAT.socket.send("[LOGIN][" + new Date().getTime() +"][" + nickname + "]"); WebSocktHandler类
+的channelRead0()方法接收到该信息协议，调用process(Channel client,String msg)方法，将信息协议解码
+为IMMessage对象，取出信息类型(SYSTEM,LOGIN...)，根据信息类型进行相应操作，操作完后，将 结果封装到
+IMMessage对象中编码后，通过客户端channel返回给客户端 chat.util.js，当客户端接收到信息时，自动触发
+CHAT.socket.onmessage()方法，该方法将接收到的返回结果渲染到 chat.html中；
+创建 ChatServer.java 类
+③自定义协议
+创建 ChatClient类，clientHandler对象通过channelActive()方法向客户端连接通道channel中写入数据，然
+后调用 SocketHandler对象的channelRead0()方法，将数据写给websocket的客户端连接通道channel，此处不理
+解；
+疑惑：
+ch.pipeline().addLast(new IMDecoder());
+ch.pipeline().addLast(new IMEncoder());
+ch.pipeline().addLast(new *Handler());
+...
+pipeline中各对象方法执行顺序？？？？？？？？？？？？？？？？？？？
+各*Handler中各方法什么时候执行？？？？？？？？？？？？？？？？？？
+-------------------------开始-------------------------------------------------------------
+public class ChatClient{
+    ...
+    b.handler(new ChannelInitializer<SocketChannel>() {
+            @Override
+            public void initChannel(SocketChannel ch) throws Exception {
+                ch.pipeline().addLast(new IMDecoder());
+                ch.pipeline().addLast(new IMEncoder());
+                ch.pipeline().addLast(clientHandler);
+            }
+        });
+}
+public class ChatServer{
+    与GPTomcat类似
+    /*主从模型，channel()为主线程，childHandler()为子线程，option为线程的配置*/
+    b.group(bossGroup, workerGroup).
+            channel(NioServerSocketChannel.class).option(ChannelOption.SO_BACKLOG, 1024)
+    .childHandler(new ChannelInitializer<SocketChannel>() {
+        @Override
+        public void initChannel(SocketChannel ch) throws Exception {
+                /*所有自定义的业务从这里开始*/
+                ChannelPipeline pipeline = ch.pipeline();
+
+                /** 解析Http请求 */
+                pipeline.addLast(new HttpServerCodec());
+                //主要是将同一个http请求或响应的多个消息对象变成一个 fullHttpRequest完整的消息对象
+                pipeline.addLast(new HttpObjectAggregator(64 * 1024));
+                //主要用于处理大数据流,比如一个1G大小的文件如果你直接传输肯定会撑暴jvm内存的 ,加上这个handler我们就不用考虑这个问题了
+                pipeline.addLast(new ChunkedWriteHandler());
+                /*绑定一个handler，用来拦截 http协议 拦截就是在目标方法之前调用这个拦截方法*/
+                /*跟HttpHandler() 在Netty中 只要后面加 0 ，都是实现类方法，不是借口方法*/
+                pipeline.addLast(new HttpHandler());
+        }
+    });
+}
+创建 resources/webroot目录，里面存 css images js html等静态文件；
+需要创建 HttpHandler.java 类，目的：浏览器访问localhost/chat.html，通过Netty访问到
+resources/webroot 中的静态资源页面 chat.html
+public class HttpHandler extends SimpleChannelInboundHandler<FullHttpRequest> {
+    在Netty中 只要后面加 0 ，都是实现类方法，不是接口方法
+    @Override
+    public void channelRead0(ChannelHandlerContext ctx, FullHttpRequest request) throws Exception {
+        /*获取请求中的 uri*/
+        String uri = request.getUri();
+        RandomAccessFile file = null;
+        try{
+            /*静态资源路径*/
+            String page = uri.equals("/") ? "chat.html" : uri;
+            file =	new RandomAccessFile(getResource(page), "r");
+        }catch(Exception e){
+            ctx.fireChannelRead(request.retain());
+            return;
+        }
+        String contextType = "text/html;";
+        /*文件类型解释*/
+        if(uri.endsWith(".css")){
+            contextType = "text/css;";
+        }else if(uri.endsWith(".js")){
+            contextType = "text/javascript;";
+        }else if(uri.toLowerCase().matches("(jpg|png|gif)$")){
+            String ext = uri.substring(uri.lastIndexOf("."));
+            contextType = "image/" + ext;
+        }
+        HttpResponse response = new DefaultHttpResponse(request.getProtocolVersion(), HttpResponseStatus.OK);
+        /*判断是否为长链接*/
+        boolean keepAlive = HttpHeaders.isKeepAlive(request);
+        /*如果是长连接，response的headers中需要增加内容*/
+        if (keepAlive) {
+            response.headers().set(HttpHeaders.Names.CONTENT_LENGTH, file.length());
+            response.headers().set(HttpHeaders.Names.CONNECTION, HttpHeaders.Values.KEEP_ALIVE);
+        }
+        /*先将协议内容写出去*/
+        ctx.write(response);
+        ctx.write(new DefaultFileRegion(file.getChannel(), 0, file.length()));
+        /*清空*/
+        ChannelFuture future = ctx.writeAndFlush(LastHttpContent.EMPTY_LAST_CONTENT);
+        if (!keepAlive) {
+            future.addListener(ChannelFutureListener.CLOSE);
+        }
+        file.close();
+    }
+}
+
+至此，浏览器访问localhost/chat.html 可以访问到 resources/webroot/chat.html，channelRead0()方法
+在这个过程中起到的作用就是将 chat.html文件读到程序中，并通过response响应给浏览器；
+
+定义 chat.util.js 为chat.html 的js，如下所示，完成登录，退出功能
+$(document).ready(function () {
+	/*定义 CHAT 对象*/
+	window.CHAT = {
+		/*定义 CHAT.login() 方法，绑定 onclick="CHAT.login();" 事件*/
+		login:function () {
+			/*隐藏当前 div，打开下面的 div*/
+            $("#loginbox").hide();
+            $("#chatbox").show();
+        },
+        /*定义 CHAT.logout() 方法，绑定 onclick="CHAT.logout();" 事件*/
+        logout:function () {
+			window.location.reload();
+        }
+	}
+})
+
+所有业务逻辑都走WebSocket协议，实现实时交互，因此 ChatServer.java 类中的 initChannel()方法中添加
+handler()
+/** 解析WebSocket请求 */
+/*只要以 ws://im开头的，都认为是 websocket协议*/
+pipeline.addLast(new WebSocketServerProtocolHandler("/im"));
+pipeline.addLast(new WebSocktHandler());
+因此，需要创建 WebSocktHandler.java 类
+public class WebSocktHandler extends SimpleChannelInboundHandler<TextWebSocketFrame> {
+    @Override                                             /*请发送来的内容解析为 TextWebSocketFrame*/
+    protected void channelRead0(ChannelHandlerContext ctx,TextWebSocketFrame msg) throws Exception {
+        processor.sendMsg(ctx.channel(), msg.text());
+    }
+}
+转到 chat.util.js window.CHAT{}中定义 init:function(){...}方法开启 websocket 协议
+$(document).ready(function () {
+    /*获取请求中的 host，此处 host = localhost/chat.html，即去掉请求中的http://协议*/
+    var host = location.href.replace(/http:\/\//i,"");
+	/*定义 CHAT 对象*/
+	window.CHAT = {
+		/*定义全局变量*/
+		/*保存服务器端WebSocket的请求地址*/
+        serverAddr:"ws://" + host.replace("chat.html","") + "im",
+        /*保存浏览器socket对象*/
+        socket:null,
+		/*开启 websocket 协议*/
+		init:function () {
+			if (!window.WebSocket){
+				window.WebSocket = window.MozWebSocket;
+			}
+			/*如果浏览器支持 websocket*/
+			if(window.WebSocket){
+				CHAT.socket = new WebSocket(CHAT.serverAddr);
+				/*当 socket 接收到消息时*/
+				CHAT.socket.onmessage = function (e) {
+					window.alert(e.data);
+                };
+                CHAT.socket.onopen = function () {
+					window.alert("websocket已开启");
+                };
+                CHAT.socket.onclose = function () {
+                    window.alert("websocket已关闭");
+                }
+			}else {
+				window.alert("你的浏览器不支持 WebSocket！！！")
+			}
+        },
+		/*定义 CHAT.login() 方法，绑定 onclick="CHAT.login();" 事件*/
+        /*定义 CHAT.logout() 方法，绑定 onclick="CHAT.logout();" 事件*/
+	}
+})
+那么，CHAT.init()方法在什么时候调用呢？ 在CHAT.login()登录中调用 CHAT.init()
+*****************************************
+javascript面向对象编程                    *
+*****************************************
+此时，Netty服务器同时支持 http 协议和 WebSocket 协议
+
+登录流程梳理：
+当 客户端登陆时及CHAT.login()时，会调用里面的 CHAT.init()方法，该方法会创建 CHAT.socket = new WebSocket(CHAT.serverAddr);
+，当创建 CHAT.socket时，会调用 CHAT.socket.onopen()方法，该方法基于websocket向服务端发送信息(协议)，
+CHAT.socket.send("[LOGIN][" + new Date().getTime() +"][" + nickname + "]"); WebSocktHandler类
+的channelRead0()方法接收到该信息协议，调用process(Channel client,String msg)方法，将信息协议解码
+为IMMessage对象，取出信息类型(SYSTEM,LOGIN...)，根据信息类型进行相应操作，操作完后，将 结果封装到
+IMMessage对象中编码后，通过客户端channel返回给客户端 chat.util.js，当客户端接收到信息时，自动触发
+CHAT.socket.onmessage()方法，该方法将接收到的返回结果渲染到 chat.html中；
+
+
+自定义协议，通过发送java对象来解析，协议 = 请求头 + 请求上下文，见 聊天项目自定义协议.png 图
+
+创建枚举类 IMP.java 表示自定义协议内容
+public enum IMP {
+    /** 系统消息 */SYSTEM("SYSTEM"),/** 登录指令 */LOGIN("LOGIN"),/** 登出指令 */LOGOUT("LOGOUT"),
+    /** 聊天消息 */CHAT("CHAT"),/** 送鲜花 */FLOWER("FLOWER");
+    private String name;
+    IMP(String name){
+        this.name = name;
+    }
+    /**判断content是否是自定义协议*/
+    public static boolean isIMP(String content){
+        return content.matches("^\\[(SYSTEM|LOGIN|LOGIN|CHAT)\\]");
+    }
+    public String getName(){
+        return this.name;
+    }
+    public String toString(){
+        return this.name;
+    }
+}
+
+解析 自定义协议字符串，然后封装到 IMMessage.java类中
+public class IMMessage{
+	private String addr;		//IP地址及端口
+	private String cmd;		//命令类型[LOGIN]或者[SYSTEM]或者[LOGOUT]
+	private long time;		//命令发送时间
+	private int online;		//当前在线人数
+	private String sender;  //发送人
+	private String receiver;	//接收人
+	private String content;	//消息内容
+    省略...
+}
+传一个字符串协议 解析成 IMMessage类，IMMessage类也可以解析成字符串协议，实现这种相互解析，需要创建
+IMEncoder类 继承 MessageToByteEncoder<IMMessage>覆写encode()方法，将IMMessage类转换成字符串协议
+IMDecoder类 继承 MessageToByteEncoder<IMMessage>覆写decode()方法，将字符串转协议换成IMMessage类
+
+转到chat.util.js的 login:function () {...}里面的 CHAT.init(nickname);
+
+init:function (nickname) {
+    ...
+    CHAT.socket = new WebSocket(CHAT.serverAddr);
+    /*当创建 websocket连接时，调用这个onopen方法*/
+    CHAT.socket.onopen = function(e) {
+        /*客户端websocket向服务端websocket发送内容，服务端WebSocketHandler的channelRead0()方法接收到该内容*/
+        /*按自定义协议规范内容发送字符串内容*/
+        CHAT.socket.send("[LOGIN][" + new Date().getTime() +"][" + nickname + "]");
+    };
+}
+转到 WebSocktHandler的channelRead0()方法，接收到上面CHAT.socket.onopen()方法发送的 字符串协议，
+将字符串协议解析为对象，并将登录用户保存到登录用户池中；
+public class WebSocktHandler extends SimpleChannelInboundHandler<TextWebSocketFrame>{
+@Override											  /**请发送来的内容解析为 TextWebSocketFrame*/
+	protected void channelRead0(ChannelHandlerContext ctx,TextWebSocketFrame msg) throws Exception {
+		将登录用户保存到用户池；
+	}
+}
+创建 IMProcessor 类，记录在线用户数，根据 字符串协议类型，进行相应操作，并将结果编码后，返回给chat.util.js
+的 CHAT.socket.onmessage = function(e) {...} 方法，该方法接到 返回结果后，渲染到 chat.html中 ,
+见 process()方法；
+public class IMProcessor {
+    //记录在线用户，ChannelGroup为客户端连接通道Channel的集合
+    private static ChannelGroup onlineUsers = new DefaultChannelGroup(GlobalEventExecutor.INSTANCE);
+    //自定义解码器
+    private IMDecoder decoder = new IMDecoder();
+    //自定义编码器
+    private IMEncoder encoder = new IMEncoder();
+    /*接收到客户端 channel，及请求信息 msg*/
+    public void process(Channel client,String msg){
+        IMMessage request = this.decoder.decode(msg);
+        if (request == null){return;}
+        String nickName = request.getSender();
+        /*如果是登录操作，就向 ChannelGroup 中增加一个 channel*/
+        if (request.getCmd().equals(IMP.LOGIN.getName())){
+            IMProcessor.onlineUsers.add(client);
+            /*上线通知，通知其他用户该用户已上线*/
+            for (Channel channel : IMProcessor.onlineUsers){
+                if (channel != client){
+                    /*创建自定义消息对象*/
+                    request = new IMMessage(IMP.SYSTEM.getName(),this.systTime(),onlineUsers.size(),nickName + " 加入聊天室");
+                }else {
+                    request = new IMMessage(IMP.SYSTEM.getName(),this.systTime(),onlineUsers.size(),"已加入聊天室");
+                }
+                /*发送前，对自定义消息对象进行编码*/
+                String text = this.encoder.encode(request);
+                /*发送已编码信息*/
+                /*客户端 chat.util.js的 CHAT.socket.onmessage会接收到该内容*/
+                channel.writeAndFlush(new TextWebSocketFrame(text));
+            }
+        }else if (request.getCmd().equals(IMP.LOGOUT.getName())){
+            IMProcessor.onlineUsers.remove(client);
+        }
+    }
+    /*客户端退出，channelGroup中移除 该group*/
+    public void logout(Channel client){
+        IMProcessor.onlineUsers.remove(client);
+    }
+}
+
+转到 WebSocketHandler 类，让该类持有 IMProcessor成员变量，修改 channelRead0()方法
+@Override											  /*请发送来的内容解析为 TextWebSocketFrame*/
+protected void channelRead0(ChannelHandlerContext ctx,TextWebSocketFrame msg) throws Exception {
+    this.imProcessor.process(ctx.channel(),msg.text());
+}
+/*如果客户端退出，调用该监听方法*/
+@Override
+public void handlerRemoved(ChannelHandlerContext ctx) throws Exception {
+    Channel client = ctx.channel();
+    this.imProcessor.logout(client);
+}
+
+转到 chat.util.js，增加一些页面处理函数；
+重写原型方法 format，用来处理服务端时间戳，prototype 属性可以 向对象 添加属性和方法；
+Date.prototype.format = function(format){
+    var o = {
+        "M+" : this.getMonth()+1, //月
+        "d+" : this.getDate(), //日
+        "h+" : this.getHours(), //时
+        "m+" : this.getMinutes(), //分
+        "s+" : this.getSeconds(), //秒
+        "q+" : Math.floor((this.getMonth()+3)/3), //刻
+        "S" : this.getMilliseconds() //毫秒
+    }
+
+    if(/(y+)/.test(format)) {
+        format = format.replace(RegExp.$1, (this.getFullYear()+"").substr(4 - RegExp.$1.length));
+    }
+
+    for(var k in o) {
+        if(new RegExp("("+ k +")").test(format)) {
+            format = format.replace(RegExp.$1, RegExp.$1.length==1 ? o[k] : ("00"+ o[k]).substr((""+ o[k]).length));
+        }
+    }
+    return format;
+};
+
+聊天流程梳理：
+chat.html中发送聊天内容按钮；
+<input class="button" type="button" id="mjr_send" onclick="CHAT.sendText()" value="发送"/>
+chat.util.js中发生聊天内容方法，将 msg发送到 WebSocktHandler类的 channelRead0()方法，并将结果返回
+到 onmessage()方法，onmessage()方法将返回结果渲染到chat.html中；
+window.CHAR{
+    sendText:function() {
+        var message = $("#send-message");
+        //去掉空格
+        if(message.html().replace(/\s/ig,"") == ""){ return; }
+        if (!window.WebSocket) { return; }
+        if (CHAT.socket.readyState == WebSocket.OPEN) {
+            var msg = ("[CHAT][" + new Date().getTime() + "]" + "[" + CHAT.nickname + "] - " + message.html().replace(/\n/ig,"<br/>"));
+            CHAT.socket.send(msg);
+            message.empty();
+            message.focus();
+        } else {
+            alert("与服务器连接失败.");
+        }
+    }
+}
+以上已经实现了http协议，websocket协议，下面实现本地协议，发送一个 java对象，直接在网页上能够接收，实现
+跨平台；
+因此ChatSever中定义 SocketHandler，继承 SimpleChannelInboundHandler<IMMessage>(将接收到的信息
+编解码为 IMMessage对象)
+
+ChatServer类的 childHandlr()方法initChannel方法中增加如下内容
+public void initChannel(SocketChannel ch) throws Exception {
+    /** 解析自定义协议 */
+    pipeline.addLast(new IMDecoder());
+    pipeline.addLast(new IMEncoder());
+    pipeline.addLast(new SocketHandler());
+    ...
+}
+需要创建 IMDecoder类将接收到的字节码用来创建一个对象，需要创建 IMEncoder类将要发送的对象编码为字节码
+数组；使用 msgpack包，继承 ByteToMessageDecoder和MessageToByteEncoder
+                                                   /**将客户端发送内容编解码为IMMessage对象*/
+public class SocketHandler extends SimpleChannelInboundHandler<IMMessage>{
+    /**当客户端连接通道 channel可读时，调用该方法*/
+    @Override
+    protected void channelRead0(ChannelHandlerContext ctx, IMMessage msg) throws Exception {
+        processor.sendMsg(ctx.channel(), msg);
+    }
+}
+当客户端连接通道 channel可读时，调用 sendMsg(ctx.channel(), msg)方法，将返回结果编码后，通过channle
+写到客户端连接通道 channel.writeAndFlush(new TextWebSocketFrame(content));
+那么客户端如何发送请求呢？
+client包中创建 ChatClient 类
+***************************************************************************************
+idea快捷键：查看一个方法在何处被调用—— ctr + alt + H；查看实现方法—— ctr + alt + B
+***************************************************************************************
+分别启动 ChatServer类和 ChatClient类
+                                       *******************************************
+Netty RPC 支持 HTTP WebSocket，现在定义一个 本地协议，即发送一个 java 对象，在网页上直接接收
+
+跨平台，直接从Java环境走到前端网页
+
+需要创建自定义 SocketHandler.java 类，网页端字符串与msg对象相互转化
+public class SocketHandler extends SimpleChannelInboundHandler<IMMessage>{
+    @Override
+    protected void channelRead0(ChannelHandlerContext ctx, IMMessage msg) throws Exception {
+        processor.sendMsg(ctx.channel(), msg);
+    }
+}
+对象与字符串相互转化，需要定义编码器，解码器；
+转到 ChatServer 类的 initChannel(SocketChannel ch)方法，增加自定义解析器
+/** 解析自定义协议 */
+pipeline.addLast(new IMDecoder());
+pipeline.addLast(new IMEncoder());
+pipeline.addLast(new SocketHandler());
+IMEncoder类继承MessageToByteEncoder，IMDecoder类继承ByteToMessageEncoder，表示对象可以转化为字
+节，对象转化为字节后，才能在网络中，各主机中传输，encode编码就是一个序列化的过程，decode解码就是一个反
+序列化的过程；序列化框架有很多，这里选择效率较高的 msgpack，依赖包如下：
+<dependency>
+  <groupId>org.msgpack</groupId>
+  <artifactId>msgpack</artifactId>
+  <version>0.6.12</version>
+</dependency>
+------------------------------------Netty源码分析----------------------------------------
+所以：BIO 同步阻塞；NIO 同步非阻塞；AIO异步非阻塞；Netty 异步非阻塞 在NIO基础上增加线程池实现异步，这
+么多线程组成 pipeline，pipeline是一个无锁化串行链路；

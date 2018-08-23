@@ -1,0 +1,58 @@
+handler类中 channelRead(ChannelHandlerContext ctx, LuckMessage msg)，其中 ctx表示连接对象，
+LuckMessage msg表示解码器将发送内容解析为 LuckMessage类对象；
+
+一般而言，我们制定的协议需要两个部分：
+Header : 协议头部，放置一些Meta信息。
+Content : 应用之间交互的信息主体。
+例如：
+| Version | Content-Length | SessionId | Content |
+其中Version,Content-Length,SessionId就是Header信息，Content就是交互的主体。给这个协议起一个名字叫做
+luck,依照luck协议，我们构建，消息头部类LuckHeader，消息主体类LuckMessage
+那么我们在Netty中如何去对这种自定义的协议编码(Encode)呢?
+在Netty中对数据进行编码解码需要利用Codec组件，Codec组件中分为：
+Encoder : 编码器，将出站的数据从 Message 转换成 Byte。
+Decoder : 解码器，将入站的数据从 Byte 转换成 Message。
+创建 LuckDecoder 类 LuckEncoder 类：
+
+编写一个逻辑控制层，展现server接收到的协议信息：
+
+public class NettyLuckHandler extends SimpleChannelInboundHandler<Message> {
+    @Override
+    protected void channelRead0(ChannelHandlerContext ctx, Message msg) throws Exception {
+        // 简单地打印出server接收到的消息
+        System.out.println(msg.toString());
+    }
+}
+
+编写完成之后，把编解码器和逻辑控制器放入初始化组件中:
+
+public class NettyLuckInitializer extends ChannelInitializer<SocketChannel> {
+    private static final LuckEncoder ENCODER = new LuckEncoder();
+    @Override
+    protected void initChannel(SocketChannel channel) throws Exception {
+        ChannelPipeline pipeline = channel.pipeline();
+        // 添加编解码器, 由于ByteToMessageDecoder的子类无法使用@Sharable注解,
+        // 这里必须给每个Handler都添加一个独立的Decoder.
+        pipeline.addLast(ENCODER);
+        pipeline.addLast(new LuckDecoder());
+        // 添加逻辑控制层
+        pipeline.addLast(new NettyLuckHandler());
+    }
+}
+
+编写一个服务端启动类 NettyLuckServer：
+
+光有服务端并不行，没法测试我们的server是不是成功了。所以我们还需要编写一个客户端程序 LuckClient.java
+
+先运行NettyLuckServer.java，然后再去运行LuckClient.java可以看到控制的输出
+
+四月 15, 2016 11:31:34 下午 io.netty.handler.logging.LoggingHandler channelRegistered
+信息: [id: 0x92534c29] REGISTERED
+四月 15, 2016 11:31:34 下午 io.netty.handler.logging.LoggingHandler bind
+信息: [id: 0x92534c29] BIND(0.0.0.0/0.0.0.0:8888)
+luck协议启动地址：127.0.0.1:8888
+四月 15, 2016 11:31:34 下午 io.netty.handler.logging.LoggingHandler channelActive
+信息: [id: 0x92534c29, L:/0:0:0:0:0:0:0:0:8888] ACTIVE
+四月 15, 2016 11:31:54 下午 io.netty.handler.logging.LoggingHandler logMessage
+信息: [id: 0x92534c29, L:/0:0:0:0:0:0:0:0:8888] RECEIVED: [id: 0x67a91c6b, L:/127.0.0.1:8888 - R:/127.0.0.1:53585]
+[version=1,contentLength=22,sessionId=cff7b3ea-1188-4314-abaa-de04db32d39f,content=I'm the luck protocol!]

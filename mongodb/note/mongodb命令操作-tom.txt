@@ -1,0 +1,36 @@
+MongoDB：json格式文档存储；Redis：key-value存储；
+
+CAP原理：一个分布式计算系统来说，不可能同时满足以下三点；
+一致性(Consistency) (所有节点在同一时间具有相同的数据)；
+可用性(Availability) (保证每个请求不管成功或者失败都有响应)；
+分区容错性(Partition tolerance) (系统中任意信息的丢失或失败不影响系统的继续运行)；
+
+关系型数据库术语/概念                 MongoDB 术语/概念               解释/说明
+Database                           Database                       数据库
+Table                              Collection                     数据库表/集合
+Row                                Document                       数据记录行/文档
+Column                             Field                          数据列/数据字段
+Index                              Index                          索引
+Table joins                                                       表关联/MongoDB 不支持
+Primary Key                        Object ID                      主键/MongoDB 自动将_id 设置为主键
+
+------------------------------MongoDB用户名密码-------------------------------------------
+mongo.exe客户端：
+> use admin
+switched to db admin
+> db.createUser({user:"root",pwd:"123456",roles:[{role:"userAdminAnyDatabase",db:"admin"},{role:"__system",db:"admin"}]})
+mongodb.exe服务端 mongodb.bat文件内容如下：
+mongod --dbpath="F:\Program Files\MongoDB\Data" --auth
+mongo.exe客户端连接服务端：
+db.auth('root','123456')
+------------------------------MongoDB命令操作---------------------------------------------
+切换数据库：use foobar    //切换到foobar数据库
+当前数据库中创建集合：db.t_member.insert({name:"James",age:34});db.t_member.insert({name:"Jordan",age:40})
+当前数据库集合内容查询：db.t_member.find()
+修改：db.t_member.update({name:"Jordan"},{$set:{age:38}})
+删除document即一行数据：db.t_member.remove({name:"Kobe"})
+删除集合：db.t_member.drop()
+删除数据库：db.dropDatabase()
+
+查看所有集合：show collections
+查看所有数据库：show dbs

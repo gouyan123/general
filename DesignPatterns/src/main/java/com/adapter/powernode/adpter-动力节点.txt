@@ -1,0 +1,6 @@
+适配器实质：方法 work(Object target) 接收到不同类型参数的时候，都可以执行
+①适配器接口 IAdapter的方法work(Object target)在接收到不同接口 ICook IDrive对象的时候，利用 instanceof 分别判断其接口类型，
+if(target instanceof ICook){((ICook)target).cook()}，然后执行相应接口方法；
+②每个接口ICook,IDrive一个适配器，实现适配器接口IAdapter中的work(Object target){((ICook)target).cook}和
+supports(Object target){return target instandof ICook;}方法，分别表示执行相应接口的do()方法和判断是否是相应接口;
+实际使用：根据 obj类型找到它的适配器，再上转型为IAdapter，调用work(target)方法；

@@ -1,0 +1,28 @@
+SiginService是老的登录类，通过用户名密码进行登录，现在有新的需求：既可以通过老的用户名密码进行登录，又可以
+通过 微信，QQ，手机号 + 验证码 等方式进行登录，因此定义 SiginForThirdService extends SiginService
+登录类，继承 SiginService
+public class SiginForThirdService extends SiginService {
+    public ResultMsg loginForRegist(String username,String password){
+        super.regist(username,null);
+        return super.login(username,null);
+    }
+    public ResultMsg loginForQQ(String openId){
+        //1、openId是全局唯一，我们可以把它当做是一个用户名(加长)
+        //2、密码默认为QQ_EMPTY
+        //3、注册（在原有系统里面创建一个用户）
+        //4、调用原来的登录方法
+        return loginForRegist(openId,null);
+    }
+    public ResultMsg loginForToken(String token){
+        //通过token拿到用户信息，然后再重新登陆了一次
+        return  null;
+    }
+
+    ...
+
+}
+测试：使用 SiginForThirdService 类进行测试；
+
+如果登录业务很复杂，可以创建各个登录方式的适配器，例如，LoginForQQAdapter，LoginForWeChatAdapter，
+LoginForTelPhoneAdapter，每一个适配器解决一类问题，然后创建它们的接口 ，统一使用接口表示所有实现子类
+的类型，可以解藕合；

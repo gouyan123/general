@@ -1,0 +1,78 @@
+------------------------工厂模式---------------------------------------
+**************************************************************
+用户调用工厂方法获得产品对象，工厂方法参数就是用户的需求
+*************************************************************
+工厂产品：Milk 接口，及其实现类 Telunsu，Mengniu，Yili 定义在 product 包中；
+简单工厂：定义在 simple 包中；
+高级工厂，定义在 func 包中，高级工厂中的工厂也是一个接口，接口方法为获得产品，这里的产品也用产品接口；
+public interface Factory {
+    //工厂必然具有生产产品技能，统一的产品出口
+    Milk getMilk();
+}
+然后定义相应的产品工厂实现类，实现这个工厂接口
+public class MengniuFactory implements  Factory {
+    @Override
+    public Milk getMilk() {
+        return new Mengniu();
+    }
+}
+public class TelunsuFactory implements Factory {
+    @Override
+    public Milk getMilk() {
+        return new Telunsu();
+    }
+}
+然后用户使用这些实现类工厂创建自己需要的产品
+public class FactoryTest {
+    public static void main(String[] args) {
+        //配置，可能会配置错
+        Factory factory = new MengniuFactory();
+        System.out.println(factory.getMilk());
+    }
+}
+缺点：用户创建的时候，还要自己创建相应产品的工厂；
+
+抽象工厂模式：抽象工厂是用户的主入口，一个产品接口有几个分类，即实现子类，就定义几个入口，定义在 abstrac 包中
+
+public abstract class AbstractFactory {
+
+    public  abstract Milk getMengniu();
+
+    public abstract  Milk getYili();
+
+    public  abstract  Milk getTelunsu();
+}
+创建抽象工厂其实现类 MilkFactory
+public class MilkFactory extends  AbstractFactory {
+    @Override
+    public Milk getMengniu() {
+        return new Mengniu();
+    }
+    @Override
+    public Milk getYili() {
+        return new Yili();
+    }
+    @Override
+    public Milk getTelunsu() {
+        return new Telunsu();
+    }
+}
+
+客户端只需要调用 getXxx()方法，根据 Xxx 就知道自己要的是什么产品了，用户只有选择的权利了
+public class AbstractFactoryTest {
+    public static void main(String[] args) {
+        MilkFactory factory = new MilkFactory();
+        //对于用户而言，更加简单了
+        //用户只有选择的权利了，保证了程序的健壮性
+        System.out.println(factory.getMengniu());
+    }
+}
+总结：抽象工厂优点，易于扩展，spring中很多抽象工厂；
+AbstractFactory类，MilkFactory类是框架定义的，AbstractFactoryTest类描述的是用户调用框架；
+抽象工厂怎么设计？ 一个抽象工厂，一个实现工厂，提供各产品的 getXxx()方法，所有产品实现同一个接口；
+
+*****************************************************************************************
+只有声明变量类型：都用最高层接口或父类；
+抽象类与接口比较：抽象类可以定义一些成员变量，可以进行逻辑处理，接口不方便做逻辑处理；
+*****************************************************************************************
+

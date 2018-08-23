@@ -1,0 +1,37 @@
+mybatis中有 2种配置文件：①主配置文件 mybatis.xml；②映射文件 *mapper.xml；
+*.mapper.xml映射文件内容：
+<?xml version="1.0" encoding="UTF-8" ?>
+如果现在直接编写xml文件，那么这个xml文件跟其他xml文件没有区别，为了区别其他类型xml文件，引入约束文件如下：
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+其中，!DOCTYPE mapper表示这个xml文件的根标签，格式如下：
+<mapper namespace="">
+
+</mapper>
+至此，一个 *mapper.xml映射文件写好了；
+
+mybatis.xml主配置文件内容：
+<?xml version="1.0" encoding="UTF-8" ?>
+如果现在直接编写xml文件，那么这个xml文件跟其他xml文件没有区别，为了区别其他类型xml文件，引入约束文件如下
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+其中，!DOCTYPE configuration表示这个xml文件的根标签，格式如下：
+<configuration>
+
+</configuration>
+至此，一个 mybatis.xml主配置文件写好了；
+
+配置文件中引入 约束文件后的提示问题：File → Settings → Language & Frameworks，URI填写链接，location
+写 *.dtd文件位置；
+
+studentMapper.xml映射文件内容如下：
+<mapper>
+    <insert id="insertStu">
+        insert into student(name,age,score) values(#{name},#{age},#{score})
+    </insert>
+</mapper>
+
+主配置文件mybatis.xml内容如下：
+查看 根标签<configuration>的子标签

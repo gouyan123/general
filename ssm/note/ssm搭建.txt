@@ -1,0 +1,187 @@
+-----------------------首先配置 web.xml文件------------------------------------------------
+①配置监听器，被监听方法为Tomcat服务器创建 application对象，当Tomcat服务器创建application对象时，调
+用监听器ContextLoaderListener的监听方法，监听方法里面 启动 Spring容器(ApplicationContext context
+= new ApplicationContext("application-context.xml"))，并将Spring容器保存到application
+(servletContext)对象中；
+<!-- 配置ContextLoaderListener监听器的成员变量，指定Spring容器的配置文件路径 -->
+<context-param>
+    <param-name>contextConfigLocation</param-name>
+    <param-value>classpath:application-context.xml</param-value>
+</context-param>
+<listener>
+    <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+</listener>
+②配置字符集过滤器
+<filter>
+<filter-name>CharacterEncodingFilter</filter-name>
+<filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
+<init-param>
+  <param-name>encoding</param-name>
+  <param-value>utf-8</param-value>
+</init-param>
+<init-param>
+  <param-name>forceEncoding</param-name>
+  <param-value>true</param-value>
+</init-param>
+</filter>
+<filter-mapping>
+<filter-name>CharacterEncodingFilter</filter-name>
+<url-pattern>/*</url-pattern>
+</filter-mapping>
+③配置springmvc中央调度器DispatcherServlet
+创建DispatcherServlet对象，浏览器端所有 *.do请求都映射到DispatcherServlet
+<servlet>
+ <servlet-name>springmvc</servlet-name>
+ <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+ <init-param>
+   <param-name>contextConfigLocation</param-name>
+   <param-value>classpath:application-mvc.xml</param-value>
+ </init-param>
+ <load-on-startup>1</load-on-startup>
+</servlet>
+<servlet-mapping>
+ <servlet-name>springmvc</servlet-name>
+ <url-pattern>*.do</url-pattern>
+</servlet-mapping>
+-----------------------spring的配置文件----------------------------------------------------
+所有配置文件都定义在 src/main/resources 目录中；
+①监听器中指定 application-context.xml 路径，Spring容器去加载该配置文件，内容如下：
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+	<import resource="classpath:application-beans.xml"/>
+	<import resource="classpath:application-common.xml"/>
+	<import resource="classpath:application-db.xml" />
+	<import resource="classpath:application-aop.xml" />
+	<import resource="classpath:application-mybatis.xml" />
+</beans>
+<import ...>表示spring容器再去加载这个配置文件；
+ApplicationContext context = new ClassPathApplicationContext("application-beans.xml")等；
+②application-common.xml内容如下：
+<!--①扫描该包及子包下所有*.java文件，得到所有*.java文件的类全名className(com.vo.Member.class)
+	，通过反射判断该类是否使用spring注解，如果使用了spring注解，则将该类注册到Spring容器中；
+	②注册 4个BeanPostProcessor的bean到Spring容器-->
+<context:component-scan base-package="com.bjpowernode"/>
+<!-- 如果要自动扫描Annotation -->
+<context:annotation-config />
+③application-db.xml只需要配置数据源 dataSource
+<?xml version="1.0" encoding="UTF-8"?>
+<beans ...>
+    <!-- 读取 *.property文件路径 -->
+    <context:property-placeholder location="classpath:jdbc.properties"/>
+	<!-- 配置数据源 -->
+    <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
+        <property name="driverClass" value="${jdbc.driverClassName}" />
+        <property name="jdbcUrl" value="${jdbc.url}" />
+        <property name="user" value="${jdbc.username}" />
+        <property name="password" value="${jdbc.password}" />
+        <property name="maxPoolSize" value="${c3p0.pool.size.max}" />
+        <property name="minPoolSize" value="${c3p0.pool.size.min}" />
+        <property name="initialPoolSize" value="${c3p0.pool.size.ini}" />
+        <property name="acquireIncrement" value="${c3p0.pool.size.increment}" />
+    </bean>
+</beans>
+④application-aop.xml内容如下：
+<beans ...>
+	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource"/>
+	</bean>
+	<!-- 配置事务通知属性 -->
+	<tx:advice id="transactionAdvice" transaction-manager="transactionManager">
+		<tx:attributes>
+			<tx:method name="add*" propagation="REQUIRED" rollback-for="Exception,RuntimeException,SQLException"/>
+			<tx:method name="remove*" propagation="REQUIRED" rollback-for="Exception,RuntimeException,SQLException"/>
+			<tx:method name="edit*" propagation="REQUIRED" rollback-for="Exception,RuntimeException,SQLException"/>
+			<tx:method name="login" propagation="NOT_SUPPORTED"/>
+			<tx:method name="query*" read-only="true"/>
+		</tx:attributes>
+	</tx:advice>
+	<aop:config>
+		<aop:advisor advice-ref="transactionAdvice" pointcut-ref="transactionPointcut"/>
+        <aop:aspect ref="dataSource">
+            <aop:pointcut id="transactionPointcut" expression="execution(public * com.bjpowernode.*.service..*ServiceImpl.*(..))" />
+        </aop:aspect>
+    </aop:config>
+</beans>
+⑤application-mybatis.xml，mabatis只有 2种配置文件，主配置文件mybatis.xml和映射文件 *.mapper：
+<beans ...>
+    <!--注册sqlSessionFactory：通过 数据源，mybatis.xml配置文件，*mapper映射文件生成
+    sqlSessionFactory工厂类-->
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="dataSource" ref="dataSource"/>
+        <property name="configLocation" value="classpath:mybatis.xml"/>
+        <property name="mapperLocations" value="classpath:mapping/*.xml"/>
+    </bean>
+    <!--注册Dao的代理对象：给基本包的所有类都生成Dao代理对象-->
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"/>
+        <property name="basePackage" value="com.bjpowernode.dao"/>
+    </bean>
+</beans>
+⑥application-mvc.xml文件内容如下：
+<?xml version="1.0" encoding="UTF-8"?>
+<beans ...>
+	<!--1、该注解会自动注册RequestMappingHandlerMapping与RequestMappingHandlerAdapter两个Bean -->
+	<mvc:annotation-driven></mvc:annotation-driven>
+	<!--2、视图解析器 -->
+	<!--<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="prefix" value="/"/>
+		<property name="suffix" value=".jsp"/>
+	</bean>-->
+	<!--3、自动扫描该包，使SpringMVC认为包下用了@Controller注解的类是控制器  -->
+	<context:component-scan base-package="com.bjpowernode.controllers"/>
+</beans>
+-----------------------定义控制层，服务层，数据层代码--------------------------------------------
+控制层 定义 com.bjpowernode.controllers.StudentController.java 如下：
+@Controller
+@RequestMapping("/test")
+public class StudentController {
+    @Resource
+    private IStudentSerivce studentServiceImpl;
+
+    @RequestMapping("/findByName.do")
+    public ModelAndView findByName(String name){
+        ModelAndView mv = new ModelAndView();
+        List<Student> students = this.studentServiceImpl.findByName(name);
+        System.out.println("students :" + JSON.toJSONString(students,true));
+        mv.addObject("students",students);
+        mv.setViewName("forward:/WEB-INF/jsp/show.jsp");
+        return mv;
+    }
+}
+服务层 定义com.bjpowernode.service.StudentServiceImpl.java 如下：
+@Service
+public class StudentServiceImpl implements IStudentSerivce {
+    @Resource
+    private IStudentDao studentDao;
+
+    public void addStudent(Student student) {
+        this.studentDao.addStudent(student);
+    }
+
+    @Override
+    public List<Student> findByName(String name) {
+        return this.studentDao.findByName(name);
+    }
+}
+数据层 定义com.bjpowernode.dao.IStudentDao.java 如下：
+@Repository
+public interface IStudentDao {
+    public abstract void addStudent(Student student);
+    public abstract List<Student> findByName(String name);
+}
+定义映射文件 resources/mapping/IStudentDao.xml内容如下：
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<!--命名空间为相应接口名称-->
+<mapper namespace="com.bjpowernode.dao.IStudentDao">
+    <insert id="addStudent" parameterType="com.bjpowernode.beans.Student">
+        INSERT INTO student(name,age) VALUES (#{name},#{age})
+    </insert>
+    <select id="findByName" resultType="com.bjpowernode.beans.Student">
+        SELECT name,age FROM student WHERE name = #{name}
+    </select>
+</mapper>
+
+测试：启动Tomcat服务器，浏览器访问：http://localhost:8080/test/findByName.do?name=James

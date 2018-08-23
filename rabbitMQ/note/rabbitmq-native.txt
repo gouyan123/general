@@ -1,0 +1,120 @@
+消息 = 消息头(地址routingKey) + 消息体(消息内容)；
+队列 = 队列路由rountingKey + 队列名(用于创建队列)；
+交换空间 = 交换空间名(用于创建交换空间) + 交换空间模式；
+生产者消费者发送消费消息流程：
+①生产者 创建交换空间(交换空间名+交换模式)，然后将 消息(消息头+消息内容) 发送给 交换空间；
+②消费者 创建队列(队列名+队列路由地址)，然后将 队列和队列路由地址 绑定到 交换空间；
+③交换空间 将 消息 装到路由相匹配的 队列中；
+④消费者 取出队列中内容，并且当取出数据是调用consumer对象的方法，来处理取出的数据
+
+RabbitMQ支持消息应答：消费者发送一个消息应答，告诉RabbitMQ这个消息已经接收并且处理完毕了，RabbitMQ就可
+以删除它了；例如：
+因此手动ACK的常见手段
+// 接收消息之后，主动ack/nak
+Consumer consumer = new DefaultConsumer(channel) {
+    @Override
+    public void handleDelivery(String consumerTag, Envelope envelope, AMQP.BasicProperties properties,
+            byte[] body) throws IOException {
+        String message = new String(body, "UTF-8");
+        try {
+            System.out.println(" [ " + queue + " ] Received '" + message);
+            channel.basicAck(envelope.getDeliveryTag(), false);
+        } catch (Exception e) {
+            channel.basicNack(envelope.getDeliveryTag(), false, true);
+        }
+    }
+};
+// 取消自动ack
+channel.basicConsume(queue, false, consumer);
+手动ack时，有个multiple，其含义表示:
+可以理解为每个Channel维护一个unconfirm的消息序号集合，每publish一条数据，集合中元素加1，每回调一次
+handleAck方法，unconfirm集合删掉相应的一条(multiple=false)或多条(multiple=true)记录
+----------------------代码------------------------------------------------------------
+创建 com.rabbitmq.original.RabbitUtil类，该类创建连接工厂对象
+public class RabbitUtil {
+    public static ConnectionFactory getConnectionFactory() {
+        ConnectionFactory factory = new ConnectionFactory();
+        factory.setHost("47.100.49.95");
+        factory.setPort(5672);
+        factory.setUsername("gouyan");
+        factory.setPassword("123456");
+        factory.setVirtualHost("/");
+        return factory;
+    }
+}
+创建 com.rabbitmq.original.MsgProducer类；生产者先创建交换空间(名字+模式)；再向交换空间发送消息
+(消息头+消息内容)；主方法：向direct.exchange交换空间发送消息，消息头分别为aaa，bbb；消费者创建队列
+(队列名+路由地址)并绑定到该交换空间；交换空间将 消息装到相应队列中(条件：消息路由与队列路由匹配)；消费
+者取出队列中消息进行处理；
+public class MsgProducer {
+    public static void produceMsg(String exchangeName, BuiltinExchangeType type,String rountingKey,String message) throws IOException, TimeoutException {
+        ConnectionFactory factory = RabbitUtil.getConnectionFactory();
+        Connection connection = factory.newConnection();
+        Channel channel = connection.createChannel();
+        /**连接对象channel创建交换空间，true消息可持久，false消息不自动删除*/
+        channel.exchangeDeclare(exchangeName,type,true,false,null);
+        /**连接对象channel发送消息，rountingKey为消息地址，data为消息内容*/
+        channel.basicPublish(exchangeName,rountingKey,null,message.getBytes());
+        channel.close();
+        connection.close();
+    }
+    public static void main(String[] args) throws IOException, TimeoutException {
+        String exchangeName = "direct.exchange";
+        BuiltinExchangeType type = BuiltinExchangeType.DIRECT;
+        /**向exchangeName发送消息(消息地址 + 消息内容)，发送方式为direct*/
+        String[] routingKey = new String[]{"aaa", "bbb"};
+        String msg = "hello >>> ";
+        for (int i = 0; i < 30; i++) {
+            produceMsg(exchangeName,type,routingKey[i % 2], msg + i);
+        }
+        System.out.println("----over-------");
+    }
+}
+创建 com.rabbitmq.original.MsgConsumer类；生产者先创建队列(队列名+队列路由)，再将队列绑定到交换空间
+中；交换空间将相应到消息发送到相应队列中；消费者取出队列中消息，并调用consumer对象里面的方法，对消息进行
+处理；
+public class MsgConsumer {
+    public static void consumeMsg(String queueName,String exchangeName,String rountingKey) throws IOException, TimeoutException {
+        ConnectionFactory factory = RabbitUtil.getConnectionFactory();
+        Connection connection = factory.newConnection();
+        Channel channel = connection.createChannel();
+        /**连接对象channel在rabbitmq服务器端创建 对列queueName*/
+        channel.queueDeclare(queueName,true,false,false,null);
+        /**连接对象channel将创建队列queueName保定到交换空间exchangeName上*/
+        channel.queueBind(queueName,exchangeName,rountingKey);
+        /**创建消费者对象*/
+        Consumer consumer = new DefaultConsumer(channel){
+            @Override
+            public void handleDelivery(String consumerTag, Envelope envelope, AMQP.BasicProperties properties, byte[] body) throws IOException {
+                String message = new String(body, "UTF-8");
+                try {
+                    System.out.println(queueName + " Received '" + message);
+                } finally {
+                    System.out.println(queueName + " Done");
+                    channel.basicAck(envelope.getDeliveryTag(), false);
+                }
+            }
+        };
+        /**自动取消 ack*/
+        /**Consumer接收到了消息之后，必须返回一个ack的标志，表示消息是否成功消费，如果返回true，则表
+         * 示消费成功了，然后这个消息就会从RabbitMQ的队列中删掉；如果返回false，且设置为重新入队，则
+         * 这个消息可以被重新投递进来*/
+        /**basickConsume()方法中启动线程，死循环检查队列queueName，检查到数据则取出，并调用consumer
+         * 对象中的相应方法*/
+        channel.basicConsume(queueName,false,consumer);
+        /**关闭通道，关闭连接*/
+    }
+    public static void main(String[] args) throws IOException, TimeoutException {
+        String exchangeName = "direct.exchange";
+        String[] routingKey = new String[]{"aaa", "bbb"};
+        String[] queueNames = new String[]{"qa", "qb"};
+        for (int i = 0; i < 2; i++) {
+            consumeMsg(queueNames[i],exchangeName,routingKey[i]);
+        }
+        try {
+            Thread.sleep(1000 * 60 * 10);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+}

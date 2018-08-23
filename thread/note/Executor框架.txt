@@ -1,0 +1,20 @@
+重点：Runnable(无返回值)接口，Callable(有返回值)接口 是任务，不是线程；
+
+Executor，ExecutorService和Executors关系
+Executor 定义了 execute(Runnable command)方法用来接收一个Runnable接口的对象
+   ↑
+ExecutorService  ExecutorService 接口中的 submit()方法可以接受Runnable和Callable接口的对象，返回Future
+---------------------------------------------------------------------------------------------------
+1.Callable与Runnable类似，都可以作为线程任务被执行，但是Callable可以返回线程执行结果（通过Future.get()
+方法）
+2.ExectuorService包含几个submit方法，主要用到2个，如下
+submit(Callable task)
+submit(Runnable task)
+3.ExecutorService可以通过Executors的几个工厂方法获得，比如：newSingleThreadExecutor();
+4.ExecutorService的submit方法返回Future的实例
+5.Future的get方法可以对submit方法提交的任务线程做如下操作
+cancel(boolean isMayInterruptIfRunning)
+isCanceled()
+isDone()
+get() throws InterruptException, ExecutionException
+get(time, timeunit) throws InterruptException, ExecutionException

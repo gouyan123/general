@@ -1,0 +1,15 @@
+多态实质：可扩展性；
+排序方法口诀：冒择入 兮(希尔) 快归堆；分别指，冒泡，选择，插入，希尔，快速，归并，堆
+public class Cat implements Comparable{
+private Comparator comparator;
+public Cat(Comparator comparator){
+    this.comparator = comparator;
+}
+@Override
+public int compareTo(Object o){
+    this.comparator.compare(o);
+}
+}
+策略即，本处只调用不实现，而交给具体实现子类去实现，接口调用其方法(comparator.compare())，即本处只调
+用不实现，程序将进入接口实现类的实现方法中；
+扩展：类 要么 实现一个接口 is-a，要么拥有接口 has-a；

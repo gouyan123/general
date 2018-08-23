@@ -1,0 +1,52 @@
+----------------初级版 SxtHashMap---------------------------------------------------
+创建 SxtHashMap001 类，存放键值对，根据键对象找值对象；
+创建 SxtEntry 类，封装键对象 key 和值对象 value；
+class SxtEntry{
+    private Object key;
+    private Object value;
+    省略
+}
+SxtHashMap001 类中定义数组 SxtEntry[] arr，存键值对SxtEntry类对象；
+SxtHashMap001 类中定义 put(Object key,Object value)方法
+public void put(Object key,Object value){
+    SxtEntry e = new SxtEntry(key,value);
+    arr[size++] = e;
+}
+SxtHashMap001 类中定义 get(Object key)方法，根据键对象获取值对象
+public Object get(Object key){
+    for (int i = 0;i < size;i++){
+        if (key.equals(arr[i].getKey())){
+            return arr[i].getValue();
+        }
+    }
+    return null;
+}
+SxtHashMap001 类中定义 containsKey() 判断 map 中是否含有此 key
+public boolean containKeys(Object key){
+    for (int i = 0;i < size;i++){
+        if (key.equals(arr[i].getKey())){
+            return true;
+        }
+    }
+    return false;
+}
+SxtHashMap001 类修改 put()方法，当key值重复时，覆盖其对应的 value
+测试：
+public static void main(String[] args) {
+    SxtHashMap map = new SxtHashMap();
+    map.put("James",23);
+    map.put("James",6);
+    System.out.println(map.get("James"));
+}
+返回：6，证明当key重复时，可以覆盖其对应的value；
+----------------高级版 SxtHashMap---------------------------------------------------
+此时get()方法遍历取值效率低；通过 key.hashCode() 获得key对象的hash值，hash值为整数，hash值通过类对象
+成员变量求得，见Student类，重写Object类equal()方法，hashCode()方法；两个对象内容相同，hashCode()一定
+相同，反之则不然；hashcode()方法是根据对象的地址或者字符串的值来计算出hash值；
+HashMap底层 = 数组 + 链表；即 数组里面存链表（存在位置：hash值 % 数组长度），链表里面存键值对Entry；
+创建 SxtHashMap002 类
+SxtHashMap002 类中定义链表数组 LinkedList[] arr = new LinkedList[999];将key的hashCode对999取余
+，得到数组下标，该下标里面存的是一个链表，将Entry对象存到该链表中；
+SxtHashMap002 类中定义 put()方法
+SxtHashMap002 类中定义 get()方法
+SxtHashMap002 类中定义 containKeys()方法

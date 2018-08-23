@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<!--命名空间为相应接口名称-->
+<mapper namespace="com.bjpowernode.dao.IStudentDao">
+    <insert id="addStudent" parameterType="com.bjpowernode.beans.Student">
+        INSERT INTO student(name,age) VALUES (#{name},#{age})
+    </insert>
+    <select id="findByName" resultType="com.bjpowernode.beans.Student">
+        SELECT name,age FROM student WHERE name = #{name}
+    </select>
+</mapper>

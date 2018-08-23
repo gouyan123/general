@@ -1,0 +1,55 @@
+输入输出：
+→   →     →
+in.read(buffer) 将 输入流in 中内容 读到 数组buffer中
+ ←   ←      ←
+out.write(buffer) 将 数组buffer 中的内容 写到 输出流out中
+-----------------------------------------------------------------------------------------
+阻塞与非阻塞：当 进程 访问 数据时，数据没有准备好；如果进程等待数据则属于阻塞；如果进程不等待数据则属于非阻塞；
+同步与异步：同步-程序直接参与IO操作；异步-程序不参与IO操作，IO操作交由操作系统，操作完成通知程序；
+-----------------------------------------------------------------------------------------
+BIO(同步阻塞)与NIO(同步非阻塞)对比(参考 BIO.png NIO.png)：
+BIO：
+①每个client端请求，server端都会开启 1个线程去接收；
+②每个client端请求，都要创建一个 客户端连接服务端对象，处理完之后关闭连接；
+③线程thread接收自己client端的数据，直到数据接收完成(IO读写完成)，该线程才能处理，属于阻塞；
+NIO：
+①server端只开启 1个线程，死循环轮询是否有client端发送请求过来；
+②事先创建多个 客户端连接服务端对象，不关闭；
+③client端 将数据读到缓冲区，对应处理thread会不停检查 缓冲区数据，当该数据读好了(IO读写完成)，该thread
+就会进行处理，否则，直接返回，因此，NIO属于非阻塞；
+-----------------------------------------------------------------------------------------
+Nio模型：
+整体流程：先读取出客户端连接对象里面的内容，处理后，再将相应内容写入客户端连接对象；
+实质：客户端连接通道 socketChannel里面的数据读到服务端，处理之后，将数据写到客户端连接通道 socketChannel；
+
+/**将服务端连接通道 serverSocketChannel封装到key中再注册到 selector上，key表示该通道可以
+* 被客户端连接通道连接了*/
+serverSocketChannel.register(selector, SelectionKey.OP_ACCEPT);
+/**将客户端连接通道 clientSocketChannel封装到key中再注册到 selector上，key表示该通道可以
+* 向缓冲区读取数据*/
+clientSocketChannel.register(selector, SelectionKey.OP_READ);
+/**返回注册到 selector上面的 连接通道数量*/
+int num = selector.select();
+/**返回注册到 selector上面的所有 连接通道的 key*/
+Set<SelectionKey> keys = selector.selectedKeys();
+/**取出封装在 key中的 服务端连接通道channel*/
+ServerSocketChannel serverSocketChannel = (ServerSocketChannel)key.channel();
+/**取出封装在 key中的 客户端连接通道channel*/
+SocketChannel clientSocketChannel = (SocketChannel)key.channel();
+
+手写 客户端client：
+com.gupaoedu.nio.client.NIOClient
+手写 服务端server：
+com.gupaoedu.nio.server.NIOServer
+-----------------------------------------------------------------------------------------
+Buffer缓冲区：
+channel  →IO流←  Buffer  →数据类型←  程序；
+先将IO流读入 Buffer，满了以后，再将Buffer读入程序；
+或者，先将程序内容写到Buffer，满了以后，再将 Buffer写入IO流；
+Buffer就是一个数组，子类ByteBuffer就是一个字节数组，子类IntBuffer就是一个数字数组；
+如上图，Buffer解除 程序与IO流 操作的藕合；
+创建 com.gupaoedu.nio.buffer.TestIntBuffer，向IntBuffer缓冲区数组里面存入取出整形数据；其中，
+buffer.flip()：切换读写模式；
+------------------------------------------------------------------------------------------
+
+

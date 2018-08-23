@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+                        http://www.springframework.org/schema/beans/spring-beans.xsd
+                        http://www.springframework.org/schema/context
+                        http://www.springframework.org/schema/context/spring-context.xsd
+                        http://www.springframework.org/schema/aop
+                        http://www.springframework.org/schema/context/spring-aop.xsd
+                        http://www.springframework.org/schema/tx
+                        http://www.springframework.org/schema/context/spring-tx.xsd
+                        http://www.springframework.org/schema/mvc
+                        http://www.springframework.org/schema/context/spring-mvc.xsd">
+    <!--why：解决web.xml文件中dispatcherServet的url-pattern设为 / 时无法访问静态资源问题-->
+    <mvc:default-servlet-handler />
+    <!--注册处理器映射器-->
+    <!--<bean class="org.springframework.web.servlet.handler.BeanNameUrlHandlerMapping"/>-->
+    <!--<bean class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
+        <property name=""
+    </bean>-->
+    <bean id="/my.do" class="com.bjpowernode.controllers.MyControler"/>
+    <!--注册视图解析器，实际效果不好-->
+    <!--无id的bean为bean后处理器BeanPostProcessor，当其他bean初始化前后自动执行初始化前方法，初始化后方法-->
+    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="prefix" value="/WEB-INF/jsp/"/>
+        <property name="suffix" value=".jsp"/>
+    </bean>
+    <!--bean后处理器，自动在每个bean初始化前后执行-->
+    <bean class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
+        <property name="defaultErrorView" value="/errors/error.jsp"/><!--当发生异常，自动跳到该页面-->
+        <property name="exceptionAttribute" value="ex"/><!--jsp中输出异常消息：${ex.message}-->
+    </bean>
+</beans>

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" 
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+
+	   xmlns:jack="http://www.dongnaoedu.com/schema/soa"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans 
+       http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+	   http://www.dongnaoedu.com/schema/soa 
+	   http://www.dongnaoedu.com/schema/soa.xsd"
+       default-lazy-init="true">
+	<!--beans：跟节点
+	    xmlns：命名空间
+	    xmlns:xxx=uri：以xxx为前缀的xmlnamespace,uri表示命名空间，就是一个唯一标识符，不重复即可
+	    例，xmlns:jack=uri表示以jack为前缀的命名空间，<jack:xxx/>
+	    <jack:xxx/>中的xxx表示 jack/uri 这个命名空间里的属性
+	    xmlns=uri：表示默认命名空间时是beans，当使用默认命名空间时 <xxx/>xxx是beans命名空间里面的元素
+	    xsi:schemaLocation:各命名空间的uri与xsd文件的对应关系，"x x.xsd y y.xsd z z.xsd" 以空格隔开
+	-->
+	<!--<bean id="userServiceImpl" class="com.dongnao.jack.test.UserServiceImpl"/>-->
+	<jack:registry protocol="redis" address="101.132.109.12:6379"/>
+	<jack:protocol  name="http" port="27017" host="127.0.0.1"/>
+	<jack:service interface="com.dongnao.jack.test.UserService" ref="userServiceImpl"/>
+	<jack:service interface="com.dongnao.jack.test.UserService" ref="userServiceImpl2"/>
+	<!--消费者 创建interface的代理对象，调用代理对象的代理方法，该方法将[目标对象id,目标方法名,方法参数]
+	发送给 生产者端，生产者端 利用反射执行目标方法，生产者端将返回结果发生给消费者端-->
+	<jack:reference id="userServiceImpl" interface="com.dongnao.jack.test.UserService" loadbalance="random" protocol="http"/>
+
+
+</beans>
