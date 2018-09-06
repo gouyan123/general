@@ -6,7 +6,12 @@
     </artifacts-to-build>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="fa2c94f0-70ed-4963-8fba-afc573722790" name="Default" comment="gx" />
+    <list default="true" id="fa2c94f0-70ed-4963-8fba-afc573722790" name="Default" comment="gx">
+      <change afterPath="$PROJECT_DIR$/base/src/main/java/com/lamda/CalculateInterface.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/base/src/main/java/com/lamda/LamdaTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/base/src/main/java/com/lamda/lamda表达式.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    </list>
     <ignored path="$PROJECT_DIR$/zookeeper/target/" />
     <ignored path="$PROJECT_DIR$/target/" />
     <ignored path="$PROJECT_DIR$/out/" />
@@ -68,47 +73,33 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="简历.txt" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/简历/简历.txt">
+      <file leaf-file-name="lamda表达式.txt" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/base/src/main/java/com/lamda/lamda表达式.txt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2050">
-              <caret line="50" column="37" selection-start-line="50" selection-start-column="37" selection-end-line="50" selection-end-column="37" />
+            <state>
+              <caret column="51" lean-forward="true" selection-start-column="51" selection-end-column="51" />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="springboot-mldn.txt" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/简历/springboot-mldn.txt">
+      <file leaf-file-name="CalculateInterface.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/base/src/main/java/com/lamda/CalculateInterface.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="738">
-              <caret line="18" column="13" selection-start-line="18" selection-start-column="13" selection-end-line="18" selection-end-column="13" />
+            <state relative-caret-position="90">
+              <caret line="3" column="20" selection-start-line="3" selection-start-column="20" selection-end-line="3" selection-end-column="20" />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="BAT面试专题-gupao.txt" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/简历/BAT面试专题-gupao.txt">
+      <file leaf-file-name="LamdaTest.java" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/base/src/main/java/com/lamda/LamdaTest.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="41">
-              <caret line="1" selection-start-line="1" selection-end-line="1" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="mysql数据库设计与优化-gupao-James.txt" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/mysql/note/mysql数据库设计与优化-gupao-James.txt">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="984">
-              <caret line="24" column="9" selection-start-line="24" selection-start-column="9" selection-end-line="24" selection-end-column="9" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="mysql优化.txt" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/mysql/note/mysql优化.txt">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1066">
-              <caret line="26" column="10" selection-start-line="26" selection-start-column="10" selection-end-line="26" selection-end-column="10" />
+            <state relative-caret-position="382">
+              <caret line="17" column="32" selection-start-line="17" selection-start-column="32" selection-end-line="17" selection-end-column="32" />
+              <folding>
+                <element signature="e#215#216#0" expanded="true" />
+                <element signature="e#259#260#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -164,9 +155,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/thread/note/thread-dongnao-mark.txt" />
-        <option value="$PROJECT_DIR$/netty/src/main/java/com/gupaoedu/catalina/netty/server/GPTomcat.java" />
-        <option value="$PROJECT_DIR$/netty/note/Netty.txt" />
         <option value="$PROJECT_DIR$/netty/src/main/java/com/demo01/EchoClient.java" />
         <option value="$PROJECT_DIR$/netty/src/main/java/com/demo01/EchoInHandler1.java" />
         <option value="$PROJECT_DIR$/netty/src/main/java/com/demo01/EchoOutHandler1.java" />
@@ -215,6 +203,9 @@
         <option value="$PROJECT_DIR$/DesignPatterns/src/main/java/com/decorator/ToUpperCaseDecorator.java" />
         <option value="$PROJECT_DIR$/mysql/note/mysql优化.txt" />
         <option value="$PROJECT_DIR$/简历/BAT面试专题-gupao.txt" />
+        <option value="$PROJECT_DIR$/base/src/main/java/com/lamda/lamda表达式.txt" />
+        <option value="$PROJECT_DIR$/base/src/main/java/com/lamda/CalculateInterface.java" />
+        <option value="$PROJECT_DIR$/base/src/main/java/com/lamda/LamdaTest.java" />
       </list>
     </option>
   </component>
@@ -288,7 +279,67 @@
     <navigator proportions="" version="1">
       <foldersAlwaysOnTop value="true" />
     </navigator>
-    <panes />
+    <panes>
+      <pane id="Scope" />
+      <pane id="PackagesPane" />
+      <pane id="AndroidView" />
+      <pane id="ProjectPane">
+        <subPane>
+          <expand>
+            <path>
+              <item name="general" type="b2602c69:ProjectViewProjectNode" />
+              <item name="general" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="general" type="b2602c69:ProjectViewProjectNode" />
+              <item name="general" type="462c0819:PsiDirectoryNode" />
+              <item name="base" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="general" type="b2602c69:ProjectViewProjectNode" />
+              <item name="general" type="462c0819:PsiDirectoryNode" />
+              <item name="base" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="general" type="b2602c69:ProjectViewProjectNode" />
+              <item name="general" type="462c0819:PsiDirectoryNode" />
+              <item name="base" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="general" type="b2602c69:ProjectViewProjectNode" />
+              <item name="general" type="462c0819:PsiDirectoryNode" />
+              <item name="base" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="general" type="b2602c69:ProjectViewProjectNode" />
+              <item name="general" type="462c0819:PsiDirectoryNode" />
+              <item name="base" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="com" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="general" type="b2602c69:ProjectViewProjectNode" />
+              <item name="general" type="462c0819:PsiDirectoryNode" />
+              <item name="base" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="com" type="462c0819:PsiDirectoryNode" />
+              <item name="lamda" type="462c0819:PsiDirectoryNode" />
+            </path>
+          </expand>
+          <select />
+        </subPane>
+      </pane>
+    </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
@@ -334,7 +385,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Application.DirectProducer">
+  <component name="RunManager" selected="Application.LamdaTest">
     <configuration default="true" type="Applet" factoryName="Applet">
       <option name="POLICY_FILE" value="$APPLICATION_HOME_DIR$/bin/appletviewer.policy" />
     </configuration>
@@ -345,17 +396,6 @@
       <extension name="coverage">
         <pattern>
           <option name="PATTERN" value="com.gupaoedu.chat.client.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-    </configuration>
-    <configuration name="ChatServer" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="com.gupaoedu.chat.server.ChatServer" />
-      <module name="netty" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="com.gupaoedu.chat.server.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
@@ -378,6 +418,17 @@
       <extension name="coverage">
         <pattern>
           <option name="PATTERN" value="com.dongnaoedu.normal.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+    </configuration>
+    <configuration name="LamdaTest" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="com.lamda.LamdaTest" />
+      <module name="base" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.lamda.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
@@ -517,19 +568,19 @@
     </configuration>
     <list>
       <item itemvalue="Tomcat Server.Tomcat" />
-      <item itemvalue="Application.ChatServer" />
       <item itemvalue="Application.ChatClient" />
       <item itemvalue="Application.Test" />
       <item itemvalue="Application.DirectProducer" />
       <item itemvalue="Application.ConsumerAll" />
+      <item itemvalue="Application.LamdaTest" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Application.LamdaTest" />
         <item itemvalue="Application.DirectProducer" />
         <item itemvalue="Application.ConsumerAll" />
         <item itemvalue="Application.Test" />
         <item itemvalue="Application.ChatClient" />
-        <item itemvalue="Application.ChatServer" />
       </list>
     </recent_temporary>
   </component>
@@ -591,6 +642,7 @@
       <workItem from="1533536874770" duration="1351000" />
       <workItem from="1533638764447" duration="2042000" />
       <workItem from="1535027809819" duration="52000" />
+      <workItem from="1536248946728" duration="924000" />
     </task>
     <task id="LOCAL-00001" summary="gx">
       <created>1531055274891</created>
@@ -635,47 +687,48 @@
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="362323000" />
+    <option name="totallyTimeSpent" value="363247000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-9" y="-9" width="1938" height="1050" extended-state="6" />
+    <frame x="-8" y="-8" width="1040" height="744" extended-state="6" />
+    <editor active="true" />
     <layout>
       <window_info anchor="right" id="Palette" order="4" />
-      <window_info anchor="bottom" id="TODO" order="8" weight="0.32876712" />
-      <window_info anchor="right" id="Palette&#9;" order="6" />
-      <window_info id="Image Layers" order="3" />
-      <window_info anchor="bottom" id="Java Enterprise" order="14" weight="0.32993197" />
-      <window_info anchor="right" id="Capture Analysis" order="7" />
       <window_info anchor="bottom" id="Event Log" order="9" sideWeight="0.5408163" side_tool="true" weight="0.510274" />
       <window_info anchor="bottom" id="Application Servers" order="12" weight="0.32876712" />
       <window_info anchor="right" id="Maven Projects" order="9" weight="0.49081632" />
       <window_info anchor="bottom" id="Database Changes" order="13" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Run" order="4" sideWeight="0.45918366" weight="0.50343645" />
-      <window_info anchor="bottom" id="Version Control" order="10" weight="0.6151203" />
-      <window_info active="true" anchor="bottom" id="Terminal" order="11" visible="true" weight="0.67253524" />
+      <window_info anchor="right" id="CDI" order="10" />
       <window_info id="Capture Tool" order="1" />
       <window_info id="Designer" order="6" />
-      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.4924406" weight="0.27040815" />
-      <window_info id="Web" order="4" side_tool="true" />
       <window_info anchor="right" id="Database" order="5" weight="0.32959184" />
       <window_info id="Structure" order="7" side_tool="true" weight="0.28163266" />
+      <window_info anchor="right" id="JSF" order="12" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info id="UI Designer" order="2" />
-      <window_info anchor="right" id="Theme Preview" order="8" />
       <window_info anchor="bottom" id="Debug" order="7" weight="0.5223368" />
+      <window_info anchor="bottom" id="TODO" order="8" weight="0.32876712" />
+      <window_info anchor="bottom" id="Messages" order="3" sideWeight="0.49183673" weight="0.40378007" />
+      <window_info anchor="right" id="Palette&#9;" order="6" />
+      <window_info id="Image Layers" order="3" />
+      <window_info anchor="bottom" id="Java Enterprise" order="14" weight="0.32993197" />
+      <window_info anchor="right" id="Capture Analysis" order="7" />
+      <window_info anchor="bottom" id="Version Control" order="10" weight="0.6151203" />
+      <window_info anchor="bottom" id="Run" order="4" sideWeight="0.45918366" weight="0.50343645" />
+      <window_info anchor="bottom" id="Spring" order="15" weight="0.32993197" />
+      <window_info anchor="bottom" id="Terminal" order="11" weight="0.6718213" />
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.4924406" weight="0.27040815" />
+      <window_info anchor="right" id="Bean Validation" order="11" weight="0.32959184" />
+      <window_info id="Web" order="4" side_tool="true" />
+      <window_info anchor="right" id="Theme Preview" order="8" />
       <window_info id="Favorites" order="5" sideWeight="0.5075594" side_tool="true" weight="0.26734695" />
       <window_info anchor="bottom" id="Analyze Dataflow to" order="16" weight="0.32876712" />
       <window_info anchor="bottom" id="Inspection Results" order="0" weight="0.32876712" />
       <window_info anchor="right" id="Coverage" order="13" side_tool="true" weight="0.32959184" />
       <window_info anchor="bottom" id="Inspection" order="6" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="5" weight="0.25" />
-      <window_info anchor="right" id="Bean Validation" order="11" weight="0.32959184" />
-      <window_info anchor="right" id="JSF" order="12" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.65" />
       <window_info anchor="right" id="PlantUML" order="3" weight="0.32959184" />
-      <window_info anchor="right" id="CDI" order="10" />
-      <window_info anchor="bottom" id="Messages" order="3" sideWeight="0.49183673" weight="0.40378007" />
-      <window_info anchor="bottom" id="Spring" order="15" weight="0.32993197" />
       <window_info anchor="bottom" id="Find" order="2" weight="0.31678084" />
       <window_info anchor="right" id="Commander" order="0" weight="0.4" />
       <window_info anchor="bottom" id="Message" order="1" />
@@ -899,27 +952,6 @@
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/简历/springboot-mldn.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="738">
-          <caret line="18" column="13" selection-start-line="18" selection-start-column="13" selection-end-line="18" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/mysql/note/mysql数据库设计与优化-gupao-James.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="984">
-          <caret line="24" column="9" selection-start-line="24" selection-start-column="9" selection-end-line="24" selection-end-column="9" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/mysql/note/mysql优化.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1066">
-          <caret line="26" column="10" selection-start-line="26" selection-start-column="10" selection-end-line="26" selection-end-column="10" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/简历/BAT面试专题-gupao.txt">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="41">
@@ -1195,36 +1227,61 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/mysql/note/mysql数据库设计与优化-gupao-James.txt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="984">
+        <state relative-caret-position="720">
           <caret line="24" column="9" selection-start-line="24" selection-start-column="9" selection-end-line="24" selection-end-column="9" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/mysql/note/mysql优化.txt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1066">
+        <state relative-caret-position="780">
           <caret line="26" column="10" selection-start-line="26" selection-start-column="10" selection-end-line="26" selection-end-column="10" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/简历/简历.txt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2050">
+        <state relative-caret-position="1500">
           <caret line="50" column="37" selection-start-line="50" selection-start-column="37" selection-end-line="50" selection-end-column="37" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/简历/springboot-mldn.txt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="738">
+        <state relative-caret-position="540">
           <caret line="18" column="13" selection-start-line="18" selection-start-column="13" selection-end-line="18" selection-end-column="13" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/简历/BAT面试专题-gupao.txt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="41">
+        <state relative-caret-position="30">
           <caret line="1" selection-start-line="1" selection-end-line="1" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/base/src/main/java/com/lamda/CalculateInterface.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="90">
+          <caret line="3" column="20" selection-start-line="3" selection-start-column="20" selection-end-line="3" selection-end-column="20" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/base/src/main/java/com/lamda/lamda表达式.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret column="51" lean-forward="true" selection-start-column="51" selection-end-column="51" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/base/src/main/java/com/lamda/LamdaTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="382">
+          <caret line="17" column="32" selection-start-line="17" selection-start-column="32" selection-end-line="17" selection-end-column="32" />
+          <folding>
+            <element signature="e#215#216#0" expanded="true" />
+            <element signature="e#259#260#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
