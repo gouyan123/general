@@ -7,10 +7,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="fa2c94f0-70ed-4963-8fba-afc573722790" name="Default" comment="gx">
-      <change afterPath="$PROJECT_DIR$/base/src/main/java/com/lamda/CalculateInterface.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/base/src/main/java/com/lamda/LamdaTest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/base/src/main/java/com/lamda/lamda表达式.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/base/src/main/java/com/lamda/LamdaTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/base/src/main/java/com/lamda/LamdaTest.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/zookeeper/target/" />
     <ignored path="$PROJECT_DIR$/target/" />
@@ -94,8 +91,8 @@
       <file leaf-file-name="LamdaTest.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/base/src/main/java/com/lamda/LamdaTest.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="382">
-              <caret line="17" column="32" selection-start-line="17" selection-start-column="32" selection-end-line="17" selection-end-column="32" />
+            <state relative-caret-position="300">
+              <caret line="22" column="46" selection-start-line="22" selection-start-column="46" selection-end-line="22" selection-end-column="46" />
               <folding>
                 <element signature="e#215#216#0" expanded="true" />
                 <element signature="e#259#260#0" expanded="true" />
@@ -225,8 +222,8 @@
   <component name="MavenImportPreferences">
     <option name="generalSettings">
       <MavenGeneralSettings>
-        <option name="mavenHome" value="F:/Program Files/apache-maven-3.3.9" />
-        <option name="userSettingsFile" value="F:\Program Files\apache-maven-3.3.9\conf\settings.xml" />
+        <option name="mavenHome" value="F:/Program Files/apache-maven-3.5.2" />
+        <option name="userSettingsFile" value="F:\Program Files\apache-maven-3.5.2\conf\settings.xml" />
       </MavenGeneralSettings>
     </option>
     <option name="importingSettings">
@@ -642,7 +639,7 @@
       <workItem from="1533536874770" duration="1351000" />
       <workItem from="1533638764447" duration="2042000" />
       <workItem from="1535027809819" duration="52000" />
-      <workItem from="1536248946728" duration="924000" />
+      <workItem from="1536248946728" duration="1856000" />
     </task>
     <task id="LOCAL-00001" summary="gx">
       <created>1531055274891</created>
@@ -687,7 +684,7 @@
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="363247000" />
+    <option name="totallyTimeSpent" value="364179000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1040" height="744" extended-state="6" />
@@ -1276,8 +1273,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/base/src/main/java/com/lamda/LamdaTest.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="382">
-          <caret line="17" column="32" selection-start-line="17" selection-start-column="32" selection-end-line="17" selection-end-column="32" />
+        <state relative-caret-position="300">
+          <caret line="22" column="46" selection-start-line="22" selection-start-column="46" selection-end-line="22" selection-end-column="46" />
           <folding>
             <element signature="e#215#216#0" expanded="true" />
             <element signature="e#259#260#0" expanded="true" />
