@@ -14,10 +14,10 @@ public class DirectProducer {
         /**创建工厂*/
         ConnectionFactory factory = new ConnectionFactory();
         /**配置工厂*/
-        factory.setHost("47.100.49.95");
+        factory.setHost("172.17.1.247");
         factory.setPort(5672);
-        factory.setUsername("gouyan");
-        factory.setPassword("123456");
+        factory.setUsername("guest");
+        factory.setPassword("guest");
         factory.setVirtualHost("/");
         /**工厂创建 tcp/ip 连接*/
         Connection connection = factory.newConnection();
