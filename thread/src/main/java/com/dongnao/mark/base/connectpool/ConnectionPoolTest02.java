@@ -1,7 +1,6 @@
 package com.dongnao.mark.base.connectpool;
 
 import com.alibaba.fastjson.JSON;
-
 import java.sql.Connection;
 import java.util.concurrent.CountDownLatch;
 

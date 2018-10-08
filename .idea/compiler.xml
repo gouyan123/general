@@ -25,6 +25,8 @@
         <module name="self-orm" />
         <module name="self-spring" />
         <module name="service" />
+        <module name="SocketClient" />
+        <module name="SocketServer" />
         <module name="spring" />
         <module name="springmvc" />
         <module name="ssm" />
@@ -63,6 +65,8 @@
       <module name="self-redis" target="1.8" />
       <module name="self-spring" target="1.7" />
       <module name="service" target="1.8" />
+      <module name="SocketClient" target="1.7" />
+      <module name="SocketServer" target="1.7" />
       <module name="spring" target="1.8" />
       <module name="springboot" target="1.8" />
       <module name="springmvc" target="1.8" />

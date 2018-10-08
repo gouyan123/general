@@ -29,6 +29,8 @@
       <module>zookeeper</module>
       <module>rabbitMQ</module>
       <module>mysql</module>
+      <module>SocketClient</module>
+      <module>SocketServer</module>
   </modules>
 
   <properties>

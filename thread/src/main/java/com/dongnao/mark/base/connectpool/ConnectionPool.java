@@ -23,7 +23,7 @@ public class ConnectionPool {
         }
     }
 
-    /**将连接放回线程池*/
+    /**将连接放回 连接池*/
     public void releaseConnection(Connection connection) {
         if (connection != null) {
             synchronized (pool) {
