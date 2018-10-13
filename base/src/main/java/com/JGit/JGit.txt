@@ -1,0 +1,2 @@
+使用 JGit的api在java客户端操作 git服务端，依赖包 org.eclipse.jgit；
+使用 commons-io的api进行文件操作，I/O流操作，依赖包 commons-io；
