@@ -6,58 +6,7 @@
     </artifacts-to-build>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="fa2c94f0-70ed-4963-8fba-afc573722790" name="Default" comment="gx">
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_googlecode_javaewah_JavaEWAH_1_1_6.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_jcraft_jsch_0_1_54.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_jcraft_jzlib_1_1_1.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_apiguardian_apiguardian_api_1_0_0.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_eclipse_jgit_org_eclipse_jgit_5_1_0_201809111528_r.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_junit_jupiter_junit_jupiter_api_5_3_1.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_junit_platform_junit_platform_commons_1_3_1.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_opentest4j_opentest4j_1_1_1.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_slf4j_slf4j_api_1_7_2.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/SocketClient/SocketClient.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/SocketClient/pom.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/SocketClient/src/main/java/com/gouyan/SocketClient.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/SocketClient/src/main/resources/META-INF/MANIFEST.MF" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/SocketServer/SocketServer.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/SocketServer/pom.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/SocketServer/src/main/java/com/gouyan/SocketServer.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/SocketServer/src/main/resources/META-INF/MANIFEST.MF" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/base/src/main/java/com/JGit/JGit" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/base/src/main/java/com/JGit/gitTest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/base/src/main/java/com/socket/SocketClient.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/base/src/main/java/com/socket/SocketServer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/artifacts/base_war_exploded.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/artifacts/base_war_exploded.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/base/base.iml" beforeDir="false" afterPath="$PROJECT_DIR$/base/base.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/base/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/base/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/base/target/classes/com/bjpowernode/手写Tomcat服务器/httpserver/core/BootStrap.class" beforeDir="false" afterPath="$PROJECT_DIR$/base/target/classes/com/bjpowernode/手写Tomcat服务器/httpserver/core/BootStrap.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/base/target/classes/com/bjpowernode/手写Tomcat服务器/httpserver/core/HandlerRequest.class" beforeDir="false" afterPath="$PROJECT_DIR$/base/target/classes/com/bjpowernode/手写Tomcat服务器/httpserver/core/HandlerRequest.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/base/target/classes/com/lamda/LamdaTest.class" beforeDir="false" afterPath="$PROJECT_DIR$/base/target/classes/com/lamda/LamdaTest.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/self-orm/self-orm.iml" beforeDir="false" afterPath="$PROJECT_DIR$/self-orm/self-orm.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/self-spring/self-spring.iml" beforeDir="false" afterPath="$PROJECT_DIR$/self-spring/self-spring.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ssm/ssm.iml" beforeDir="false" afterPath="$PROJECT_DIR$/ssm/ssm.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/thread/src/main/java/com/dongnao/mark/base/connectpool/ConnectionPool.java" beforeDir="false" afterPath="$PROJECT_DIR$/thread/src/main/java/com/dongnao/mark/base/connectpool/ConnectionPool.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/thread/src/main/java/com/dongnao/mark/base/connectpool/ConnectionPoolTest02.java" beforeDir="false" afterPath="$PROJECT_DIR$/thread/src/main/java/com/dongnao/mark/base/connectpool/ConnectionPoolTest02.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/thread/target/classes/com/dongnao/mark/aqs/TestMyLock$1Worker.class" beforeDir="false" afterPath="$PROJECT_DIR$/thread/target/classes/com/dongnao/mark/aqs/TestMyLock$1Worker.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/thread/target/classes/com/dongnao/mark/base/Daemon$DaemonRunner.class" beforeDir="false" afterPath="$PROJECT_DIR$/thread/target/classes/com/dongnao/mark/base/Daemon$DaemonRunner.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/thread/target/classes/com/dongnao/mark/base/connectpool/ConnectionPoolTest$ConnetionRunner.class" beforeDir="false" afterPath="$PROJECT_DIR$/thread/target/classes/com/dongnao/mark/base/connectpool/ConnectionPoolTest$ConnetionRunner.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/thread/target/classes/com/dongnao/mark/base/connectpool/ConnectionPoolTest02$ConnectionThread.class" beforeDir="false" afterPath="$PROJECT_DIR$/thread/target/classes/com/dongnao/mark/base/connectpool/ConnectionPoolTest02$ConnectionThread.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/thread/target/classes/com/dongnao/mark/base/connectpool/ConnectionPoolTest02$ReleaseThread.class" beforeDir="false" afterPath="$PROJECT_DIR$/thread/target/classes/com/dongnao/mark/base/connectpool/ConnectionPoolTest02$ReleaseThread.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/thread/target/classes/com/dongnao/mark/base/connectpool/ConnectionPoolTest02.class" beforeDir="false" afterPath="$PROJECT_DIR$/thread/target/classes/com/dongnao/mark/base/connectpool/ConnectionPoolTest02.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/thread/target/classes/com/dongnao/mark/base/interrupt/BlockInterrupt$TryWhileWhenBlock.class" beforeDir="false" afterPath="$PROJECT_DIR$/thread/target/classes/com/dongnao/mark/base/interrupt/BlockInterrupt$TryWhileWhenBlock.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/thread/target/classes/com/dongnao/mark/base/interrupt/OverrideInterrupt.class" beforeDir="false" afterPath="$PROJECT_DIR$/thread/target/classes/com/dongnao/mark/base/interrupt/OverrideInterrupt.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/thread/target/classes/com/dongnao/mark/base/threadstate/ThreadState$Sync.class" beforeDir="false" afterPath="$PROJECT_DIR$/thread/target/classes/com/dongnao/mark/base/threadstate/ThreadState$Sync.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/thread/target/classes/com/dongnao/mark/lock/LimitedBlockingQueue/BlockingQueueLC.class" beforeDir="false" afterPath="$PROJECT_DIR$/thread/target/classes/com/dongnao/mark/lock/LimitedBlockingQueue/BlockingQueueLC.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/thread/target/classes/com/dongnao/mark/lock/LimitedBlockingQueue/BlockingQueueLC02.class" beforeDir="false" afterPath="$PROJECT_DIR$/thread/target/classes/com/dongnao/mark/lock/LimitedBlockingQueue/BlockingQueueLC02.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/thread/target/classes/com/dongnao/mark/lock/condicton/ConditionTemplate.class" beforeDir="false" afterPath="$PROJECT_DIR$/thread/target/classes/com/dongnao/mark/lock/condicton/ConditionTemplate.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/thread/target/classes/com/dongnao/mark/lock/readwritelock/RwNumImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/thread/target/classes/com/dongnao/mark/lock/readwritelock/RwNumImpl.class" afterDir="false" />
-    </list>
+    <list default="true" id="fa2c94f0-70ed-4963-8fba-afc573722790" name="Default" comment="gx" />
     <ignored path="$PROJECT_DIR$/zookeeper/target/" />
     <ignored path="$PROJECT_DIR$/target/" />
     <ignored path="$PROJECT_DIR$/out/" />
@@ -97,11 +46,11 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="CoverageDataManager">
-    <SUITE FILE_PATH="coverage/general$Test_test01.coverage" NAME="Test.test01 Coverage Results" MODIFIED="1530250659856" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
-      <FILTER>com.rabbitmq.spring.test.*</FILTER>
-    </SUITE>
     <SUITE FILE_PATH="coverage/general$MyTest.coverage" NAME="MyTest Coverage Results" MODIFIED="1518338594970" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
       <FILTER>com.dongnao.jack.test.*</FILTER>
+    </SUITE>
+    <SUITE FILE_PATH="coverage/general$Test_test01.coverage" NAME="Test.test01 Coverage Results" MODIFIED="1530250659856" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
+      <FILTER>com.rabbitmq.spring.test.*</FILTER>
     </SUITE>
   </component>
   <component name="DatabaseView">
@@ -120,30 +69,39 @@
     <favorites_list name="general" />
   </component>
   <component name="FileEditorManager">
-    <leaf SIDE_TABS_SIZE_LIMIT_KEY="375">
-      <file leaf-file-name="SocketServer.java" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/SocketServer/src/main/java/com/gouyan/SocketServer.java">
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+      <file leaf-file-name="lamda表达式.txt" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/base/src/main/java/com/lamda/lamda表达式.txt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="492">
-              <caret line="17" column="40" selection-start-line="17" selection-start-column="40" selection-end-line="17" selection-end-column="40" />
+            <state relative-caret-position="30">
+              <caret line="2" column="25" selection-start-line="2" selection-start-column="25" selection-end-line="2" selection-end-column="25" />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="pom.xml" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/base/pom.xml">
+      <file leaf-file-name="系统设计-开闭原则.txt" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/base/src/main/java/com/开闭原则/系统设计-开闭原则.txt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="164">
-              <caret line="46" column="34" selection-start-line="46" selection-start-column="34" selection-end-line="46" selection-end-column="34" />
+            <state relative-caret-position="55">
+              <caret line="7" column="29" selection-start-line="7" selection-start-column="29" selection-end-line="7" selection-end-column="29" />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="SocketClient.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/SocketClient/src/main/java/com/gouyan/SocketClient.java">
+      <file leaf-file-name="CalculateInterface.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/base/src/main/java/com/lamda/CalculateInterface.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="328">
-              <caret line="10" column="36" selection-start-line="10" selection-start-column="12" selection-end-line="10" selection-end-column="38" />
+            <state relative-caret-position="90">
+              <caret line="3" column="20" selection-start-line="3" selection-start-column="20" selection-end-line="3" selection-end-column="20" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="LamdaTest.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/base/src/main/java/com/lamda/LamdaTest.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="90">
+              <caret line="3" column="44" selection-start-line="3" selection-start-column="44" selection-end-line="3" selection-end-column="44" />
             </state>
           </provider>
         </entry>
@@ -193,6 +151,7 @@
     </replaceStrings>
   </component>
   <component name="Git.Settings">
+    <option name="UPDATE_TYPE" value="MERGE" />
     <option name="ROOT_SYNC" value="DONT_SYNC" />
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
@@ -319,11 +278,17 @@
   <component name="ProjectLevelVcsManager" settingsEditedManually="true">
     <ConfirmationsSetting value="2" id="Add" />
   </component>
+  <component name="ProjectReloadState">
+    <option name="STATE" value="1" />
+  </component>
   <component name="ProjectView">
     <navigator proportions="" version="1">
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="PackagesPane" />
+      <pane id="Scope" />
+      <pane id="AndroidView" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -374,82 +339,12 @@
               <item name="main" type="462c0819:PsiDirectoryNode" />
               <item name="java" type="462c0819:PsiDirectoryNode" />
               <item name="com" type="462c0819:PsiDirectoryNode" />
-              <item name="JGit" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="general" type="b2602c69:ProjectViewProjectNode" />
-              <item name="general" type="462c0819:PsiDirectoryNode" />
-              <item name="SocketServer" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="general" type="b2602c69:ProjectViewProjectNode" />
-              <item name="general" type="462c0819:PsiDirectoryNode" />
-              <item name="SocketServer" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="general" type="b2602c69:ProjectViewProjectNode" />
-              <item name="general" type="462c0819:PsiDirectoryNode" />
-              <item name="SocketServer" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="general" type="b2602c69:ProjectViewProjectNode" />
-              <item name="general" type="462c0819:PsiDirectoryNode" />
-              <item name="SocketServer" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="general" type="b2602c69:ProjectViewProjectNode" />
-              <item name="general" type="462c0819:PsiDirectoryNode" />
-              <item name="SocketServer" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="gouyan" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="general" type="b2602c69:ProjectViewProjectNode" />
-              <item name="general" type="462c0819:PsiDirectoryNode" />
-              <item name="SocketServer" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="resources" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="general" type="b2602c69:ProjectViewProjectNode" />
-              <item name="general" type="462c0819:PsiDirectoryNode" />
-              <item name="SocketServer" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="resources" type="462c0819:PsiDirectoryNode" />
-              <item name="META-INF" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="general" type="b2602c69:ProjectViewProjectNode" />
-              <item name="general" type="462c0819:PsiDirectoryNode" />
-              <item name="SocketServer" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="test" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="general" type="b2602c69:ProjectViewProjectNode" />
-              <item name="general" type="462c0819:PsiDirectoryNode" />
-              <item name="SocketServer" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="test" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="开闭原则" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
         </subPane>
       </pane>
-      <pane id="PackagesPane" />
-      <pane id="Scope" />
-      <pane id="AndroidView" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -805,17 +700,16 @@
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="373105000" />
+    <option name="totallyTimeSpent" value="373108000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-9" y="-9" width="1938" height="1050" extended-state="6" />
-    <editor active="true" />
+    <frame x="-8" y="-8" width="1040" height="744" extended-state="6" />
     <layout>
       <window_info anchor="right" id="Palette" order="4" />
       <window_info anchor="bottom" id="Event Log" order="9" sideWeight="0.5408163" side_tool="true" weight="0.510274" />
-      <window_info anchor="bottom" id="Application Servers" order="11" weight="0.32876712" />
+      <window_info anchor="bottom" id="Application Servers" order="12" weight="0.32876712" />
       <window_info anchor="right" id="Maven Projects" order="9" weight="0.49081632" />
-      <window_info anchor="bottom" id="Database Changes" order="12" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Database Changes" order="13" show_stripe_button="false" />
       <window_info anchor="right" id="CDI" order="10" />
       <window_info id="Capture Tool" order="1" />
       <window_info id="Designer" order="6" />
@@ -828,29 +722,57 @@
       <window_info anchor="bottom" id="TODO" order="8" weight="0.32876712" />
       <window_info anchor="right" id="Palette&#9;" order="6" />
       <window_info id="Image Layers" order="3" />
-      <window_info anchor="bottom" id="Java Enterprise" order="13" weight="0.32993197" />
+      <window_info anchor="bottom" id="Java Enterprise" order="14" weight="0.32993197" />
       <window_info anchor="right" id="Capture Analysis" order="7" />
       <window_info anchor="bottom" id="Version Control" order="10" weight="0.6151203" />
-      <window_info anchor="bottom" id="Run" order="4" sideWeight="0.45918366" weight="0.50235295" />
-      <window_info anchor="bottom" id="Spring" order="14" weight="0.32993197" />
-      <window_info anchor="bottom" id="Terminal" order="17" weight="0.67176473" />
-      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.4924406" visible="true" weight="0.28540772" />
+      <window_info anchor="bottom" id="Run" order="4" sideWeight="0.45918366" weight="0.50343645" />
+      <window_info anchor="bottom" id="Spring" order="15" weight="0.32993197" />
+      <window_info active="true" anchor="bottom" id="Terminal" order="11" visible="true" weight="0.6701031" />
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.4924406" weight="0.27040815" />
       <window_info anchor="right" id="Bean Validation" order="11" weight="0.32959184" />
       <window_info id="Web" order="4" side_tool="true" />
       <window_info anchor="right" id="Theme Preview" order="8" />
       <window_info id="Favorites" order="5" sideWeight="0.5075594" side_tool="true" weight="0.26734695" />
-      <window_info anchor="bottom" id="Analyze Dataflow to" order="15" weight="0.32876712" />
-      <window_info anchor="bottom" id="Inspection Results" order="0" weight="0.32876712" />
+      <window_info anchor="bottom" id="Spring" order="14" weight="0.32993197" />
+      <window_info anchor="bottom" id="Run" order="4" sideWeight="0.45918366" weight="0.50235295" />
+      <window_info anchor="right" id="Database" order="5" weight="0.32959184" />
+      <window_info anchor="bottom" id="Terminal" order="17" weight="0.67176473" />
+      <window_info id="UI Designer" order="2" />
+      <window_info anchor="bottom" id="Application Servers" order="11" weight="0.32876712" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.4924406" visible="true" weight="0.28540772" />
       <window_info anchor="right" id="Coverage" order="13" side_tool="true" weight="0.32959184" />
-      <window_info anchor="bottom" id="Inspection" order="6" weight="0.4" />
-      <window_info anchor="bottom" id="Cvs" order="5" weight="0.25" />
-      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.65" />
-      <window_info anchor="right" id="PlantUML" order="3" weight="0.32959184" />
-      <window_info anchor="bottom" id="Messages" order="3" sideWeight="0.49183673" weight="0.4035294" />
-      <window_info anchor="bottom" id="Find" order="2" weight="0.3164706" />
-      <window_info anchor="right" id="Commander" order="0" weight="0.4" />
-      <window_info anchor="bottom" id="Message" order="1" />
+      <window_info anchor="right" id="Palette&#9;" order="6" />
+      <window_info anchor="right" id="Palette" order="4" />
       <window_info anchor="bottom" id="Analyze Dataflow from" order="16" weight="0.32876712" />
+      <window_info id="Structure" order="7" side_tool="true" weight="0.28163266" />
+      <window_info anchor="bottom" id="TODO" order="8" weight="0.32876712" />
+      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.65" />
+      <window_info anchor="right" id="Maven Projects" order="9" weight="0.49081632" />
+      <window_info anchor="bottom" id="Inspection Results" order="0" weight="0.32876712" />
+      <window_info anchor="right" id="Capture Analysis" order="7" />
+      <window_info anchor="bottom" id="Message" order="1" />
+      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
+      <window_info anchor="right" id="CDI" order="10" />
+      <window_info id="Favorites" order="5" sideWeight="0.5075594" side_tool="true" weight="0.26734695" />
+      <window_info anchor="right" id="Theme Preview" order="8" />
+      <window_info id="Image Layers" order="3" />
+      <window_info anchor="bottom" id="Find" order="2" weight="0.3164706" />
+      <window_info anchor="bottom" id="Event Log" order="9" sideWeight="0.5408163" side_tool="true" weight="0.510274" />
+      <window_info anchor="bottom" id="Cvs" order="5" weight="0.25" />
+      <window_info anchor="right" id="PlantUML" order="3" weight="0.32959184" />
+      <window_info anchor="bottom" id="Inspection" order="6" weight="0.4" />
+      <window_info id="Designer" order="6" />
+      <window_info anchor="bottom" id="Analyze Dataflow to" order="15" weight="0.32876712" />
+      <window_info anchor="bottom" id="Java Enterprise" order="13" weight="0.32993197" />
+      <window_info id="Web" order="4" side_tool="true" />
+      <window_info anchor="right" id="Bean Validation" order="11" weight="0.32959184" />
+      <window_info anchor="bottom" id="Database Changes" order="12" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Version Control" order="10" weight="0.6151203" />
+      <window_info anchor="right" id="JSF" order="12" />
+      <window_info anchor="right" id="Commander" order="0" weight="0.4" />
+      <window_info id="Capture Tool" order="1" />
+      <window_info anchor="bottom" id="Messages" order="3" sideWeight="0.49183673" weight="0.4035294" />
+      <window_info anchor="bottom" id="Debug" order="7" weight="0.5223368" />
     </layout>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -1212,8 +1134,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/base/src/main/java/com/lamda/LamdaTest.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="820">
-          <caret line="22" column="5" selection-start-line="22" selection-start-column="5" selection-end-line="22" selection-end-column="5" />
+        <state relative-caret-position="90">
+          <caret line="3" column="44" selection-start-line="3" selection-start-column="44" selection-end-line="3" selection-end-column="44" />
         </state>
       </provider>
     </entry>
@@ -1240,15 +1162,15 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/base/src/main/java/com/lamda/CalculateInterface.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="123">
+        <state relative-caret-position="90">
           <caret line="3" column="20" selection-start-line="3" selection-start-column="20" selection-end-line="3" selection-end-column="20" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/base/src/main/java/com/lamda/lamda表达式.txt">
       <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret column="51" selection-start-column="51" selection-end-column="51" />
+        <state relative-caret-position="30">
+          <caret line="2" column="25" selection-start-line="2" selection-start-column="25" selection-end-line="2" selection-end-column="25" />
         </state>
       </provider>
     </entry>
@@ -1329,41 +1251,11 @@
         </state>
       </provider>
     </entry>
-    <entry file="jar://F:/ProgramFiles/Java/jdk1.8.0_181/src.zip!/java/net/PlainSocketImpl.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="141">
-          <caret line="192" column="32" selection-start-line="192" selection-start-column="32" selection-end-line="192" selection-end-column="32" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://F:/ProgramFiles/Java/jdk1.8.0_181/src.zip!/java/net/SocketImpl.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="273">
-          <caret line="140" column="28" selection-start-line="140" selection-start-column="28" selection-end-line="140" selection-end-column="28" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://F:/ProgramFiles/Java/jdk1.8.0_181/src.zip!/java/net/DualStackPlainSocketImpl.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="150">
-          <caret line="121" column="9" selection-start-line="121" selection-start-column="9" selection-end-line="121" selection-end-column="9" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://F:/ProgramFiles/Java/jdk1.8.0_181/src.zip!/java/net/AbstractPlainSocketImpl.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="396">
-          <caret line="408" column="19" lean-forward="true" selection-start-line="408" selection-start-column="19" selection-end-line="408" selection-end-column="19" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://F:/ProgramFiles/Java/jdk1.8.0_181/src.zip!/java/net/ServerSocket.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="510">
-          <caret line="544" column="26" selection-start-line="544" selection-start-column="26" selection-end-line="544" selection-end-column="26" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="jar://F:/ProgramFiles/Java/jdk1.8.0_181/src.zip!/java/net/PlainSocketImpl.java" />
+    <entry file="jar://F:/ProgramFiles/Java/jdk1.8.0_181/src.zip!/java/net/SocketImpl.java" />
+    <entry file="jar://F:/ProgramFiles/Java/jdk1.8.0_181/src.zip!/java/net/DualStackPlainSocketImpl.java" />
+    <entry file="jar://F:/ProgramFiles/Java/jdk1.8.0_181/src.zip!/java/net/AbstractPlainSocketImpl.java" />
+    <entry file="jar://F:/ProgramFiles/Java/jdk1.8.0_181/src.zip!/java/net/ServerSocket.java" />
     <entry file="file://$PROJECT_DIR$/base/src/main/java/com/socket/SocketServer.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="82">
@@ -1385,13 +1277,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/base/src/main/java/com/JGit.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="82">
-          <caret line="2" column="17" selection-start-line="2" selection-start-column="17" selection-end-line="2" selection-end-column="17" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/base/src/main/java/com/JGit.java" />
     <entry file="file://$PROJECT_DIR$/base/pom.xml">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="164">
