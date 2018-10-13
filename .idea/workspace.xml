@@ -7,7 +7,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="fa2c94f0-70ed-4963-8fba-afc573722790" name="Default" comment="gx">
-      <change beforePath="$PROJECT_DIR$/base/src/main/java/com/lamda/LamdaTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/base/src/main/java/com/lamda/LamdaTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/base/src/main/java/com/开闭原则/系统设计-开闭原则.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/zookeeper/target/" />
     <ignored path="$PROJECT_DIR$/target/" />
@@ -73,8 +74,17 @@
       <file leaf-file-name="lamda表达式.txt" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/base/src/main/java/com/lamda/lamda表达式.txt">
           <provider selected="true" editor-type-id="text-editor">
-            <state>
-              <caret column="51" lean-forward="true" selection-start-column="51" selection-end-column="51" />
+            <state relative-caret-position="30">
+              <caret line="2" column="25" selection-start-line="2" selection-start-column="25" selection-end-line="2" selection-end-column="25" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="系统设计-开闭原则.txt" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/base/src/main/java/com/开闭原则/系统设计-开闭原则.txt">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="210">
+              <caret line="7" column="29" selection-start-line="7" selection-start-column="29" selection-end-line="7" selection-end-column="29" />
             </state>
           </provider>
         </entry>
@@ -88,15 +98,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="LamdaTest.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="LamdaTest.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/base/src/main/java/com/lamda/LamdaTest.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="300">
-              <caret line="22" column="46" selection-start-line="22" selection-start-column="46" selection-end-line="22" selection-end-column="46" />
-              <folding>
-                <element signature="e#215#216#0" expanded="true" />
-                <element signature="e#259#260#0" expanded="true" />
-              </folding>
+            <state relative-caret-position="90">
+              <caret line="3" column="44" selection-start-line="3" selection-start-column="44" selection-end-line="3" selection-end-column="44" />
             </state>
           </provider>
         </entry>
@@ -152,7 +158,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/netty/src/main/java/com/demo01/EchoClient.java" />
         <option value="$PROJECT_DIR$/netty/src/main/java/com/demo01/EchoInHandler1.java" />
         <option value="$PROJECT_DIR$/netty/src/main/java/com/demo01/EchoOutHandler1.java" />
         <option value="$PROJECT_DIR$/netty/note/gupao-tom-nio.txt" />
@@ -200,9 +205,10 @@
         <option value="$PROJECT_DIR$/DesignPatterns/src/main/java/com/decorator/ToUpperCaseDecorator.java" />
         <option value="$PROJECT_DIR$/mysql/note/mysql优化.txt" />
         <option value="$PROJECT_DIR$/简历/BAT面试专题-gupao.txt" />
-        <option value="$PROJECT_DIR$/base/src/main/java/com/lamda/lamda表达式.txt" />
         <option value="$PROJECT_DIR$/base/src/main/java/com/lamda/CalculateInterface.java" />
         <option value="$PROJECT_DIR$/base/src/main/java/com/lamda/LamdaTest.java" />
+        <option value="$PROJECT_DIR$/base/src/main/java/com/lamda/lamda表达式.txt" />
+        <option value="$PROJECT_DIR$/base/src/main/java/com/开闭原则/系统设计-开闭原则.txt" />
       </list>
     </option>
   </component>
@@ -277,8 +283,8 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="PackagesPane" />
+      <pane id="Scope" />
       <pane id="AndroidView" />
       <pane id="ProjectPane">
         <subPane>
@@ -330,7 +336,7 @@
               <item name="main" type="462c0819:PsiDirectoryNode" />
               <item name="java" type="462c0819:PsiDirectoryNode" />
               <item name="com" type="462c0819:PsiDirectoryNode" />
-              <item name="lamda" type="462c0819:PsiDirectoryNode" />
+              <item name="开闭原则" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -639,7 +645,10 @@
       <workItem from="1533536874770" duration="1351000" />
       <workItem from="1533638764447" duration="2042000" />
       <workItem from="1535027809819" duration="52000" />
-      <workItem from="1536248946728" duration="1856000" />
+      <workItem from="1536248946728" duration="2166000" />
+      <workItem from="1537002213746" duration="33000" />
+      <workItem from="1539440589026" duration="5000" />
+      <workItem from="1539441799198" duration="1656000" />
     </task>
     <task id="LOCAL-00001" summary="gx">
       <created>1531055274891</created>
@@ -684,7 +693,7 @@
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="364179000" />
+    <option name="totallyTimeSpent" value="366183000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1040" height="744" extended-state="6" />
@@ -705,7 +714,6 @@
       <window_info id="UI Designer" order="2" />
       <window_info anchor="bottom" id="Debug" order="7" weight="0.5223368" />
       <window_info anchor="bottom" id="TODO" order="8" weight="0.32876712" />
-      <window_info anchor="bottom" id="Messages" order="3" sideWeight="0.49183673" weight="0.40378007" />
       <window_info anchor="right" id="Palette&#9;" order="6" />
       <window_info id="Image Layers" order="3" />
       <window_info anchor="bottom" id="Java Enterprise" order="14" weight="0.32993197" />
@@ -713,7 +721,7 @@
       <window_info anchor="bottom" id="Version Control" order="10" weight="0.6151203" />
       <window_info anchor="bottom" id="Run" order="4" sideWeight="0.45918366" weight="0.50343645" />
       <window_info anchor="bottom" id="Spring" order="15" weight="0.32993197" />
-      <window_info anchor="bottom" id="Terminal" order="11" weight="0.6718213" />
+      <window_info anchor="bottom" id="Terminal" order="11" weight="0.67066896" />
       <window_info content_ui="combo" id="Project" order="0" sideWeight="0.4924406" weight="0.27040815" />
       <window_info anchor="right" id="Bean Validation" order="11" weight="0.32959184" />
       <window_info id="Web" order="4" side_tool="true" />
@@ -726,6 +734,7 @@
       <window_info anchor="bottom" id="Cvs" order="5" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.65" />
       <window_info anchor="right" id="PlantUML" order="3" weight="0.32959184" />
+      <window_info anchor="bottom" id="Messages" order="3" sideWeight="0.49183673" weight="0.40378007" />
       <window_info anchor="bottom" id="Find" order="2" weight="0.31678084" />
       <window_info anchor="right" id="Commander" order="0" weight="0.4" />
       <window_info anchor="bottom" id="Message" order="1" />
@@ -949,13 +958,6 @@
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/简历/BAT面试专题-gupao.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="41">
-          <caret line="1" selection-start-line="1" selection-end-line="1" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/DesignPatterns/src/main/java/com/listener/Test.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="90">
@@ -1257,6 +1259,13 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/base/src/main/java/com/lamda/lamda表达式.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="30">
+          <caret line="2" column="25" selection-start-line="2" selection-start-column="25" selection-end-line="2" selection-end-column="25" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/base/src/main/java/com/lamda/CalculateInterface.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="90">
@@ -1264,21 +1273,17 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/base/src/main/java/com/lamda/lamda表达式.txt">
+    <entry file="file://$PROJECT_DIR$/base/src/main/java/com/lamda/LamdaTest.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret column="51" lean-forward="true" selection-start-column="51" selection-end-column="51" />
+        <state relative-caret-position="90">
+          <caret line="3" column="44" selection-start-line="3" selection-start-column="44" selection-end-line="3" selection-end-column="44" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/base/src/main/java/com/lamda/LamdaTest.java">
+    <entry file="file://$PROJECT_DIR$/base/src/main/java/com/开闭原则/系统设计-开闭原则.txt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="300">
-          <caret line="22" column="46" selection-start-line="22" selection-start-column="46" selection-end-line="22" selection-end-column="46" />
-          <folding>
-            <element signature="e#215#216#0" expanded="true" />
-            <element signature="e#259#260#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="210">
+          <caret line="7" column="29" selection-start-line="7" selection-start-column="29" selection-end-line="7" selection-end-column="29" />
         </state>
       </provider>
     </entry>
