@@ -8,7 +8,6 @@ import org.eclipse.jgit.internal.storage.file.FileRepository;
 import org.eclipse.jgit.lib.Repository;
 import org.eclipse.jgit.storage.file.FileRepositoryBuilder;
 import org.eclipse.jgit.transport.UsernamePasswordCredentialsProvider;
-import org.junit.jupiter.api.Test;
 import java.io.*;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -99,7 +98,7 @@ public class gitTest {
         UsernamePasswordCredentialsProvider usernamePasswordCredentialsProvider =new
                 UsernamePasswordCredentialsProvider(username,password);
         //git仓库地址
-        Git git = new Git(new FileRepository(localPath+"/.git"));
+        Git git = new Git(new FileRepository(remotePath+"/.git"));
         git.pull().setRemoteBranchName("master").
                 setCredentialsProvider(usernamePasswordCredentialsProvider).call();
     }
@@ -109,7 +108,7 @@ public class gitTest {
     public void testPush() throws IOException, JGitInternalException,
             GitAPIException {
         UsernamePasswordCredentialsProvider usernamePasswordCredentialsProvider =new
-                UsernamePasswordCredentialsProvider("username","password");
+                UsernamePasswordCredentialsProvider(username,password);
         //git仓库地址
         Git git = new Git(new FileRepository(localPath+"/.git"));   
         git.push().setRemote("origin").setCredentialsProvider(usernamePasswordCredentialsProvider).call();

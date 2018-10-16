@@ -17,6 +17,6 @@ public abstract class Shopping {
     public abstract void buy();
     //钩子方法：子类可重写，也可不重写
     public void pay(){
-        //System.out.println("使用银联支付");
+        System.out.println("使用银联支付");
     }
 }
