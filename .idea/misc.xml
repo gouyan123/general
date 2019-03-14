@@ -34,6 +34,8 @@
     <option name="ignoredFiles">
       <set>
         <option value="$PROJECT_DIR$/NettyGuide/pom.xml" />
+        <option value="$PROJECT_DIR$/SocketClient/pom.xml" />
+        <option value="$PROJECT_DIR$/SocketServer/pom.xml" />
         <option value="$PROJECT_DIR$/blockchain/pom.xml" />
         <option value="$PROJECT_DIR$/dnjacksoa/pom.xml" />
         <option value="$PROJECT_DIR$/dubbo-consumer/pom.xml" />

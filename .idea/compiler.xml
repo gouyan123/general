@@ -25,8 +25,6 @@
         <module name="self-orm" />
         <module name="self-spring" />
         <module name="service" />
-        <module name="SocketClient" />
-        <module name="SocketServer" />
         <module name="spring" />
         <module name="springmvc" />
         <module name="ssm" />

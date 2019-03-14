@@ -3,8 +3,6 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/DesignPatterns/DesignPatterns.iml" filepath="$PROJECT_DIR$/DesignPatterns/DesignPatterns.iml" />
-      <module fileurl="file://$PROJECT_DIR$/SocketClient/SocketClient.iml" filepath="$PROJECT_DIR$/SocketClient/SocketClient.iml" />
-      <module fileurl="file://$PROJECT_DIR$/SocketServer/SocketServer.iml" filepath="$PROJECT_DIR$/SocketServer/SocketServer.iml" />
       <module fileurl="file://$PROJECT_DIR$/base/base.iml" filepath="$PROJECT_DIR$/base/base.iml" />
       <module fileurl="file://$PROJECT_DIR$/dn-jack-soa/dn-jack-soa.iml" filepath="$PROJECT_DIR$/dn-jack-soa/dn-jack-soa.iml" />
       <module fileurl="file://$PROJECT_DIR$/general.iml" filepath="$PROJECT_DIR$/general.iml" />

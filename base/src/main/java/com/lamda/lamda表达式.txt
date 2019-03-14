@@ -1,18 +1,19 @@
-lamda表达式是对匿名内部类的简写形式，interface对象 = (参数...) -> {方法体}
+lamda表达式是对匿名实现类 的简写形式；
 
-Lamda表达式实质：interface对象 = lamda表达式
+Lamda表达式写法：interface 对象 = (参数...) -> {方法体}
 
 public class LamdaTest {
     public static void main(String[] args) {
         int x = 9;
+        //CalculateInterface接口的 匿名实现类 的普通写法；
         CalculateInterface cal01 = new CalculateInterface() {
             @Override
             public int sum(int x, int y) {
                 return x + y;
             }
         };
-        System.out.println("匿名内部类写法 " + cal01.sum(1,2));
-
+        System.out.println("匿名接口写法 " + cal01.sum(1,2));
+        //CalculateInterface接口 的匿名实现类 的lamda表达式写法，省略 new 接口()，省略方法名，只剩方法参数()和方法体{}
         CalculateInterface cal02 = (int x,int y) -> {
             return x + y;
         };
@@ -22,6 +23,6 @@ public class LamdaTest {
         CalculateInterface cal03 = (x,y) -> x + y;
         System.out.println("Lamda表达式写法 " + cal03.sum(1,2));
 
-        /*匿名内部类使用访问外层作用域的变量，则外层变量会自动被编译为 final*/
+        /*匿名类使用访问外层作用域的变量，则外层变量会自动被编译为 final*/
     }
 }
