@@ -25,8 +25,8 @@
         <module name="self-orm" />
         <module name="self-spring" />
         <module name="service" />
-        <module name="spring" />
         <module name="springmvc" />
+        <module name="spring源码" />
         <module name="ssm" />
         <module name="stream" />
         <module name="thread" />
@@ -68,6 +68,7 @@
       <module name="spring" target="1.8" />
       <module name="springboot" target="1.8" />
       <module name="springmvc" target="1.8" />
+      <module name="spring源码" target="1.8" />
       <module name="ssm" target="1.8" />
       <module name="strategy" target="1.8" />
       <module name="stream" target="1.8" />

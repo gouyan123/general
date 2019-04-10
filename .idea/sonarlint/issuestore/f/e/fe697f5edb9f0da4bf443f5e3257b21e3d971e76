@@ -1,0 +1,16 @@
+
+1squid:S1643"Use a StringBuilder instead.(Š–ˆÂ
+csquid:S1192"IDefine a constant instead of duplicating this literal "user.dir" 3 times.(ªÅˆâùÿÿÿÿ
+bsquid:S2095"HUse try-with-resources or close this "FileWriter" in a "finally" clause.(¶Á²„úÿÿÿÿ
+asquid:S2095"LUse try-with-resources or close this "URLClassLoader" in a "finally" clause.(ÀÑØÇ
+_squid:CommentedOutCodeLine"<This block of commented-out lines of code should be removed.(œò†"
+esquid:CommentedOutCodeLine"<This block of commented-out lines of code should be removed.(ÐÙðêøÿÿÿÿ
+esquid:CommentedOutCodeLine"<This block of commented-out lines of code should be removed.(ù®Ü¢üÿÿÿÿ
+R
+squid:S106"9Replace this use of System.out or System.err by a logger.(ªÅˆâùÿÿÿÿ
+M
+squid:S106"9Replace this use of System.out or System.err by a logger.(ÖÓƒï
+M
+squid:S106"9Replace this use of System.out or System.err by a logger.(çÐÁÃ
+usquid:S1488"[Immediately return this expression instead of assigning it to the temporary variable "obj".(§è¢çüÿÿÿÿ
+\squid:S00112"FDefine and throw a dedicated exception instead of using a generic one.(ƒÃÊà

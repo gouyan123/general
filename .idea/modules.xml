@@ -16,8 +16,8 @@
       <module fileurl="file://$PROJECT_DIR$/self-spring/self-spring.iml" filepath="$PROJECT_DIR$/self-spring/self-spring.iml" />
       <module fileurl="file://$PROJECT_DIR$/service/service.iml" filepath="$PROJECT_DIR$/service/service.iml" />
       <module fileurl="file://$PROJECT_DIR$/servlet/servlet.iml" filepath="$PROJECT_DIR$/servlet/servlet.iml" />
-      <module fileurl="file://$PROJECT_DIR$/spring/spring.iml" filepath="$PROJECT_DIR$/spring/spring.iml" />
       <module fileurl="file://$PROJECT_DIR$/springmvc/springmvc.iml" filepath="$PROJECT_DIR$/springmvc/springmvc.iml" />
+      <module fileurl="file://$PROJECT_DIR$/spring源码/spring源码.iml" filepath="$PROJECT_DIR$/spring源码/spring源码.iml" />
       <module fileurl="file://$PROJECT_DIR$/ssm/ssm.iml" filepath="$PROJECT_DIR$/ssm/ssm.iml" />
       <module fileurl="file://$PROJECT_DIR$/stream/stream.iml" filepath="$PROJECT_DIR$/stream/stream.iml" />
       <module fileurl="file://$PROJECT_DIR$/mybatis/target/target.iml" filepath="$PROJECT_DIR$/mybatis/target/target.iml" />

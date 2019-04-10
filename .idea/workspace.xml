@@ -7,19 +7,108 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="fa2c94f0-70ed-4963-8fba-afc573722790" name="Default" comment="gx">
+      <change afterPath="$PROJECT_DIR$/spring源码/src/main/resources/applicationContext-annotation.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/spring源码/src/main/resources/applicationContext-aop.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/spring源码/src/main/resources/applicationContext-aspectJ.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/spring源码/src/main/resources/applicationContext.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/LOG_PATH_IS_UNDEFINED/error-20180330.log.0" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/LOG_PATH_IS_UNDEFINED/error.log" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/LOG_PATH_IS_UNDEFINED/info-20180330.log.0" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/LOG_PATH_IS_UNDEFINED/info.log" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/logs/debug.log" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/logs/debug.log.2018-05-26" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/logs/debug.log.2018-05-27" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/logs/debug.log.2018-05-28" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/logs/error.log" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/spring/note/spring.docx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/spring/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/spring源码/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/spring/spring.iml" beforeDir="false" afterPath="$PROJECT_DIR$/spring源码/spring源码.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/spring/springmvc/pom.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/spring/springmvc/springmvc.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/spring/springmvc/src/main/java/com/bjpowernode/handlers/MyControler.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/spring/springmvc/src/main/resources/springmvc.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/spring/springmvc/src/main/webapp/WEB-INF/jsp/welcome.jsp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/spring/springmvc/src/main/webapp/WEB-INF/web.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/spring/springmvc/src/main/webapp/index.jsp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/spring/springmvc/target/classes/com/bjpowernode/handlers/MyControler.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/spring/springmvc/target/classes/springmvc.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/spring/src/main/java/com/bjpowernode/aop/aspectJ/ISomeService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/spring/src/main/java/com/bjpowernode/aop/aspectJ/MyAspectAnnotation.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/spring/src/main/java/com/bjpowernode/aop/aspectJ/MyAspectXML.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/spring/src/main/java/com/bjpowernode/aop/aspectJ/PasswordException.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/spring/src/main/java/com/bjpowernode/aop/aspectJ/SomeServiceImpl.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/spring/src/main/java/com/bjpowernode/aop/aspectJ/UserException.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/spring/src/main/java/com/bjpowernode/aop/aspectJ/UsernameException.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/spring/src/main/java/com/bjpowernode/aop/introduction/ISomeService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/spring/src/main/java/com/bjpowernode/aop/introduction/MyAfterReturningAdvice.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/spring/src/main/java/com/bjpowernode/aop/introduction/MyMethodBeforeAdvice.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/spring/src/main/java/com/bjpowernode/aop/introduction/MyMethodInterceptor.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/spring/src/main/java/com/bjpowernode/aop/introduction/MyThrowsAdvice.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/spring/src/main/java/com/bjpowernode/aop/introduction/PasswordException.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/spring/src/main/java/com/bjpowernode/aop/introduction/SomeServiceImpl.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/spring/src/main/java/com/bjpowernode/aop/introduction/SystemService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/spring/src/main/java/com/bjpowernode/aop/introduction/UserException.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/spring/src/main/java/com/bjpowernode/aop/introduction/UsernameException.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/spring/src/main/java/com/bjpowernode/di/Person.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/spring/src/main/java/com/bjpowernode/di/School.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/spring/src/main/java/com/bjpowernode/di/Student.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/spring/src/main/java/com/bjpowernode/di/annotation/School.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/spring/src/main/java/com/bjpowernode/di/annotation/Student.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/spring/src/main/java/com/bjpowernode/ioc/ISomeService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/spring/src/main/java/com/bjpowernode/ioc/MyBeanPostProcessor.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/spring/src/main/java/com/bjpowernode/ioc/ServiceFactory.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/spring/src/main/java/com/bjpowernode/ioc/SomeServiceImpl.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/spring/src/main/main4.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/spring/src/main/resources/applicationContext-annotation.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/spring/src/main/resources/applicationContext-aop.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/spring/src/main/resources/applicationContext-aspectJ.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/spring/src/main/resources/applicationContext.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/spring/src/test/java/com/bjpowernode/TestAOP.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/spring/src/test/java/com/bjpowernode/TestAnnotation.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/spring/src/test/java/com/bjpowernode/TestAspectJ.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/spring/src/test/java/com/bjpowernode/TestDI.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/spring/src/test/java/com/bjpowernode/TestService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/spring/src/test/test2.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/spring/target/classes/applicationContext-annotation.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/spring/target/classes/applicationContext-aop.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/spring/target/classes/applicationContext-aspectJ.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/spring/target/classes/applicationContext.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/spring/target/classes/com/bjpowernode/aop/aspectJ/ISomeService.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/spring/target/classes/com/bjpowernode/aop/aspectJ/MyAspectAnnotation.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/spring/target/classes/com/bjpowernode/aop/aspectJ/MyAspectXML.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/spring/target/classes/com/bjpowernode/aop/aspectJ/PasswordException.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/spring/target/classes/com/bjpowernode/aop/aspectJ/SomeServiceImpl.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/spring/target/classes/com/bjpowernode/aop/aspectJ/UserException.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/spring/target/classes/com/bjpowernode/aop/aspectJ/UsernameException.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/spring/target/classes/com/bjpowernode/aop/introduction/ISomeService.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/spring/target/classes/com/bjpowernode/aop/introduction/MyAfterReturningAdvice.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/spring/target/classes/com/bjpowernode/aop/introduction/MyMethodBeforeAdvice.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/spring/target/classes/com/bjpowernode/aop/introduction/MyMethodInterceptor.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/spring/target/classes/com/bjpowernode/aop/introduction/MyThrowsAdvice.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/spring/target/classes/com/bjpowernode/aop/introduction/PasswordException.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/spring/target/classes/com/bjpowernode/aop/introduction/SomeServiceImpl.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/spring/target/classes/com/bjpowernode/aop/introduction/SystemService.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/spring/target/classes/com/bjpowernode/aop/introduction/UserException.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/spring/target/classes/com/bjpowernode/aop/introduction/UsernameException.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/spring/target/classes/com/bjpowernode/di/Person.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/spring/target/classes/com/bjpowernode/di/School.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/spring/target/classes/com/bjpowernode/di/Student.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/spring/target/classes/com/bjpowernode/di/annotation/School.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/spring/target/classes/com/bjpowernode/di/annotation/Student.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/spring/target/classes/com/bjpowernode/ioc/ISomeService.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/spring/target/classes/com/bjpowernode/ioc/MyBeanPostProcessor$1.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/spring/target/classes/com/bjpowernode/ioc/MyBeanPostProcessor.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/spring/target/classes/com/bjpowernode/ioc/ServiceFactory.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/spring/target/classes/com/bjpowernode/ioc/SomeServiceImpl.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/spring/target/maven-archiver/pom.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/spring/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/spring/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/spring/target/maven-status/maven-compiler-plugin/testCompile/default-testCompile/createdFiles.lst" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/spring/target/maven-status/maven-compiler-plugin/testCompile/default-testCompile/inputFiles.lst" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/spring/target/test-classes/com/bjpowernode/TestAOP$1.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/spring/target/test-classes/com/bjpowernode/TestAOP.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/spring/target/test-classes/com/bjpowernode/TestAnnotation.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/spring/target/test-classes/com/bjpowernode/TestAspectJ.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/spring/target/test-classes/com/bjpowernode/TestDI.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/spring/target/test-classes/com/bjpowernode/TestService.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/gouyan/App.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/gouyan/App.class" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/zookeeper/target/" />
     <ignored path="$PROJECT_DIR$/target/" />
@@ -52,6 +141,7 @@
     <ignored path="$PROJECT_DIR$/netty/target/" />
     <ignored path="$PROJECT_DIR$/SocketClient/target/" />
     <ignored path="$PROJECT_DIR$/SocketServer/target/" />
+    <ignored path="$PROJECT_DIR$/spring源码/target/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -84,11 +174,20 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="375">
-      <file leaf-file-name="Proxy.java" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/DesignPatterns/src/main/java/com/proxy/Proxy.java">
+      <file leaf-file-name="pom.xml" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/pom.xml">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="533">
-              <caret line="114" column="8" selection-start-line="114" selection-start-column="8" selection-end-line="115" selection-end-column="48" />
+            <state relative-caret-position="462">
+              <caret line="14" column="31" selection-start-line="14" selection-start-column="31" selection-end-line="14" selection-end-column="31" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="pom.xml" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/spring源码/pom.xml">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="231">
+              <caret line="7" column="38" selection-start-line="7" selection-start-column="38" selection-end-line="7" selection-end-column="38" />
             </state>
           </provider>
         </entry>
@@ -145,17 +244,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/netty/src/main/java/com/gupaoedu/chat/server/ChatServer.java" />
-        <option value="$PROJECT_DIR$/netty/src/main/java/com/gupaoedu/chat/client/handler/ChatClientHandler.java" />
-        <option value="$PROJECT_DIR$/netty/src/main/java/com/gupaoedu/chat/client/ChatClient.java" />
-        <option value="$PROJECT_DIR$/netty/src/main/java/com/gupaoedu/chat/server/handler/SocketHandler.java" />
-        <option value="$PROJECT_DIR$/netty/src/main/java/com/gupaoedu/chat/server/handler/WebSocketHandler.java" />
-        <option value="$PROJECT_DIR$/netty/note/gupao-tom-netty.txt" />
-        <option value="$PROJECT_DIR$/netty/src/main/java/com/gupaoedu/rpc/手写RPC.txt" />
-        <option value="$PROJECT_DIR$/base/src/main/java/com/bjsxt/类加载全过程/类加载全过程" />
-        <option value="$PROJECT_DIR$/base/src/main/java/com/bjsxt/集合/map/Student.java" />
-        <option value="$PROJECT_DIR$/base/src/main/java/com/bjsxt/集合/map/SxtHashMap.txt" />
-        <option value="$PROJECT_DIR$/base/src/main/java/com/bjsxt/集合/map/SxtHashMap003.java" />
         <option value="$PROJECT_DIR$/base/src/main/java/com/bjpowernode/手写Tomcat服务器/手写Tomcat服务器.txt" />
         <option value="$PROJECT_DIR$/base/src/main/java/com/bjpowernode/手写Tomcat服务器/httpserver/core/HandlerRequest.java" />
         <option value="$PROJECT_DIR$/DesignPatterns/src/main/java/com/proxy/proxy-尚学堂.txt" />
@@ -196,6 +284,17 @@
         <option value="$PROJECT_DIR$/SocketServer/src/main/java/com/gouyan/SocketServer.java" />
         <option value="$PROJECT_DIR$/base/pom.xml" />
         <option value="$PROJECT_DIR$/base/src/main/java/com/JGit/gitTest.java" />
+        <option value="$PROJECT_DIR$/spring/src/main/java/com/gupao/Demo.java" />
+        <option value="$PROJECT_DIR$/spring/src/main/resources/applicationContext.xml" />
+        <option value="$PROJECT_DIR$/spring/src/main/resources/applicationContext-annotation.xml" />
+        <option value="$PROJECT_DIR$/spring/src/main/resources/applicationContext-aop.xml" />
+        <option value="$PROJECT_DIR$/spring/src/main/resources/applicationContext-aspectJ.xml" />
+        <option value="$PROJECT_DIR$/spring/pom.xml" />
+        <option value="$PROJECT_DIR$/spring源码/src/main/resources/applicationContext-annotation.xml" />
+        <option value="$PROJECT_DIR$/pom.xml" />
+        <option value="$PROJECT_DIR$/spring源码/src/main/java/com/gupao/ClassPathXmlApplicationContextDemo.java" />
+        <option value="$PROJECT_DIR$/spring源码/src/main/resources/applicationContext.xml" />
+        <option value="$PROJECT_DIR$/spring源码/pom.xml" />
       </list>
     </option>
   </component>
@@ -235,10 +334,10 @@
     <packageJsonPaths />
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="-8" />
-    <option name="y" value="-8" />
+    <option name="x" value="-10" />
+    <option name="y" value="-10" />
     <option name="width" value="1040" />
-    <option name="height" value="744" />
+    <option name="height" value="745" />
   </component>
   <component name="ProjectInspectionProfilesVisibleTreeState">
     <entry key="Project Default">
@@ -273,6 +372,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="AndroidView" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -283,54 +383,34 @@
             <path>
               <item name="general" type="b2602c69:ProjectViewProjectNode" />
               <item name="general" type="462c0819:PsiDirectoryNode" />
-              <item name="DesignPatterns" type="462c0819:PsiDirectoryNode" />
+              <item name="spring源码" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="general" type="b2602c69:ProjectViewProjectNode" />
               <item name="general" type="462c0819:PsiDirectoryNode" />
-              <item name="DesignPatterns" type="462c0819:PsiDirectoryNode" />
+              <item name="spring源码" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="general" type="b2602c69:ProjectViewProjectNode" />
               <item name="general" type="462c0819:PsiDirectoryNode" />
-              <item name="DesignPatterns" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="general" type="b2602c69:ProjectViewProjectNode" />
-              <item name="general" type="462c0819:PsiDirectoryNode" />
-              <item name="DesignPatterns" type="462c0819:PsiDirectoryNode" />
+              <item name="spring源码" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="general" type="b2602c69:ProjectViewProjectNode" />
               <item name="general" type="462c0819:PsiDirectoryNode" />
-              <item name="DesignPatterns" type="462c0819:PsiDirectoryNode" />
+              <item name="spring源码" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="main" type="462c0819:PsiDirectoryNode" />
               <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="com" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="general" type="b2602c69:ProjectViewProjectNode" />
-              <item name="general" type="462c0819:PsiDirectoryNode" />
-              <item name="DesignPatterns" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="com" type="462c0819:PsiDirectoryNode" />
-              <item name="proxy" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
         </subPane>
       </pane>
       <pane id="Scope" />
-      <pane id="AndroidView" />
       <pane id="PackagesPane" />
     </panes>
   </component>
@@ -338,7 +418,7 @@
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
     <property name="last_directory_selection" value="$PROJECT_DIR$/rabbitMQ/src/main/java/com" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../rabbitdemo" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../springcloud_1.5.8" />
     <property name="project.structure.last.edited" value="Modules" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.25467288" />
@@ -378,7 +458,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Application.SocketClient">
+  <component name="RunManager" selected="Application.Demo">
     <configuration default="true" type="Applet" factoryName="Applet">
       <option name="POLICY_FILE" value="$APPLICATION_HOME_DIR$/bin/appletviewer.policy" />
     </configuration>
@@ -393,13 +473,13 @@
         </pattern>
       </extension>
     </configuration>
-    <configuration name="DirectProducer" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="com.dongnaoedu.normal.DirectProducer" />
-      <module name="rabbitMQ" />
+    <configuration name="Demo" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="com.gupao.Demo" />
+      <module name="general" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="com.dongnaoedu.normal.*" />
+          <option name="PATTERN" value="com.gupao.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
@@ -561,19 +641,19 @@
     </configuration>
     <list>
       <item itemvalue="Tomcat Server.Tomcat" />
-      <item itemvalue="Application.DirectProducer" />
       <item itemvalue="Application.LamdaTest" />
       <item itemvalue="Application.ConnectionPoolTest02" />
       <item itemvalue="Application.SocketServer" />
       <item itemvalue="Application.SocketClient" />
+      <item itemvalue="Application.Demo" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Application.Demo" />
         <item itemvalue="Application.SocketClient" />
         <item itemvalue="Application.SocketServer" />
         <item itemvalue="Application.ConnectionPoolTest02" />
         <item itemvalue="Application.LamdaTest" />
-        <item itemvalue="Application.DirectProducer" />
       </list>
     </recent_temporary>
   </component>
@@ -647,6 +727,8 @@
       <workItem from="1539738013469" duration="807000" />
       <workItem from="1542938377890" duration="94000" />
       <workItem from="1544506794658" duration="1637000" />
+      <workItem from="1554719764668" duration="4416000" />
+      <workItem from="1554771754693" duration="243000" />
     </task>
     <task id="LOCAL-00001" summary="gx">
       <created>1531055274891</created>
@@ -691,11 +773,10 @@
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="376411000" />
+    <option name="totallyTimeSpent" value="381070000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-9" y="-9" width="1938" height="1050" extended-state="6" />
-    <editor active="true" />
+    <frame x="-7" y="-7" width="1550" height="838" extended-state="6" />
     <layout>
       <window_info anchor="right" id="Palette" order="4" />
       <window_info anchor="bottom" id="Event Log" order="9" sideWeight="0.5408163" side_tool="true" weight="0.510274" />
@@ -718,12 +799,13 @@
       <window_info anchor="bottom" id="Java Enterprise" order="13" weight="0.32993197" />
       <window_info anchor="right" id="Capture Analysis" order="7" />
       <window_info anchor="bottom" id="Version Control" order="10" weight="0.6151203" />
-      <window_info anchor="bottom" id="Run" order="4" sideWeight="0.45918366" weight="0.50235295" />
+      <window_info anchor="bottom" id="Run" order="4" sideWeight="0.45918366" weight="0.5022157" />
       <window_info anchor="bottom" id="Spring" order="14" weight="0.32993197" />
       <window_info anchor="bottom" id="Terminal" order="17" weight="0.67176473" />
-      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.4924406" weight="0.29774678" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.4924406" visible="true" weight="0.3016086" />
       <window_info anchor="right" id="Bean Validation" order="11" weight="0.32959184" />
       <window_info id="Web" order="4" side_tool="true" />
+      <window_info anchor="bottom" id="SonarLint" order="18" />
       <window_info anchor="right" id="Theme Preview" order="8" />
       <window_info id="Favorites" order="5" sideWeight="0.5075594" side_tool="true" weight="0.26734695" />
       <window_info anchor="bottom" id="Analyze Dataflow to" order="15" weight="0.32876712" />
@@ -733,7 +815,7 @@
       <window_info anchor="bottom" id="Cvs" order="5" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.65" />
       <window_info anchor="right" id="PlantUML" order="3" weight="0.32959184" />
-      <window_info anchor="bottom" id="Messages" order="3" sideWeight="0.49183673" weight="0.4035294" />
+      <window_info anchor="bottom" id="Messages" order="3" sideWeight="0.49183673" weight="0.40324962" />
       <window_info anchor="bottom" id="Find" order="2" weight="0.3164706" />
       <window_info anchor="right" id="Commander" order="0" weight="0.4" />
       <window_info anchor="bottom" id="Message" order="1" />
@@ -957,122 +1039,17 @@
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/netty/src/main/java/com/websocket/websocket.txt">
+    <entry file="file://$PROJECT_DIR$/pom.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-630" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/netty/note/gupao-tom-nio.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1080">
-          <caret line="3" column="13" lean-forward="true" selection-start-line="3" selection-start-column="13" selection-end-line="3" selection-end-column="13" />
+        <state relative-caret-position="462">
+          <caret line="14" column="31" selection-start-line="14" selection-start-column="31" selection-end-line="14" selection-end-column="31" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/DesignPatterns/src/main/java/com/factory/abstractFactory/MilkFactory.java">
+    <entry file="file://$PROJECT_DIR$/spring源码/pom.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="120">
-          <caret line="7" column="13" selection-start-line="7" selection-start-column="13" selection-end-line="7" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/DesignPatterns/src/main/java/com/factory/abstractFactory/AbstractFactory.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="150">
-          <caret line="5" column="22" selection-start-line="5" selection-start-column="22" selection-end-line="5" selection-end-column="22" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://F:/Program Files/Java/jdk1.8.0_101/src.zip!/java/lang/String.java" />
-    <entry file="file://$PROJECT_DIR$/DesignPatterns/src/main/java/com/decorator/Test.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-30">
-          <caret line="2" column="13" selection-start-line="2" selection-start-column="13" selection-end-line="2" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://F:/Program Files/Java/jdk1.8.0_101/src.zip!/java/util/HashMap.java" />
-    <entry file="file://$PROJECT_DIR$/DesignPatterns/src/main/java/com/decorator/ToUpperCaseDecorator.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="322">
-          <caret line="15" column="26" lean-forward="true" selection-start-line="15" selection-start-column="26" selection-end-line="15" selection-end-column="26" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/DesignPatterns/src/main/java/com/decorator/SomeServiceWrapper.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="90">
-          <caret line="3" column="13" selection-start-line="3" selection-start-column="13" selection-end-line="3" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/DesignPatterns/src/main/java/com/decorator/SomeServiceImpl.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="90">
-          <caret line="3" column="13" selection-start-line="3" selection-start-column="13" selection-end-line="3" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/DesignPatterns/src/main/java/com/decorator/ISomeService.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="90">
-          <caret line="3" column="17" selection-start-line="3" selection-start-column="17" selection-end-line="3" selection-end-column="17" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/mysql/note/mysql数据库设计与优化-gupao-James.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="720">
-          <caret line="24" column="9" selection-start-line="24" selection-start-column="9" selection-end-line="24" selection-end-column="9" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/mysql/note/mysql优化.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="780">
-          <caret line="26" column="10" selection-start-line="26" selection-start-column="10" selection-end-line="26" selection-end-column="10" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/简历/简历.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1500">
-          <caret line="50" column="37" selection-start-line="50" selection-start-column="37" selection-end-line="50" selection-end-column="37" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/简历/springboot-mldn.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="540">
-          <caret line="18" column="13" selection-start-line="18" selection-start-column="13" selection-end-line="18" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/简历/BAT面试专题-gupao.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="30">
-          <caret line="1" selection-start-line="1" selection-end-line="1" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/base/src/main/java/com/lamda/LamdaTest.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="90">
-          <caret line="3" column="44" selection-start-line="3" selection-start-column="44" selection-end-line="3" selection-end-column="44" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/thread/src/main/java/com/dongnao/mark/future/FutureSample.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="533">
-          <caret line="18" column="92" selection-start-line="18" selection-start-column="12" selection-end-line="18" selection-end-column="92" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/thread/src/main/java/com/dongnao/mark/future/ComputerTask.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="164">
-          <caret line="4" column="13" selection-start-line="4" selection-start-column="13" selection-end-line="4" selection-end-column="13" />
+        <state relative-caret-position="231">
+          <caret line="7" column="38" selection-start-line="7" selection-start-column="38" selection-end-line="7" selection-end-column="38" />
         </state>
       </provider>
     </entry>
@@ -1214,13 +1191,90 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/rabbitMQ/note/rabbitmq-dongnao-mark.txt">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
     <entry file="file://$PROJECT_DIR$/DesignPatterns/src/main/java/com/proxy/Proxy.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="533">
           <caret line="114" column="8" selection-start-line="114" selection-start-column="8" selection-end-line="115" selection-end-column="48" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/ssm/note/ssm搭建.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-4950" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/spring/springmvc/src/main/java/com/bjpowernode/handlers/MyControler.java" />
+    <entry file="file://$PROJECT_DIR$/spring/src/main/java/com/bjpowernode/di/annotation/School.java" />
+    <entry file="file://$PROJECT_DIR$/spring/src/main/java/com/bjpowernode/di/Person.java" />
+    <entry file="file://$PROJECT_DIR$/spring/src/main/java/com/bjpowernode/aop/aspectJ/MyAspectAnnotation.java" />
+    <entry file="file://$PROJECT_DIR$/self-spring/note/手写spring.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1881" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/spring/src/test/java/com/bjpowernode/TestAnnotation.java" />
+    <entry file="file://$PROJECT_DIR$/self-spring/src/main/java/com/gupaoedu/vip/spring/framework/beans/GPBeanDefinition.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="99">
+          <caret line="3" column="13" selection-start-line="3" selection-start-column="13" selection-end-line="3" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/DesignPatterns/src/main/java/com/singleton/register/BeanFactory.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="132">
+          <caret line="5" column="13" selection-start-line="5" selection-start-column="13" selection-end-line="5" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/spring源码/src/main/resources/applicationContext-aop.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="330">
+          <caret line="10" column="16" selection-start-column="4" selection-end-line="72" selection-end-column="12" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/spring源码/src/main/resources/applicationContext-aspectJ.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="264">
+          <caret line="8" lean-forward="true" selection-start-column="4" selection-end-line="39" selection-end-column="12" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/spring源码/src/main/java/com/gupao/Demo.java" />
+    <entry file="file://$PROJECT_DIR$/spring源码/src/main/resources/applicationContext-annotation.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="429">
+          <caret line="13" column="38" selection-start-column="4" selection-end-line="15" selection-end-column="12" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/servlet/pom.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="66">
+          <caret line="2" selection-start-line="2" selection-end-line="6" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pom.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="462">
+          <caret line="14" column="31" selection-start-line="14" selection-start-column="31" selection-end-line="14" selection-end-column="31" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/spring源码/src/main/java/com/gupao/ClassPathXmlApplicationContextDemo.java" />
+    <entry file="file://$PROJECT_DIR$/spring源码/src/main/resources/applicationContext.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-759">
+          <caret line="10" column="13" lean-forward="true" selection-start-line="10" selection-start-column="13" selection-end-line="10" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/spring源码/pom.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="231">
+          <caret line="7" column="38" selection-start-line="7" selection-start-column="38" selection-end-line="7" selection-end-column="38" />
         </state>
       </provider>
     </entry>
@@ -1255,6 +1309,7 @@
       </state>
       <state key="GlobalLibrariesConfigurable.UI">
         <settings>
+          <last-edited>groovy-2.5.4</last-edited>
           <splitter-proportions>
             <option name="proportions">
               <list>
@@ -1278,11 +1333,12 @@
       </state>
       <state key="ModuleStructureConfigurable.UI">
         <settings>
-          <last-edited>spring</last-edited>
+          <last-edited>spring源码</last-edited>
           <splitter-proportions>
             <option name="proportions">
               <list>
                 <option value="0.25467288" />
+                <option value="0.6" />
               </list>
             </option>
           </splitter-proportions>

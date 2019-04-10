@@ -29,6 +29,7 @@
     <option name="originalFiles">
       <list>
         <option value="$PROJECT_DIR$/pom.xml" />
+        <option value="$PROJECT_DIR$/spring源码/pom.xml" />
       </list>
     </option>
     <option name="ignoredFiles">
@@ -47,6 +48,7 @@
         <option value="$PROJECT_DIR$/redis/pom.xml" />
         <option value="$PROJECT_DIR$/remoteapi/pom.xml" />
         <option value="$PROJECT_DIR$/self-redis/pom.xml" />
+        <option value="$PROJECT_DIR$/spring/pom.xml" />
         <option value="$PROJECT_DIR$/springboot/pom.xml" />
         <option value="$PROJECT_DIR$/strategy/pom.xml" />
       </set>
