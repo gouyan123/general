@@ -27,11 +27,11 @@ public class ProducerConfirm {
         channel.addConfirmListener(new ConfirmListener() {
             @Override
             public void handleAck(long l, boolean b) throws IOException {
-
+                System.out.println("发送端确认 服务端 已接收到消息");
             }
             @Override
             public void handleNack(long l, boolean b) throws IOException {
-
+                System.out.println("发送端确认 服务端 未接收到消息");
             }
         });
         /**生产者 声明 交换空间(name + type)*/
