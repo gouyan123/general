@@ -7,108 +7,272 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="fa2c94f0-70ed-4963-8fba-afc573722790" name="Default" comment="gx">
-      <change afterPath="$PROJECT_DIR$/spring源码/src/main/resources/applicationContext-annotation.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/spring源码/src/main/resources/applicationContext-aop.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/spring源码/src/main/resources/applicationContext-aspectJ.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/spring源码/src/main/resources/applicationContext.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_rabbitmq_amqp_client_4_1_0.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__commons_io_commons_io_1_3_2.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/DesignPatterns/src/main/java/com/demo/ServerSocketDemo.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/DesignPatterns/src/main/java/com/demo/SocketDemo.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/DesignPatterns/src/main/java/com/factory/abstractFactory/People.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/DesignPatterns/src/main/java/com/factory/abstractFactory/Student.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/rabbitMQ/rabbitmq-javaapi/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/rabbitMQ/rabbitmq-javaapi/README.MD" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/rabbitMQ/rabbitmq-javaapi/pom.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/rabbitMQ/rabbitmq-javaapi/src/main/java/com/gupaoedu/ack/AckConsumer.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/rabbitMQ/rabbitmq-javaapi/src/main/java/com/gupaoedu/ack/AckProducer.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/rabbitMQ/rabbitmq-javaapi/src/main/java/com/gupaoedu/confirm/AsyncConfirmProducer.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/rabbitMQ/rabbitmq-javaapi/src/main/java/com/gupaoedu/confirm/BatchConfirmProducer.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/rabbitMQ/rabbitmq-javaapi/src/main/java/com/gupaoedu/confirm/NormalConfirmProducer.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/rabbitMQ/rabbitmq-javaapi/src/main/java/com/gupaoedu/dlx/DelayPluginConsumer.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/rabbitMQ/rabbitmq-javaapi/src/main/java/com/gupaoedu/dlx/DelayPluginProducer.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/rabbitMQ/rabbitmq-javaapi/src/main/java/com/gupaoedu/dlx/DlxConsumer.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/rabbitMQ/rabbitmq-javaapi/src/main/java/com/gupaoedu/dlx/DlxProducer.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/rabbitMQ/rabbitmq-javaapi/src/main/java/com/gupaoedu/limit/LimitConsumer.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/rabbitMQ/rabbitmq-javaapi/src/main/java/com/gupaoedu/limit/LimitConsumer2.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/rabbitMQ/rabbitmq-javaapi/src/main/java/com/gupaoedu/limit/LimitProducer.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/rabbitMQ/rabbitmq-javaapi/src/main/java/com/gupaoedu/message/MessageConsumer.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/rabbitMQ/rabbitmq-javaapi/src/main/java/com/gupaoedu/message/MessageProducer.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/rabbitMQ/rabbitmq-javaapi/src/main/java/com/gupaoedu/returnlistener/ReturnListenerProducer.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/rabbitMQ/rabbitmq-javaapi/src/main/java/com/gupaoedu/rpc/RPCClient.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/rabbitMQ/rabbitmq-javaapi/src/main/java/com/gupaoedu/rpc/RPCServer.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/rabbitMQ/rabbitmq-javaapi/src/main/java/com/gupaoedu/simple/MyConsumer.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/rabbitMQ/rabbitmq-javaapi/src/main/java/com/gupaoedu/simple/MyProducer.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/rabbitMQ/rabbitmq-javaapi/src/main/java/com/gupaoedu/transaction/TransactionProducer.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/rabbitMQ/rabbitmq-javaapi/src/main/java/com/gupaoedu/ttl/TTLProducer.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/rabbitMQ/rabbitmq-javaapi/src/main/java/com/gupaoedu/util/ResourceUtil.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/rabbitMQ/rabbitmq-javaapi/src/main/resources/config.properties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/rabbitMQ/spring-rabbitmq/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/rabbitMQ/spring-rabbitmq/README.MD" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/rabbitMQ/spring-rabbitmq/pom.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/rabbitMQ/spring-rabbitmq/src/main/java/com/gupaoedu/consumer/FirstConsumer.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/rabbitMQ/spring-rabbitmq/src/main/java/com/gupaoedu/consumer/FourthConsumer.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/rabbitMQ/spring-rabbitmq/src/main/java/com/gupaoedu/consumer/SecondConsumer.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/rabbitMQ/spring-rabbitmq/src/main/java/com/gupaoedu/consumer/ThirdConsumer.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/rabbitMQ/spring-rabbitmq/src/main/java/com/gupaoedu/producer/MessageProducer.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/rabbitMQ/spring-rabbitmq/src/main/resources/applicationContext.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/rabbitMQ/spring-rabbitmq/src/main/resources/log4j.properties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/rabbitMQ/spring-rabbitmq/src/main/resources/rabbitMQ.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/rabbitMQ/spring-rabbitmq/src/test/java/com/gupaoedu/test/RabbitTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/rabbitMQ/springboot-mq/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/rabbitMQ/springboot-mq/README.MD" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/rabbitMQ/springboot-mq/pom.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/rabbitMQ/springboot-mq/src/main/java/com/gupaoedu/SpringbootMq0904Application.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/rabbitMQ/springboot-mq/src/main/java/com/gupaoedu/config/RabbitConfig.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/rabbitMQ/springboot-mq/src/main/java/com/gupaoedu/consumer/FirstConsumer.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/rabbitMQ/springboot-mq/src/main/java/com/gupaoedu/consumer/SecondConsumer.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/rabbitMQ/springboot-mq/src/main/java/com/gupaoedu/consumer/ThirdConsumer.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/rabbitMQ/springboot-mq/src/main/java/com/gupaoedu/provider/MyProvider.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/rabbitMQ/springboot-mq/src/main/resources/application.properties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/rabbitMQ/springboot-mq/src/main/resources/banner.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/rabbitMQ/springboot-mq/src/test/java/com/gupaoedu/SpringbootMq0904ApplicationTests.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/thread/src/main/java/com/bjsxt/state/AllState.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/thread/src/main/java/com/bjsxt/state/BlockedJoin01.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/thread/src/main/java/com/bjsxt/state/BlockedJoin02.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/thread/src/main/java/com/bjsxt/state/BlockedSleep01.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/thread/src/main/java/com/bjsxt/state/BlockedSleep02.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/thread/src/main/java/com/bjsxt/state/BlockedSleep03.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/thread/src/main/java/com/bjsxt/state/DaemonTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/thread/src/main/java/com/bjsxt/state/Demo.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/thread/src/main/java/com/bjsxt/state/InfoTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/thread/src/main/java/com/bjsxt/state/PriorityTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/thread/src/main/java/com/bjsxt/state/TerminateThread.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/thread/src/main/java/com/bjsxt/state/YieldDemo01.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/thread/src/main/java/com/bjsxt/state/YieldDemo02.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/thread/src/main/java/com/bjsxt/syn/Account.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/thread/src/main/java/com/bjsxt/syn/DeadLock.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/thread/src/main/java/com/bjsxt/syn/Happy12306.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/thread/src/main/java/com/bjsxt/syn/HappyCinema.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/thread/src/main/java/com/bjsxt/syn/HappyCinema2.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/thread/src/main/java/com/bjsxt/syn/SynBlockTest01.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/thread/src/main/java/com/bjsxt/syn/SynBlockTest02.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/thread/src/main/java/com/bjsxt/syn/SynBlockTest03.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/thread/src/main/java/com/bjsxt/syn/SynContainer.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/thread/src/main/java/com/bjsxt/syn/SynTest01.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/thread/src/main/java/com/bjsxt/syn/SynTest02.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/thread/src/main/java/com/bjsxt/syn/UnsafeTest01.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/thread/src/main/java/com/bjsxt/syn/UnsafeTest02.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/thread/src/main/java/com/bjsxt/syn/UnsafeTest03.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/thread/src/main/java/com/bjsxt/thread/CDownloader.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/thread/src/main/java/com/bjsxt/thread/CRacer.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/thread/src/main/java/com/bjsxt/thread/IDownloader.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/thread/src/main/java/com/bjsxt/thread/LambdaTest01.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/thread/src/main/java/com/bjsxt/thread/LambdaTest02.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/thread/src/main/java/com/bjsxt/thread/LambdaTest03.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/thread/src/main/java/com/bjsxt/thread/LambdaTest04.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/thread/src/main/java/com/bjsxt/thread/LambdaThread.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/thread/src/main/java/com/bjsxt/thread/Racer.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/thread/src/main/java/com/bjsxt/thread/StartRun.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/thread/src/main/java/com/bjsxt/thread/StartThread.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/thread/src/main/java/com/bjsxt/thread/StaticProxy.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/thread/src/main/java/com/bjsxt/thread/TDownloader.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/thread/src/main/java/com/bjsxt/thread/Web12306.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/thread/src/main/java/com/bjsxt/thread/WebDownloader.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/artifacts/thread_war_exploded.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/artifacts/thread_war_exploded.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__aopalliance_aopalliance_1_0.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__aopalliance_aopalliance_1_0.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__avalon_framework_avalon_framework_4_1_3.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__cglib_cglib_3_2_5.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__cglib_cglib_3_2_5.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__cglib_cglib_full_2_0_2.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__cglib_cglib_full_2_0_2.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__cglib_cglib_nodep_3_1.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__cglib_cglib_nodep_3_1.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__cglib_cglib_nodep_3_2_5.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__cglib_cglib_nodep_3_2_5.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__cglib_cglib_nodep_3_2_6.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__ch_qos_logback_logback_classic_1_1_2.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__ch_qos_logback_logback_classic_1_1_2.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__ch_qos_logback_logback_core_1_1_2.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__ch_qos_logback_logback_core_1_1_2.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__com_101tec_zkclient_0_10.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_101tec_zkclient_0_10.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__com_alibaba_druid_1_0_9.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_alibaba_druid_1_0_9.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__com_alibaba_fastjson_1_2_37.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_alibaba_fastjson_1_2_37.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__com_alibaba_fastjson_1_2_4.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_alibaba_fastjson_1_2_4.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__com_fasterxml_jackson_core_jackson_annotations_2_8_0.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__com_fasterxml_jackson_core_jackson_core_2_0_0.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_fasterxml_jackson_core_jackson_core_2_0_0.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__com_fasterxml_jackson_core_jackson_core_2_8_4.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__com_fasterxml_jackson_core_jackson_databind_2_8_4.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__com_googlecode_javaewah_JavaEWAH_1_1_6.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_googlecode_javaewah_JavaEWAH_1_1_6.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__com_jcraft_jsch_0_1_54.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_jcraft_jsch_0_1_54.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__com_jcraft_jzlib_1_1_1.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_jcraft_jzlib_1_1_1.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__com_mchange_c3p0_0_9_5_2.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_mchange_c3p0_0_9_5_2.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__com_mchange_mchange_commons_java_0_2_11.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_mchange_mchange_commons_java_0_2_11.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__com_rabbitmq_amqp_client_4_1_1.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_rabbitmq_amqp_client_4_1_1.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__com_rabbitmq_amqp_client_5_0_0.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__com_rabbitmq_http_client_1_3_0_RELEASE.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__commons_beanutils_commons_beanutils_1_8_3.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__commons_beanutils_commons_beanutils_1_8_3.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__commons_codec_commons_codec_1_6.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__commons_collections_commons_collections_3_2_1.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__commons_collections_commons_collections_3_2_1.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__commons_collections_commons_collections_3_2_2.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__commons_collections_commons_collections_3_2_2.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__commons_dbcp_commons_dbcp_1_2_2.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__commons_dbcp_commons_dbcp_1_2_2.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__commons_io_commons_io_2_6.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__commons_io_commons_io_2_6.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__commons_lang_commons_lang_2_6.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__commons_lang_commons_lang_2_6.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__commons_logging_commons_logging_1_1.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__commons_logging_commons_logging_1_2.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__commons_logging_commons_logging_1_2.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__commons_pool_commons_pool_1_3.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__commons_pool_commons_pool_1_3.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__dom4j_dom4j_1_6_1.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__dom4j_dom4j_1_6_1.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__io_netty_netty_3_10_6_Final.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__io_netty_netty_3_10_6_Final.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__io_netty_netty_all_5_0_0_Alpha2.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__io_netty_netty_all_5_0_0_Alpha2.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__javax_javaee_web_api_7_0.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__javax_persistence_persistence_api_1_0.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__javax_persistence_persistence_api_1_0.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__javax_servlet_javax_servlet_api_4_0_1.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__javax_servlet_javax_servlet_api_4_0_1.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__javax_servlet_jstl_1_2.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__javax_servlet_servlet_api_2_5.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__javax_servlet_servlet_api_2_5.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__jaxen_jaxen_1_1_6.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__jaxen_jaxen_1_1_6.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__jline_jline_0_9_94.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__jline_jline_0_9_94.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__junit_junit_4_11.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__junit_junit_4_11.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__junit_junit_4_12.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__junit_junit_4_12.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__log4j_log4j_1_2_17.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__log4j_log4j_1_2_17.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__logkit_logkit_1_0_1.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__mysql_mysql_connector_java_5_1_14.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__mysql_mysql_connector_java_5_1_14.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__mysql_mysql_connector_java_5_1_25.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__mysql_mysql_connector_java_5_1_25.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_apache_ant_ant_1_9_6.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_apache_ant_ant_1_9_6.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_apache_ant_ant_launcher_1_9_6.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_apache_ant_ant_launcher_1_9_6.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_apache_commons_commons_lang3_3_1.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_apache_commons_commons_lang3_3_1.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_apache_commons_commons_pool2_2_3.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_apache_commons_commons_pool2_2_3.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_apache_httpcomponents_httpclient_4_3_6.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_apache_httpcomponents_httpcore_4_3_3.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_apache_yetus_audience_annotations_0_5_0.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_apache_yetus_audience_annotations_0_5_0.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_apache_zookeeper_zookeeper_3_4_12.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_apache_zookeeper_zookeeper_3_4_12.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_aspectj_aspectjrt_1_8_9.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_aspectj_aspectjrt_1_8_9.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_aspectj_aspectjweaver_1_6_2.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_aspectj_aspectjweaver_1_6_2.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_aspectj_aspectjweaver_1_6_8.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_aspectj_aspectjweaver_1_6_8.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_codehaus_jackson_jackson_core_asl_1_8_7.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_codehaus_jackson_jackson_core_asl_1_8_7.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_codehaus_jackson_jackson_core_asl_1_9_13.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_codehaus_jackson_jackson_mapper_asl_1_8_7.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_codehaus_jackson_jackson_mapper_asl_1_8_7.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_codehaus_jackson_jackson_mapper_asl_1_9_13.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_eclipse_jgit_org_eclipse_jgit_5_1_0_201809111528_r.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_eclipse_jgit_org_eclipse_jgit_5_1_0_201809111528_r.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_hamcrest_hamcrest_core_1_3.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_hamcrest_hamcrest_core_1_3.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_mongodb_mongo_java_driver_2_14_3.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_mongodb_mongo_java_driver_2_14_3.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_mybatis_mybatis_3_4_1.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_mybatis_mybatis_3_4_1.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_mybatis_mybatis_3_4_4.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_mybatis_mybatis_3_4_4.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_mybatis_mybatis_spring_1_3_1.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_mybatis_mybatis_spring_1_3_1.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_mybatis_mybatis_spring_1_3_2.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_mybatis_mybatis_spring_1_3_2.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_ow2_asm_asm_5_2.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_ow2_asm_asm_5_2.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_slf4j_jcl_over_slf4j_1_7_21.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_slf4j_jcl_over_slf4j_1_7_21.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_slf4j_jcl_over_slf4j_1_7_25.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_slf4j_jcl_over_slf4j_1_7_25.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_slf4j_slf4j_api_1_7_10.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_slf4j_slf4j_api_1_7_10.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_slf4j_slf4j_api_1_7_2.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_slf4j_slf4j_api_1_7_2.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_slf4j_slf4j_api_1_7_21.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_slf4j_slf4j_api_1_7_21.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_slf4j_slf4j_api_1_7_25.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_slf4j_slf4j_api_1_7_25.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_slf4j_slf4j_log4j12_1_7_25.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_slf4j_slf4j_log4j12_1_7_25.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_amqp_spring_amqp_2_0_0_RELEASE.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_amqp_spring_rabbit_2_0_0_RELEASE.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_data_spring_data_commons_1_12_5_RELEASE.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_data_spring_data_commons_1_12_5_RELEASE.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_data_spring_data_commons_1_13_7_RELEASE.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_data_spring_data_commons_1_13_7_RELEASE.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_data_spring_data_mongodb_1_10_7_RELEASE.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_data_spring_data_mongodb_1_10_7_RELEASE.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_data_spring_data_mongodb_1_9_5_RELEASE.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_data_spring_data_mongodb_1_9_5_RELEASE.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_data_spring_data_mongodb_cross_store_1_9_4_RELEASE.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_data_spring_data_mongodb_cross_store_1_9_4_RELEASE.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_data_spring_data_mongodb_log4j_1_9_5_RELEASE.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_data_spring_data_mongodb_log4j_1_9_5_RELEASE.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_retry_spring_retry_1_2_0_RELEASE.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_spring_aop_5_0_4_RELEASE.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_spring_aop_5_0_4_RELEASE.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_spring_aspects_5_0_4_RELEASE.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_spring_aspects_5_0_4_RELEASE.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_spring_beans_5_0_4_RELEASE.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_spring_beans_5_0_4_RELEASE.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_spring_context_5_0_4_RELEASE.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_spring_context_5_0_4_RELEASE.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_spring_context_support_5_0_4_RELEASE.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_spring_context_support_5_0_4_RELEASE.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_spring_core_5_0_4_RELEASE.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_spring_core_5_0_4_RELEASE.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_spring_dao_2_0_8.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_spring_expression_5_0_4_RELEASE.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_spring_expression_5_0_4_RELEASE.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_spring_jcl_5_0_4_RELEASE.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_spring_jcl_5_0_4_RELEASE.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_spring_jdbc_5_0_4_RELEASE.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_spring_jdbc_5_0_4_RELEASE.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_spring_messaging_5_0_0_RELEASE.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_spring_orm_5_0_4_RELEASE.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_spring_orm_5_0_4_RELEASE.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_spring_test_5_0_4_RELEASE.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_spring_test_5_0_4_RELEASE.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_spring_tx_5_0_4_RELEASE.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_spring_tx_5_0_4_RELEASE.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_spring_web_5_0_4_RELEASE.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_spring_web_5_0_4_RELEASE.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_spring_webmvc_5_0_4_RELEASE.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_spring_webmvc_5_0_4_RELEASE.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__redis_clients_jedis_2_7_3.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__redis_clients_jedis_2_7_3.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__taglibs_standard_1_1_2.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__taglibs_standard_1_1_2.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__xml_apis_xml_apis_1_0_b2.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__xml_apis_xml_apis_1_0_b2.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/spring/note/spring.docx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/spring/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/spring源码/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/spring/spring.iml" beforeDir="false" afterPath="$PROJECT_DIR$/spring源码/spring源码.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/spring/springmvc/pom.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/spring/springmvc/springmvc.iml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/spring/springmvc/src/main/java/com/bjpowernode/handlers/MyControler.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/spring/springmvc/src/main/resources/springmvc.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/spring/springmvc/src/main/webapp/WEB-INF/jsp/welcome.jsp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/spring/springmvc/src/main/webapp/WEB-INF/web.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/spring/springmvc/src/main/webapp/index.jsp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/spring/springmvc/target/classes/com/bjpowernode/handlers/MyControler.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/spring/springmvc/target/classes/springmvc.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/spring/src/main/java/com/bjpowernode/aop/aspectJ/ISomeService.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/spring/src/main/java/com/bjpowernode/aop/aspectJ/MyAspectAnnotation.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/spring/src/main/java/com/bjpowernode/aop/aspectJ/MyAspectXML.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/spring/src/main/java/com/bjpowernode/aop/aspectJ/PasswordException.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/spring/src/main/java/com/bjpowernode/aop/aspectJ/SomeServiceImpl.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/spring/src/main/java/com/bjpowernode/aop/aspectJ/UserException.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/spring/src/main/java/com/bjpowernode/aop/aspectJ/UsernameException.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/spring/src/main/java/com/bjpowernode/aop/introduction/ISomeService.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/spring/src/main/java/com/bjpowernode/aop/introduction/MyAfterReturningAdvice.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/spring/src/main/java/com/bjpowernode/aop/introduction/MyMethodBeforeAdvice.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/spring/src/main/java/com/bjpowernode/aop/introduction/MyMethodInterceptor.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/spring/src/main/java/com/bjpowernode/aop/introduction/MyThrowsAdvice.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/spring/src/main/java/com/bjpowernode/aop/introduction/PasswordException.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/spring/src/main/java/com/bjpowernode/aop/introduction/SomeServiceImpl.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/spring/src/main/java/com/bjpowernode/aop/introduction/SystemService.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/spring/src/main/java/com/bjpowernode/aop/introduction/UserException.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/spring/src/main/java/com/bjpowernode/aop/introduction/UsernameException.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/spring/src/main/java/com/bjpowernode/di/Person.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/spring/src/main/java/com/bjpowernode/di/School.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/spring/src/main/java/com/bjpowernode/di/Student.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/spring/src/main/java/com/bjpowernode/di/annotation/School.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/spring/src/main/java/com/bjpowernode/di/annotation/Student.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/spring/src/main/java/com/bjpowernode/ioc/ISomeService.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/spring/src/main/java/com/bjpowernode/ioc/MyBeanPostProcessor.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/spring/src/main/java/com/bjpowernode/ioc/ServiceFactory.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/spring/src/main/java/com/bjpowernode/ioc/SomeServiceImpl.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/spring/src/main/main4.iml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/spring/src/main/resources/applicationContext-annotation.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/spring/src/main/resources/applicationContext-aop.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/spring/src/main/resources/applicationContext-aspectJ.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/spring/src/main/resources/applicationContext.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/spring/src/test/java/com/bjpowernode/TestAOP.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/spring/src/test/java/com/bjpowernode/TestAnnotation.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/spring/src/test/java/com/bjpowernode/TestAspectJ.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/spring/src/test/java/com/bjpowernode/TestDI.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/spring/src/test/java/com/bjpowernode/TestService.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/spring/src/test/test2.iml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/spring/target/classes/applicationContext-annotation.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/spring/target/classes/applicationContext-aop.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/spring/target/classes/applicationContext-aspectJ.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/spring/target/classes/applicationContext.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/spring/target/classes/com/bjpowernode/aop/aspectJ/ISomeService.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/spring/target/classes/com/bjpowernode/aop/aspectJ/MyAspectAnnotation.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/spring/target/classes/com/bjpowernode/aop/aspectJ/MyAspectXML.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/spring/target/classes/com/bjpowernode/aop/aspectJ/PasswordException.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/spring/target/classes/com/bjpowernode/aop/aspectJ/SomeServiceImpl.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/spring/target/classes/com/bjpowernode/aop/aspectJ/UserException.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/spring/target/classes/com/bjpowernode/aop/aspectJ/UsernameException.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/spring/target/classes/com/bjpowernode/aop/introduction/ISomeService.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/spring/target/classes/com/bjpowernode/aop/introduction/MyAfterReturningAdvice.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/spring/target/classes/com/bjpowernode/aop/introduction/MyMethodBeforeAdvice.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/spring/target/classes/com/bjpowernode/aop/introduction/MyMethodInterceptor.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/spring/target/classes/com/bjpowernode/aop/introduction/MyThrowsAdvice.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/spring/target/classes/com/bjpowernode/aop/introduction/PasswordException.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/spring/target/classes/com/bjpowernode/aop/introduction/SomeServiceImpl.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/spring/target/classes/com/bjpowernode/aop/introduction/SystemService.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/spring/target/classes/com/bjpowernode/aop/introduction/UserException.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/spring/target/classes/com/bjpowernode/aop/introduction/UsernameException.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/spring/target/classes/com/bjpowernode/di/Person.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/spring/target/classes/com/bjpowernode/di/School.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/spring/target/classes/com/bjpowernode/di/Student.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/spring/target/classes/com/bjpowernode/di/annotation/School.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/spring/target/classes/com/bjpowernode/di/annotation/Student.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/spring/target/classes/com/bjpowernode/ioc/ISomeService.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/spring/target/classes/com/bjpowernode/ioc/MyBeanPostProcessor$1.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/spring/target/classes/com/bjpowernode/ioc/MyBeanPostProcessor.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/spring/target/classes/com/bjpowernode/ioc/ServiceFactory.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/spring/target/classes/com/bjpowernode/ioc/SomeServiceImpl.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/spring/target/maven-archiver/pom.properties" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/spring/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/spring/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/spring/target/maven-status/maven-compiler-plugin/testCompile/default-testCompile/createdFiles.lst" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/spring/target/maven-status/maven-compiler-plugin/testCompile/default-testCompile/inputFiles.lst" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/spring/target/test-classes/com/bjpowernode/TestAOP$1.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/spring/target/test-classes/com/bjpowernode/TestAOP.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/spring/target/test-classes/com/bjpowernode/TestAnnotation.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/spring/target/test-classes/com/bjpowernode/TestAspectJ.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/spring/target/test-classes/com/bjpowernode/TestDI.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/spring/target/test-classes/com/bjpowernode/TestService.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/gouyan/App.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/gouyan/App.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/base/src/main/java/com/bjpowernode/手写Tomcat服务器/httpserver/core/WebParser.java" beforeDir="false" afterPath="$PROJECT_DIR$/base/src/main/java/com/bjpowernode/手写Tomcat服务器/httpserver/core/WebParser.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rabbitMQ/note/rabbitmq-dongnao-mark.md" beforeDir="false" afterPath="$PROJECT_DIR$/rabbitMQ/note/rabbitmq-dongnao-mark.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rabbitMQ/pom.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/rabbitMQ/src/main/java/com/dongnaoedu/confirm/ProducerConfirm.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/rabbitMQ/src/main/java/com/dongnaoedu/normal/DirectConsumer.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/rabbitMQ/src/main/java/com/dongnaoedu/normal/DirectProducer.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/rabbitMQ/src/main/java/com/rabbitmq/original/MsgConsumer.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/rabbitMQ/src/main/java/com/rabbitmq/original/MsgProducer.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/rabbitMQ/src/main/java/com/rabbitmq/original/RabbitUtil.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/rabbitMQ/src/main/java/com/rabbitmq/spring/config/DirectConsumerConfig.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/rabbitMQ/src/main/java/com/rabbitmq/spring/config/SpringConfig.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/rabbitMQ/src/main/java/com/rabbitmq/spring/consumer/BasicConsumer.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/rabbitMQ/src/main/java/com/rabbitmq/spring/produce/AmqpProducer.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/rabbitMQ/src/main/resources/applicationContext.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/rabbitMQ/src/main/resources/rabbitmq.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/rabbitMQ/src/main/webapp/WEB-INF/web.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/rabbitMQ/src/main/webapp/index.jsp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/rabbitMQ/src/test/java/Demo01.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/rabbitMQ/src/test/java/SprintUnit.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/rabbitMQ/target/classes/applicationContext.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/rabbitMQ/target/classes/com/dongnaoedu/confirm/ProducerConfirm$1.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/rabbitMQ/target/classes/com/dongnaoedu/confirm/ProducerConfirm.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/rabbitMQ/target/classes/com/dongnaoedu/normal/DirectConsumer$1.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/rabbitMQ/target/classes/com/dongnaoedu/normal/DirectConsumer.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/rabbitMQ/target/classes/com/dongnaoedu/normal/DirectProducer.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/rabbitMQ/target/classes/com/rabbitmq/original/MsgConsumer$1.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/rabbitMQ/target/classes/com/rabbitmq/original/MsgConsumer.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/rabbitMQ/target/classes/com/rabbitmq/original/MsgProducer.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/rabbitMQ/target/classes/com/rabbitmq/original/RabbitUtil.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/rabbitMQ/target/classes/com/rabbitmq/spring/config/DirectConsumerConfig.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/rabbitMQ/target/classes/com/rabbitmq/spring/config/SpringConfig.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/rabbitMQ/target/classes/com/rabbitmq/spring/consumer/BasicConsumer.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/rabbitMQ/target/classes/com/rabbitmq/spring/produce/AmqpProducer.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/rabbitMQ/target/classes/rabbitmq.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/rabbitMQ/target/test-classes/SprintUnit.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/self-orm/self-orm.iml" beforeDir="false" afterPath="$PROJECT_DIR$/self-orm/self-orm.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ssm/ssm.iml" beforeDir="false" afterPath="$PROJECT_DIR$/ssm/ssm.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/thread/note/thread-dongnao-mark.txt" beforeDir="false" afterPath="$PROJECT_DIR$/thread/note/thread-dongnao-mark.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/thread/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/thread/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/thread/src/main/java/com/dongnao/mark/base/SleepTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/thread/src/main/java/com/dongnao/mark/base/SleepTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/thread/src/main/java/com/dongnao/mark/base/threadstate/ThreadState.java" beforeDir="false" afterPath="$PROJECT_DIR$/thread/src/main/java/com/dongnao/mark/base/threadstate/ThreadState.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/thread/target/classes/com/dongnao/mark/aqs/TestMyLock$1Worker.class" beforeDir="false" afterPath="$PROJECT_DIR$/thread/target/classes/com/dongnao/mark/aqs/TestMyLock$1Worker.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/thread/target/classes/com/dongnao/mark/base/Daemon$DaemonRunner.class" beforeDir="false" afterPath="$PROJECT_DIR$/thread/target/classes/com/dongnao/mark/base/Daemon$DaemonRunner.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/thread/target/classes/com/dongnao/mark/base/SleepTest$ThreadSleep.class" beforeDir="false" afterPath="$PROJECT_DIR$/thread/target/classes/com/dongnao/mark/base/SleepTest$ThreadSleep.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/thread/target/classes/com/dongnao/mark/base/connectpool/ConnectionPoolTest$ConnetionRunner.class" beforeDir="false" afterPath="$PROJECT_DIR$/thread/target/classes/com/dongnao/mark/base/connectpool/ConnectionPoolTest$ConnetionRunner.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/thread/target/classes/com/dongnao/mark/base/interrupt/BlockInterrupt$TryWhileWhenBlock.class" beforeDir="false" afterPath="$PROJECT_DIR$/thread/target/classes/com/dongnao/mark/base/interrupt/BlockInterrupt$TryWhileWhenBlock.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/thread/target/classes/com/dongnao/mark/base/interrupt/OverrideInterrupt.class" beforeDir="false" afterPath="$PROJECT_DIR$/thread/target/classes/com/dongnao/mark/base/interrupt/OverrideInterrupt.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/thread/target/classes/com/dongnao/mark/base/threadstate/ThreadState$Sync.class" beforeDir="false" afterPath="$PROJECT_DIR$/thread/target/classes/com/dongnao/mark/base/threadstate/ThreadState$Sync.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/thread/target/classes/com/dongnao/mark/lock/LimitedBlockingQueue/BlockingQueueLC.class" beforeDir="false" afterPath="$PROJECT_DIR$/thread/target/classes/com/dongnao/mark/lock/LimitedBlockingQueue/BlockingQueueLC.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/thread/target/classes/com/dongnao/mark/lock/LimitedBlockingQueue/BlockingQueueLC02.class" beforeDir="false" afterPath="$PROJECT_DIR$/thread/target/classes/com/dongnao/mark/lock/LimitedBlockingQueue/BlockingQueueLC02.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/thread/target/classes/com/dongnao/mark/lock/condicton/ConditionTemplate.class" beforeDir="false" afterPath="$PROJECT_DIR$/thread/target/classes/com/dongnao/mark/lock/condicton/ConditionTemplate.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/thread/target/classes/com/dongnao/mark/lock/readwritelock/RwNumImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/thread/target/classes/com/dongnao/mark/lock/readwritelock/RwNumImpl.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/thread/thread.iml" beforeDir="false" afterPath="$PROJECT_DIR$/thread/thread.iml" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/zookeeper/target/" />
     <ignored path="$PROJECT_DIR$/target/" />
@@ -141,20 +305,21 @@
     <ignored path="$PROJECT_DIR$/netty/target/" />
     <ignored path="$PROJECT_DIR$/SocketClient/target/" />
     <ignored path="$PROJECT_DIR$/SocketServer/target/" />
-    <ignored path="$PROJECT_DIR$/spring源码/target/" />
+    <ignored path="$PROJECT_DIR$/rabbitMQ/activemqapi/target/" />
+    <ignored path="$PROJECT_DIR$/rabbitMQ/rabbitmq-javaapi/target/" />
+    <ignored path="$PROJECT_DIR$/rabbitMQ/springboot-mq/target/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
-    <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="CoverageDataManager">
-    <SUITE FILE_PATH="coverage/general$Test_test01.coverage" NAME="Test.test01 Coverage Results" MODIFIED="1530250659856" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
-      <FILTER>com.rabbitmq.spring.test.*</FILTER>
-    </SUITE>
     <SUITE FILE_PATH="coverage/general$MyTest.coverage" NAME="MyTest Coverage Results" MODIFIED="1518338594970" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
       <FILTER>com.dongnao.jack.test.*</FILTER>
+    </SUITE>
+    <SUITE FILE_PATH="coverage/general$Test_test01.coverage" NAME="Test.test01 Coverage Results" MODIFIED="1530250659856" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
+      <FILTER>com.rabbitmq.spring.test.*</FILTER>
     </SUITE>
   </component>
   <component name="DatabaseView">
@@ -169,25 +334,29 @@
     <expand />
     <select />
   </component>
+  <component name="DefaultGradleProjectSettings">
+    <option name="testRunner" value="GRADLE" />
+    <option name="delegatedBuild" value="true" />
+  </component>
   <component name="FavoritesManager">
     <favorites_list name="general" />
   </component>
   <component name="FileEditorManager">
-    <leaf SIDE_TABS_SIZE_LIMIT_KEY="375">
-      <file leaf-file-name="pom.xml" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/pom.xml">
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/rabbitMQ/rabbitmq-javaapi/src/main/java/com/gupaoedu/dlx/DlxConsumer.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="462">
-              <caret line="14" column="31" selection-start-line="14" selection-start-column="31" selection-end-line="14" selection-end-column="31" />
+            <state relative-caret-position="90">
+              <caret line="8" selection-start-line="8" selection-end-line="8" />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="pom.xml" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/spring源码/pom.xml">
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/rabbitMQ/springboot-mq/src/main/java/com/gupaoedu/config/RabbitConfig.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="231">
-              <caret line="7" column="38" selection-start-line="7" selection-start-column="38" selection-end-line="7" selection-end-column="38" />
+            <state relative-caret-position="60">
+              <caret line="11" column="27" selection-start-line="11" selection-start-column="27" selection-end-line="11" selection-end-column="27" />
             </state>
           </provider>
         </entry>
@@ -198,6 +367,7 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="spring-beans.schema" />
+        <option value="Interface" />
         <option value="Class" />
       </list>
     </option>
@@ -231,6 +401,9 @@
       <find>胖</find>
       <find>信道</find>
       <find>future</find>
+      <find>线程池</find>
+      <find>等待通知</find>
+      <find>条件不满足则等待</find>
     </findStrings>
     <replaceStrings>
       <replace />
@@ -244,20 +417,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/base/src/main/java/com/bjpowernode/手写Tomcat服务器/手写Tomcat服务器.txt" />
-        <option value="$PROJECT_DIR$/base/src/main/java/com/bjpowernode/手写Tomcat服务器/httpserver/core/HandlerRequest.java" />
-        <option value="$PROJECT_DIR$/DesignPatterns/src/main/java/com/proxy/proxy-尚学堂.txt" />
-        <option value="$PROJECT_DIR$/DesignPatterns/src/main/java/com/listener/Test.java" />
-        <option value="$PROJECT_DIR$/DesignPatterns/src/main/java/com/listener/listener.txt" />
-        <option value="$PROJECT_DIR$/DesignPatterns/src/main/java/com/listener/EventSource.java" />
-        <option value="$PROJECT_DIR$/简历/springboot-mldn.txt" />
-        <option value="$PROJECT_DIR$/self-orm/note/数据库事务.txt" />
-        <option value="$PROJECT_DIR$/self-orm/note/手写 orm.txt" />
-        <option value="$PROJECT_DIR$/zookeeper/note/java程序操作Zookeeper.txt" />
-        <option value="$PROJECT_DIR$/rabbitMQ/src/main/java/DirectProducer.java" />
-        <option value="$PROJECT_DIR$/rabbitMQ/src/main/java/ConsumerAll.java" />
-        <option value="$PROJECT_DIR$/rabbitMQ/src/main/java/com/dongnaoedu/normal/DirectProducer.java" />
-        <option value="$PROJECT_DIR$/rabbitMQ/src/main/java/com/dongnaoedu/normal/ConsumerAll.java" />
         <option value="$PROJECT_DIR$/rabbitMQ/src/main/java/com/dongnaoedu/confirm/DirectProducer.java" />
         <option value="$PROJECT_DIR$/rabbitMQ/src/main/java/com/dongnaoedu/confirm/ProducerConsumer.java" />
         <option value="$PROJECT_DIR$/rabbitMQ/note/rabbitmq-dongnao-mark.txt" />
@@ -284,25 +443,33 @@
         <option value="$PROJECT_DIR$/SocketServer/src/main/java/com/gouyan/SocketServer.java" />
         <option value="$PROJECT_DIR$/base/pom.xml" />
         <option value="$PROJECT_DIR$/base/src/main/java/com/JGit/gitTest.java" />
-        <option value="$PROJECT_DIR$/spring/src/main/java/com/gupao/Demo.java" />
-        <option value="$PROJECT_DIR$/spring/src/main/resources/applicationContext.xml" />
-        <option value="$PROJECT_DIR$/spring/src/main/resources/applicationContext-annotation.xml" />
-        <option value="$PROJECT_DIR$/spring/src/main/resources/applicationContext-aop.xml" />
-        <option value="$PROJECT_DIR$/spring/src/main/resources/applicationContext-aspectJ.xml" />
-        <option value="$PROJECT_DIR$/spring/pom.xml" />
-        <option value="$PROJECT_DIR$/spring源码/src/main/resources/applicationContext-annotation.xml" />
-        <option value="$PROJECT_DIR$/pom.xml" />
-        <option value="$PROJECT_DIR$/spring源码/src/main/java/com/gupao/ClassPathXmlApplicationContextDemo.java" />
-        <option value="$PROJECT_DIR$/spring源码/src/main/resources/applicationContext.xml" />
-        <option value="$PROJECT_DIR$/spring源码/pom.xml" />
+        <option value="$PROJECT_DIR$/DesignPatterns/src/main/java/com/factory/abstractFactory/Fruite.java" />
+        <option value="$PROJECT_DIR$/DesignPatterns/src/main/java/com/factory/abstractFactory/Demo.java" />
+        <option value="$PROJECT_DIR$/DesignPatterns/src/main/java/com/factory/abstractFactory/People.java" />
+        <option value="$PROJECT_DIR$/DesignPatterns/src/main/java/com/factory/abstractFactory/Student.java" />
+        <option value="$PROJECT_DIR$/base/src/main/java/com/bjpowernode/手写Tomcat服务器/httpserver/core/SocketDemo.java" />
+        <option value="$PROJECT_DIR$/base/src/main/java/com/bjpowernode/手写Tomcat服务器/httpserver/core/ServerSocket.java" />
+        <option value="$PROJECT_DIR$/base/src/main/java/com/bjpowernode/手写Tomcat服务器/httpserver/core/ServerSocketDemo.java" />
+        <option value="$PROJECT_DIR$/base/src/main/java/com/bjpowernode/手写Tomcat服务器/httpserver/core/WebParser.java" />
+        <option value="$PROJECT_DIR$/DesignPatterns/src/main/java/com/demo/ServerSocketDemo.java" />
+        <option value="$PROJECT_DIR$/thread/src/main/java/com/bjsxt/CDownloader.java" />
+        <option value="$PROJECT_DIR$/thread/src/main/java/com/bjsxt/thread/CDownloader.java" />
+        <option value="$PROJECT_DIR$/thread/src/main/java/com/bjsxt/state/BlockedSleep03.java" />
+        <option value="$PROJECT_DIR$/thread/src/main/java/com/bjsxt/state/AllState.java" />
+        <option value="$PROJECT_DIR$/thread/src/main/java/com/bjsxt/syn/Account.java" />
+        <option value="$PROJECT_DIR$/thread/pom.xml" />
+        <option value="$PROJECT_DIR$/thread/src/main/java/com/bjsxt/thread/StartThread.java" />
+        <option value="$PROJECT_DIR$/thread/src/main/java/com/bjsxt/thread/StartRun.java" />
+        <option value="$PROJECT_DIR$/thread/src/main/java/com/bjsxt/state/Demo.java" />
+        <option value="$PROJECT_DIR$/thread/src/main/java/com/bjsxt/state/BlockedSleep01.java" />
+        <option value="$PROJECT_DIR$/thread/src/main/java/com/dongnao/mark/base/threadstate/ThreadState.java" />
+        <option value="$PROJECT_DIR$/thread/src/main/java/com/dongnao/mark/base/SleepTest.java" />
+        <option value="$PROJECT_DIR$/thread/note/thread-dongnao-mark.txt" />
+        <option value="$PROJECT_DIR$/rabbitMQ/note/rabbitmq-dongnao-mark.md" />
+        <option value="$PROJECT_DIR$/rabbitMQ/rabbitmq-javaapi/src/main/java/com/gupaoedu/ack/AckConsumer.java" />
+        <option value="$PROJECT_DIR$/rabbitMQ/rabbitmq-javaapi/src/main/java/com/gupaoedu/dlx/DlxConsumer.java" />
       </list>
     </option>
-  </component>
-  <component name="JsBuildToolGruntFileManager" detection-done="true" sorting="DEFINITION_ORDER" />
-  <component name="JsBuildToolPackageJson" detection-done="true" sorting="DEFINITION_ORDER" />
-  <component name="JsGulpfileManager">
-    <detection-done>true</detection-done>
-    <sorting>DEFINITION_ORDER</sorting>
   </component>
   <component name="LogFilters">
     <option name="FILTER_ERRORS" value="false" />
@@ -314,8 +481,8 @@
   <component name="MavenImportPreferences">
     <option name="generalSettings">
       <MavenGeneralSettings>
-        <option name="mavenHome" value="F:/ProgramFiles/apache-maven-3.5.4" />
-        <option name="userSettingsFile" value="F:\ProgramFiles\apache-maven-3.5.4\conf\settings.xml" />
+        <option name="mavenHome" value="F:/Program Files/apache-maven-3.5.2" />
+        <option name="userSettingsFile" value="F:\Program Files\apache-maven-3.5.2\conf\settings.xml" />
       </MavenGeneralSettings>
     </option>
     <option name="importingSettings">
@@ -330,14 +497,11 @@
       <select />
     </treeState>
   </component>
-  <component name="NodePackageJsonFileManager">
-    <packageJsonPaths />
-  </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="-10" />
-    <option name="y" value="-10" />
+    <option name="x" value="-8" />
+    <option name="y" value="-8" />
     <option name="width" value="1040" />
-    <option name="height" value="745" />
+    <option name="height" value="744" />
   </component>
   <component name="ProjectInspectionProfilesVisibleTreeState">
     <entry key="Project Default">
@@ -372,7 +536,8 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="AndroidView" />
+      <pane id="PackagesPane" />
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -383,67 +548,99 @@
             <path>
               <item name="general" type="b2602c69:ProjectViewProjectNode" />
               <item name="general" type="462c0819:PsiDirectoryNode" />
-              <item name="spring源码" type="462c0819:PsiDirectoryNode" />
+              <item name="rabbitMQ" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="general" type="b2602c69:ProjectViewProjectNode" />
               <item name="general" type="462c0819:PsiDirectoryNode" />
-              <item name="spring源码" type="462c0819:PsiDirectoryNode" />
+              <item name="rabbitMQ" type="462c0819:PsiDirectoryNode" />
+              <item name="rabbitmq-javaapi" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="general" type="b2602c69:ProjectViewProjectNode" />
+              <item name="general" type="462c0819:PsiDirectoryNode" />
+              <item name="rabbitMQ" type="462c0819:PsiDirectoryNode" />
+              <item name="rabbitmq-javaapi" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="general" type="b2602c69:ProjectViewProjectNode" />
               <item name="general" type="462c0819:PsiDirectoryNode" />
-              <item name="spring源码" type="462c0819:PsiDirectoryNode" />
+              <item name="rabbitMQ" type="462c0819:PsiDirectoryNode" />
+              <item name="rabbitmq-javaapi" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="main" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="general" type="b2602c69:ProjectViewProjectNode" />
               <item name="general" type="462c0819:PsiDirectoryNode" />
-              <item name="spring源码" type="462c0819:PsiDirectoryNode" />
+              <item name="rabbitMQ" type="462c0819:PsiDirectoryNode" />
+              <item name="rabbitmq-javaapi" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="main" type="462c0819:PsiDirectoryNode" />
               <item name="java" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="general" type="b2602c69:ProjectViewProjectNode" />
+              <item name="general" type="462c0819:PsiDirectoryNode" />
+              <item name="rabbitMQ" type="462c0819:PsiDirectoryNode" />
+              <item name="rabbitmq-javaapi" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="gupaoedu" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="general" type="b2602c69:ProjectViewProjectNode" />
+              <item name="general" type="462c0819:PsiDirectoryNode" />
+              <item name="rabbitMQ" type="462c0819:PsiDirectoryNode" />
+              <item name="rabbitmq-javaapi" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="gupaoedu" type="462c0819:PsiDirectoryNode" />
+              <item name="confirm" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
-      <pane id="PackagesPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
     <property name="last_directory_selection" value="$PROJECT_DIR$/rabbitMQ/src/main/java/com" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../springcloud_1.5.8" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/rabbitMQ/springboot-mq/pom.xml" />
     <property name="project.structure.last.edited" value="Modules" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.25467288" />
     <property name="settings.editor.selected.configurable" value="MavenSettings" />
   </component>
   <component name="RecentsManager">
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="D:\ideaproject\general\base\src\main\java\com\bjpowernode\手写Tomcat服务器" />
+    <key name="CreateClassDialog.RecentsKey">
+      <recent name="com.factory.abstractFactory" />
     </key>
     <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
       <recent name="" />
     </key>
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\ideaproject\general\rabbitMQ" />
+      <recent name="D:\ideaproject\general\thread\src\main\java\com\bjsxt\syn" />
+      <recent name="D:\ideaproject\general\thread\src\main\java\com\bjsxt\state" />
+      <recent name="D:\ideaproject\general\thread\src\main\java\com\bjsxt" />
+      <recent name="D:\ideaProject\general\SocketServer\src\main" />
+    </key>
     <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="com.bjpowernode.手写Tomcat服务器.httpserver.core" />
       <recent name="com.gouyan" />
       <recent name="com.dongnaoedu.confirm" />
       <recent name="com.bjsxt.集合.map" />
       <recent name="com.dongnao.mark.future" />
-      <recent name="com.config" />
     </key>
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="D:\ideaProject\general\SocketServer\src\main" />
-      <recent name="D:\ideaproject\general\rabbitMQ\src\main\java" />
-      <recent name="D:\ideaproject\general\DesignPatterns\src\main\java\com" />
-      <recent name="D:\ideaproject\general\netty\src\main\java\com\gupaoedu\nio" />
-      <recent name="D:\ideaproject\general\netty\src\main\java\com\gupaoedu\nio\buffer" />
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="D:\ideaproject\general\base\src\main\java\com\bjpowernode\手写Tomcat服务器" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -458,83 +655,95 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Application.Demo">
-    <configuration default="true" type="Applet" factoryName="Applet">
+  <component name="RunManager" selected="Application.SleepTest">
+    <configuration default="true" type="Applet">
       <option name="POLICY_FILE" value="$APPLICATION_HOME_DIR$/bin/appletviewer.policy" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
     </configuration>
-    <configuration name="ConnectionPoolTest02" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="com.dongnao.mark.base.connectpool.ConnectionPoolTest02" />
+    <configuration name="Demo (1)" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="com.bjsxt.state.Demo" />
       <module name="thread" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="com.dongnao.mark.base.connectpool.*" />
+          <option name="PATTERN" value="com.bjsxt.state.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
     </configuration>
-    <configuration name="Demo" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="com.gupao.Demo" />
-      <module name="general" />
+    <configuration name="InstanceAndClass" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="com.dongnao.mark.base.syn.InstanceAndClass" />
+      <module name="thread" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="com.gupao.*" />
+          <option name="PATTERN" value="com.dongnao.mark.base.syn.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
     </configuration>
-    <configuration name="LamdaTest" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="com.lamda.LamdaTest" />
-      <module name="base" />
+    <configuration name="SleepTest" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="com.dongnao.mark.base.SleepTest" />
+      <module name="thread" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="com.lamda.*" />
+          <option name="PATTERN" value="com.dongnao.mark.base.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
     </configuration>
-    <configuration name="SocketClient" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="com.socket.SocketClient" />
-      <module name="base" />
+    <configuration name="StartRun" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="com.bjsxt.thread.StartRun" />
+      <module name="thread" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="com.socket.*" />
+          <option name="PATTERN" value="com.bjsxt.thread.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
     </configuration>
-    <configuration name="SocketServer" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="com.socket.SocketServer" />
-      <module name="base" />
+    <configuration name="ThreadState" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="com.dongnao.mark.base.threadstate.ThreadState" />
+      <module name="thread" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="com.socket.*" />
+          <option name="PATTERN" value="com.dongnao.mark.base.threadstate.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
     </configuration>
     <configuration default="true" type="Application" factoryName="Application">
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
     </configuration>
     <configuration default="true" type="JUnit" factoryName="JUnit">
-      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
-      <option name="ALTERNATIVE_JRE_PATH" />
-      <option name="PACKAGE_NAME" />
-      <option name="MAIN_CLASS_NAME" />
-      <option name="METHOD_NAME" />
       <option name="TEST_OBJECT" value="class" />
-      <option name="VM_PARAMETERS" value="-ea" />
-      <option name="PARAMETERS" />
       <option name="WORKING_DIRECTORY" value="%MODULE_WORKING_DIR%" />
-      <option name="PASS_PARENT_ENVS" value="true" />
-      <option name="TEST_SEARCH_SCOPE">
-        <value defaultName="singleModule" />
-      </option>
-      <patterns />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
     </configuration>
     <configuration default="true" type="JetRunConfigurationType" factoryName="Kotlin">
       <module name="NettyNio" />
@@ -545,28 +754,25 @@
       <option name="PASS_PARENT_ENVS" value="true" />
       <option name="MAIN_CLASS_NAME" />
       <option name="WORKING_DIRECTORY" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
     </configuration>
-    <configuration default="true" type="TestNG" factoryName="TestNG">
-      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
-      <option name="ALTERNATIVE_JRE_PATH" />
-      <option name="SUITE_NAME" />
-      <option name="PACKAGE_NAME" />
-      <option name="MAIN_CLASS_NAME" />
-      <option name="METHOD_NAME" />
-      <option name="GROUP_NAME" />
+    <configuration name="SpringbootMq0904Application" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
+      <module name="springboot-mq" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.gupaoedu.SpringbootMq0904Application" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="TestNG">
       <option name="TEST_OBJECT" value="CLASS" />
-      <option name="VM_PARAMETERS" value="-ea" />
-      <option name="PARAMETERS" />
       <option name="WORKING_DIRECTORY" value="%MODULE_WORKING_DIR%" />
-      <option name="OUTPUT_DIRECTORY" />
-      <option name="PASS_PARENT_ENVS" value="true" />
-      <option name="TEST_SEARCH_SCOPE">
-        <value defaultName="singleModule" />
-      </option>
-      <option name="USE_DEFAULT_REPORTERS" value="false" />
-      <option name="PROPERTIES_FILE" />
       <properties />
       <listeners />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
     </configuration>
     <configuration name="Tomcat" type="#com.intellij.j2ee.web.tomcat.TomcatRunConfigurationFactory" factoryName="Local" APPLICATION_SERVER_NAME="Tomcat 8.0.26" ALTERNATIVE_JRE_ENABLED="false">
       <option name="UPDATING_POLICY" value="restart-server" />
@@ -580,11 +786,11 @@
       <server-settings>
         <option name="BASE_DIRECTORY_NAME" value="Unnamed_general_3" />
       </server-settings>
-      <predefined_log_file id="Tomcat" enabled="true" />
-      <predefined_log_file id="Tomcat Catalina" enabled="true" />
-      <predefined_log_file id="Tomcat Manager" enabled="false" />
-      <predefined_log_file id="Tomcat Host Manager" enabled="false" />
-      <predefined_log_file id="Tomcat Localhost Access" enabled="false" />
+      <predefined_log_file enabled="true" id="Tomcat" />
+      <predefined_log_file enabled="true" id="Tomcat Catalina" />
+      <predefined_log_file id="Tomcat Manager" />
+      <predefined_log_file id="Tomcat Host Manager" />
+      <predefined_log_file id="Tomcat Localhost Access" />
       <RunnerSettings RunnerId="Debug">
         <option name="DEBUG_PORT" value="1798" />
       </RunnerSettings>
@@ -633,27 +839,29 @@
           <option name="PROGRAM_PARAMETERS" value="" />
         </SHUTDOWN>
       </ConfigurationWrapper>
-      <method>
+      <method v="2">
+        <option name="Make" enabled="true" />
         <option name="BuildArtifacts" enabled="true">
           <artifact name="self-spring:war exploded" />
         </option>
       </method>
     </configuration>
     <list>
+      <item itemvalue="Application.StartRun" />
+      <item itemvalue="Application.Demo (1)" />
+      <item itemvalue="Application.InstanceAndClass" />
+      <item itemvalue="Application.ThreadState" />
+      <item itemvalue="Application.SleepTest" />
       <item itemvalue="Tomcat Server.Tomcat" />
-      <item itemvalue="Application.LamdaTest" />
-      <item itemvalue="Application.ConnectionPoolTest02" />
-      <item itemvalue="Application.SocketServer" />
-      <item itemvalue="Application.SocketClient" />
-      <item itemvalue="Application.Demo" />
+      <item itemvalue="Spring Boot.SpringbootMq0904Application" />
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Application.Demo" />
-        <item itemvalue="Application.SocketClient" />
-        <item itemvalue="Application.SocketServer" />
-        <item itemvalue="Application.ConnectionPoolTest02" />
-        <item itemvalue="Application.LamdaTest" />
+        <item itemvalue="Application.SleepTest" />
+        <item itemvalue="Application.ThreadState" />
+        <item itemvalue="Application.InstanceAndClass" />
+        <item itemvalue="Application.Demo (1)" />
+        <item itemvalue="Application.StartRun" />
       </list>
     </recent_temporary>
   </component>
@@ -723,12 +931,19 @@
       <workItem from="1538195919034" duration="5248000" />
       <workItem from="1538275722757" duration="1178000" />
       <workItem from="1539001029400" duration="526000" />
-      <workItem from="1539684797245" duration="764000" />
-      <workItem from="1539738013469" duration="807000" />
-      <workItem from="1542938377890" duration="94000" />
-      <workItem from="1544506794658" duration="1637000" />
-      <workItem from="1554719764668" duration="4416000" />
-      <workItem from="1554771754693" duration="243000" />
+      <workItem from="1539448090908" duration="72000" />
+      <workItem from="1548684871896" duration="1338000" />
+      <workItem from="1548941747738" duration="64000" />
+      <workItem from="1549436699711" duration="1907000" />
+      <workItem from="1549596909003" duration="1156000" />
+      <workItem from="1550414010257" duration="595000" />
+      <workItem from="1550492925205" duration="594000" />
+      <workItem from="1550565941387" duration="15000" />
+      <workItem from="1550582089107" duration="991000" />
+      <workItem from="1550667012870" duration="5435000" />
+      <workItem from="1550989285418" duration="15469000" />
+      <workItem from="1551267478709" duration="78000" />
+      <workItem from="1555333981826" duration="4965000" />
     </task>
     <task id="LOCAL-00001" summary="gx">
       <created>1531055274891</created>
@@ -773,53 +988,53 @@
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="381070000" />
+    <option name="totallyTimeSpent" value="405787000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-7" y="-7" width="1550" height="838" extended-state="6" />
+    <frame x="-8" y="-8" width="1040" height="744" extended-state="6" />
     <layout>
-      <window_info anchor="right" id="Palette" order="4" />
-      <window_info anchor="bottom" id="Event Log" order="9" sideWeight="0.5408163" side_tool="true" weight="0.510274" />
-      <window_info anchor="bottom" id="Application Servers" order="11" weight="0.32876712" />
-      <window_info anchor="right" id="Maven Projects" order="9" weight="0.49081632" />
-      <window_info anchor="bottom" id="Database Changes" order="12" show_stripe_button="false" />
-      <window_info anchor="right" id="CDI" order="10" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.4924406" visible="true" weight="0.34081632" />
       <window_info id="Capture Tool" order="1" />
-      <window_info id="Designer" order="6" />
-      <window_info anchor="bottom" id="Docker" order="13" />
-      <window_info anchor="right" id="Database" order="5" weight="0.32959184" />
-      <window_info id="Structure" order="7" side_tool="true" weight="0.28163266" />
-      <window_info anchor="right" id="JSF" order="12" />
-      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info id="UI Designer" order="2" />
+      <window_info id="Image Layers" order="3" />
+      <window_info id="Web" order="4" side_tool="true" />
+      <window_info id="Favorites" order="5" sideWeight="0.5075594" side_tool="true" weight="0.26734695" />
+      <window_info id="Designer" order="6" />
+      <window_info id="Structure" order="7" side_tool="true" weight="0.20714286" />
+      <window_info anchor="bottom" id="Docker" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Inspection Results" order="0" weight="0.32876712" />
+      <window_info anchor="bottom" id="Message" order="1" />
+      <window_info anchor="bottom" id="Find" order="2" weight="0.3164706" />
+      <window_info anchor="bottom" id="Messages" order="3" sideWeight="0.49183673" weight="0.40206185" />
+      <window_info anchor="bottom" id="Run" order="4" sideWeight="0.45918366" weight="0.80756015" />
+      <window_info anchor="bottom" id="Cvs" order="5" weight="0.25" />
+      <window_info anchor="bottom" id="Inspection" order="6" weight="0.4" />
       <window_info anchor="bottom" id="Debug" order="7" weight="0.5223368" />
       <window_info anchor="bottom" id="TODO" order="8" weight="0.32876712" />
-      <window_info anchor="right" id="Palette&#9;" order="6" />
-      <window_info id="Image Layers" order="3" />
-      <window_info anchor="bottom" id="Java Enterprise" order="13" weight="0.32993197" />
-      <window_info anchor="right" id="Capture Analysis" order="7" />
+      <window_info anchor="bottom" id="Event Log" order="9" sideWeight="0.5408163" side_tool="true" weight="0.510274" />
       <window_info anchor="bottom" id="Version Control" order="10" weight="0.6151203" />
-      <window_info anchor="bottom" id="Run" order="4" sideWeight="0.45918366" weight="0.5022157" />
+      <window_info anchor="bottom" id="Application Servers" order="11" weight="0.32876712" />
+      <window_info anchor="bottom" id="Database Changes" order="12" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Java Enterprise" order="13" weight="0.3298969" />
       <window_info anchor="bottom" id="Spring" order="14" weight="0.32993197" />
-      <window_info anchor="bottom" id="Terminal" order="17" weight="0.67176473" />
-      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.4924406" visible="true" weight="0.3016086" />
-      <window_info anchor="right" id="Bean Validation" order="11" weight="0.32959184" />
-      <window_info id="Web" order="4" side_tool="true" />
-      <window_info anchor="bottom" id="SonarLint" order="18" />
-      <window_info anchor="right" id="Theme Preview" order="8" />
-      <window_info id="Favorites" order="5" sideWeight="0.5075594" side_tool="true" weight="0.26734695" />
       <window_info anchor="bottom" id="Analyze Dataflow to" order="15" weight="0.32876712" />
-      <window_info anchor="bottom" id="Inspection Results" order="0" weight="0.32876712" />
-      <window_info anchor="right" id="Coverage" order="13" side_tool="true" weight="0.32959184" />
-      <window_info anchor="bottom" id="Inspection" order="6" weight="0.4" />
-      <window_info anchor="bottom" id="Cvs" order="5" weight="0.25" />
+      <window_info anchor="bottom" id="Analyze Dataflow from" order="16" weight="0.32876712" />
+      <window_info anchor="bottom" id="Terminal" order="17" weight="0.6689537" />
+      <window_info anchor="right" id="Maven" weight="0.32959184" />
+      <window_info anchor="right" id="Commander" order="0" weight="0.4" />
+      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.65" />
       <window_info anchor="right" id="PlantUML" order="3" weight="0.32959184" />
-      <window_info anchor="bottom" id="Messages" order="3" sideWeight="0.49183673" weight="0.40324962" />
-      <window_info anchor="bottom" id="Find" order="2" weight="0.3164706" />
-      <window_info anchor="right" id="Commander" order="0" weight="0.4" />
-      <window_info anchor="bottom" id="Message" order="1" />
-      <window_info anchor="bottom" id="Analyze Dataflow from" order="16" weight="0.32876712" />
+      <window_info anchor="right" id="Palette" order="4" />
+      <window_info anchor="right" id="Database" order="5" weight="0.32959184" />
+      <window_info anchor="right" id="Palette&#9;" order="6" />
+      <window_info anchor="right" id="Capture Analysis" order="7" />
+      <window_info anchor="right" id="Theme Preview" order="8" />
+      <window_info anchor="right" id="Maven Projects" order="9" weight="0.49081632" />
+      <window_info anchor="right" id="CDI" order="10" />
+      <window_info anchor="right" id="Bean Validation" order="11" weight="0.32959184" />
+      <window_info anchor="right" id="JSF" order="12" />
+      <window_info anchor="right" id="Coverage" order="13" side_tool="true" weight="0.32959184" />
     </layout>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -850,9 +1065,20 @@
         </entry>
       </map>
     </option>
-  </component>
-  <component name="VcsContentAnnotationSettings">
-    <option name="myLimit" value="2678400000" />
+    <option name="RECENT_FILTERS">
+      <map>
+        <entry key="Branch">
+          <value>
+            <list />
+          </value>
+        </entry>
+        <entry key="User">
+          <value>
+            <list />
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
   <component name="VcsManagerConfiguration">
     <option name="SHOW_DIRTY_RECURSIVELY" value="true" />
@@ -1035,246 +1261,317 @@
           <option name="timeStamp" value="34" />
         </line-breakpoint>
       </breakpoints>
-      <option name="time" value="35" />
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/pom.xml">
+    <entry file="file://$PROJECT_DIR$/base/src/main/java/com/bjsxt/集合/linkedlist/Node.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="462">
-          <caret line="14" column="31" selection-start-line="14" selection-start-column="31" selection-end-line="14" selection-end-column="31" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/spring源码/pom.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="231">
-          <caret line="7" column="38" selection-start-line="7" selection-start-column="38" selection-end-line="7" selection-end-column="38" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/thread/note/thread-dongnao-mark.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="41">
-          <caret line="1302" column="39" selection-start-line="1302" selection-start-column="3" selection-end-line="1302" selection-end-column="39" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/base/src/main/java/com/lamda/CalculateInterface.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="90">
-          <caret line="3" column="20" selection-start-line="3" selection-start-column="20" selection-end-line="3" selection-end-column="20" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/base/src/main/java/com/lamda/lamda表达式.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="30">
-          <caret line="2" column="25" selection-start-line="2" selection-start-column="25" selection-end-line="2" selection-end-column="25" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/base/src/main/java/com/bjpowernode/手写Tomcat服务器/httpserver/core/HandlerRequest.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-5128">
-          <caret line="13" column="11" selection-start-line="13" selection-start-column="11" selection-end-line="13" selection-end-column="11" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/base/src/main/java/com/bjpowernode/手写Tomcat服务器/httpserver/core/BootStrap.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="451">
-          <caret line="40" column="39" selection-start-line="40" selection-start-column="39" selection-end-line="40" selection-end-column="39" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/thread/src/main/java/com/dongnao/mark/base/connectpool/ConnectionDriver.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="164">
-          <caret line="8" column="13" selection-start-line="8" selection-start-column="13" selection-end-line="8" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/thread/src/main/java/com/dongnao/mark/base/connectpool/ConnectionPool.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-492">
-          <caret line="25" column="15" selection-start-line="25" selection-start-column="15" selection-end-line="25" selection-end-column="15" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/thread/src/main/java/com/dongnao/mark/base/connectpool/ConnectionPoolTest.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1066">
-          <caret line="6" column="13" selection-start-line="6" selection-start-column="13" selection-end-line="6" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/thread/src/main/java/com/dongnao/mark/base/connectpool/ConnectionPool02.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-943">
-          <caret line="6" column="13" selection-start-line="6" selection-start-column="13" selection-end-line="6" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/thread/src/main/java/com/dongnao/mark/base/connectpool/ConnectionPoolTest02.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1599">
-          <caret line="45" column="25" lean-forward="true" selection-start-line="45" selection-start-column="25" selection-end-line="45" selection-end-column="25" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/SocketServer/src/main/resources/META-INF/MANIFEST.MF" />
-    <entry file="file://$PROJECT_DIR$/SocketClient/src/main/resources/META-INF/MANIFEST.MF" />
-    <entry file="file://$PROJECT_DIR$/SocketClient/pom.xml" />
-    <entry file="file://$PROJECT_DIR$/SocketServer/pom.xml" />
-    <entry file="jar://F:/ProgramFiles/Java/jdk1.8.0_181/src.zip!/java/net/PlainSocketImpl.java" />
-    <entry file="jar://F:/ProgramFiles/Java/jdk1.8.0_181/src.zip!/java/net/SocketImpl.java" />
-    <entry file="jar://F:/ProgramFiles/Java/jdk1.8.0_181/src.zip!/java/net/DualStackPlainSocketImpl.java" />
-    <entry file="jar://F:/ProgramFiles/Java/jdk1.8.0_181/src.zip!/java/net/AbstractPlainSocketImpl.java" />
-    <entry file="jar://F:/ProgramFiles/Java/jdk1.8.0_181/src.zip!/java/net/ServerSocket.java" />
-    <entry file="file://$PROJECT_DIR$/base/src/main/java/com/socket/SocketServer.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="82">
-          <caret line="7" column="24" lean-forward="true" selection-start-line="7" selection-start-column="24" selection-end-line="7" selection-end-column="24" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/base/src/main/java/com/socket/SocketClient.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="164">
-          <caret line="7" column="25" selection-start-line="7" selection-start-column="25" selection-end-line="7" selection-end-column="25" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/SocketClient/src/main/java/com/gouyan/SocketClient.java" />
-    <entry file="file://$PROJECT_DIR$/base/src/main/java/com/JGit.java" />
-    <entry file="file://$PROJECT_DIR$/base/pom.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="164">
-          <caret line="46" column="34" selection-start-line="46" selection-start-column="34" selection-end-line="46" selection-end-column="34" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/base/src/main/java/com/JGit/gitTest.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3567">
-          <caret line="98" column="41" selection-start-line="98" selection-start-column="41" selection-end-line="98" selection-end-column="41" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/SocketServer/src/main/java/com/gouyan/SocketServer.java" />
-    <entry file="file://$PROJECT_DIR$/DesignPatterns/src/main/java/com/adapter/powernode/Test02.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="205">
-          <caret line="6" column="13" selection-start-line="6" selection-start-column="13" selection-end-line="6" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/DesignPatterns/src/main/java/com/adapter/powernode/Test01.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="82">
+        <state relative-caret-position="-442">
           <caret line="2" column="13" selection-start-line="2" selection-start-column="13" selection-end-line="2" selection-end-column="13" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/DesignPatterns/src/main/java/com/adapter/powernode/WorkerAdapter.java">
+    <entry file="file://$PROJECT_DIR$/thread/src/main/java/com/bjsxt/thread/CDownloader.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="123">
-          <caret line="3" column="13" selection-start-line="3" selection-start-column="13" selection-end-line="3" selection-end-column="13" />
+        <state relative-caret-position="177">
+          <caret line="13" column="13" selection-start-line="13" selection-start-column="13" selection-end-line="13" selection-end-column="13" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/DesignPatterns/src/main/java/com/adapter/powernode/IWorkerAdapter.java">
+    <entry file="file://$PROJECT_DIR$/thread/src/main/java/com/bjsxt/thread/CRacer.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="164">
-          <caret line="5" column="17" selection-start-line="5" selection-start-column="17" selection-end-line="5" selection-end-column="17" />
+        <state relative-caret-position="185">
+          <caret line="14" column="13" selection-start-line="14" selection-start-column="13" selection-end-line="14" selection-end-column="13" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/DesignPatterns/src/main/java/com/proxy/Proxy.java">
+    <entry file="file://$PROJECT_DIR$/thread/src/main/java/com/bjsxt/thread/IDownloader.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="533">
-          <caret line="114" column="8" selection-start-line="114" selection-start-column="8" selection-end-line="115" selection-end-column="48" />
+        <state relative-caret-position="60">
+          <caret line="2" column="13" selection-start-line="2" selection-start-column="13" selection-end-line="2" selection-end-column="13" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/ssm/note/ssm搭建.txt">
+    <entry file="file://$PROJECT_DIR$/thread/src/main/java/com/bjsxt/thread/LambdaTest01.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-4950" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/spring/springmvc/src/main/java/com/bjpowernode/handlers/MyControler.java" />
-    <entry file="file://$PROJECT_DIR$/spring/src/main/java/com/bjpowernode/di/annotation/School.java" />
-    <entry file="file://$PROJECT_DIR$/spring/src/main/java/com/bjpowernode/di/Person.java" />
-    <entry file="file://$PROJECT_DIR$/spring/src/main/java/com/bjpowernode/aop/aspectJ/MyAspectAnnotation.java" />
-    <entry file="file://$PROJECT_DIR$/self-spring/note/手写spring.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1881" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/spring/src/test/java/com/bjpowernode/TestAnnotation.java" />
-    <entry file="file://$PROJECT_DIR$/self-spring/src/main/java/com/gupaoedu/vip/spring/framework/beans/GPBeanDefinition.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="99">
-          <caret line="3" column="13" selection-start-line="3" selection-start-column="13" selection-end-line="3" selection-end-column="13" />
+        <state relative-caret-position="188">
+          <caret line="58" column="6" selection-start-line="58" selection-start-column="6" selection-end-line="58" selection-end-column="6" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/DesignPatterns/src/main/java/com/singleton/register/BeanFactory.java">
+    <entry file="file://$PROJECT_DIR$/thread/src/main/java/com/bjsxt/thread/LambdaTest02.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="132">
-          <caret line="5" column="13" selection-start-line="5" selection-start-column="13" selection-end-line="5" selection-end-column="13" />
+        <state relative-caret-position="188">
+          <caret line="38" column="6" selection-start-line="38" selection-start-column="6" selection-end-line="38" selection-end-column="6" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/spring源码/src/main/resources/applicationContext-aop.xml">
+    <entry file="file://$PROJECT_DIR$/thread/src/main/java/com/bjsxt/thread/LambdaTest03.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="330">
-          <caret line="10" column="16" selection-start-column="4" selection-end-line="72" selection-end-column="12" />
+        <state relative-caret-position="185">
+          <caret line="7" column="13" selection-start-line="7" selection-start-column="13" selection-end-line="7" selection-end-column="13" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/spring源码/src/main/resources/applicationContext-aspectJ.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="264">
-          <caret line="8" lean-forward="true" selection-start-column="4" selection-end-line="39" selection-end-column="12" />
-        </state>
-      </provider>
+    <entry file="file://$PROJECT_DIR$/thread/src/main/java/com/bjsxt/syn/Account.java">
+      <provider selected="true" editor-type-id="text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/spring源码/src/main/java/com/gupao/Demo.java" />
-    <entry file="file://$PROJECT_DIR$/spring源码/src/main/resources/applicationContext-annotation.xml">
+    <entry file="file://$PROJECT_DIR$/thread/pom.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="429">
-          <caret line="13" column="38" selection-start-column="4" selection-end-line="15" selection-end-column="12" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/servlet/pom.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="66">
-          <caret line="2" selection-start-line="2" selection-end-line="6" selection-end-column="13" />
+        <state relative-caret-position="472">
+          <caret line="30" lean-forward="true" selection-start-line="30" selection-end-line="30" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/pom.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="462">
-          <caret line="14" column="31" selection-start-line="14" selection-start-column="31" selection-end-line="14" selection-end-column="31" />
+        <state relative-caret-position="-2790" />
+      </provider>
+    </entry>
+    <entry file="jar://F:/ProgramFiles/Java/jdk1.8.0_101/src.zip!/java/lang/Thread.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="30">
+          <caret line="140" column="27" selection-start-line="140" selection-start-column="27" selection-end-line="140" selection-end-column="27" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/spring源码/src/main/java/com/gupao/ClassPathXmlApplicationContextDemo.java" />
-    <entry file="file://$PROJECT_DIR$/spring源码/src/main/resources/applicationContext.xml">
+    <entry file="file://$PROJECT_DIR$/thread/src/main/java/com/bjsxt/thread/WebDownloader.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-759">
-          <caret line="10" column="13" lean-forward="true" selection-start-line="10" selection-start-column="13" selection-end-line="10" selection-end-column="13" />
+        <state relative-caret-position="107">
+          <caret line="7" column="38" selection-start-line="7" selection-start-column="7" selection-end-line="7" selection-end-column="38" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/spring源码/pom.xml">
+    <entry file="file://$PROJECT_DIR$/thread/src/main/java/com/bjsxt/state/Demo.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="231">
-          <caret line="7" column="38" selection-start-line="7" selection-start-column="38" selection-end-line="7" selection-end-column="38" />
+        <state relative-caret-position="330">
+          <caret line="11" column="40" selection-start-line="11" selection-start-column="40" selection-end-line="11" selection-end-column="40" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/thread/src/main/java/com/bjsxt/state/BlockedSleep03.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="150">
+          <caret line="6" column="13" selection-start-line="6" selection-start-column="13" selection-end-line="6" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/thread/src/main/java/com/bjsxt/state/AllState.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="30">
+          <caret line="10" column="35" lean-forward="true" selection-start-line="10" selection-start-column="35" selection-end-line="10" selection-end-column="35" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/thread/src/main/java/com/bjsxt/state/BlockedSleep01.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="390">
+          <caret line="16" column="1" lean-forward="true" selection-start-line="16" selection-start-column="1" selection-end-line="16" selection-end-column="1" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/thread/src/main/java/com/bjsxt/thread/StartThread.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="360">
+          <caret line="27" column="14" selection-start-line="27" selection-start-column="14" selection-end-line="27" selection-end-column="14" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/thread/src/main/java/com/bjsxt/thread/StartRun.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="98">
+          <caret line="22" column="13" selection-start-line="22" selection-start-column="13" selection-end-line="22" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/thread/src/main/java/com/dongnao/mark/base/syn/InstanceAndClass.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="300">
+          <caret line="64" column="8" selection-start-line="64" selection-start-column="8" selection-end-line="66" selection-end-column="29" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/thread/src/main/java/com/dongnao/mark/base/syn/SynDetail.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="60">
+          <caret line="2" column="13" selection-start-line="2" selection-start-column="13" selection-end-line="2" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/thread/note/锁.txt">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/thread/src/main/java/com/dongnao/mark/mythreadpool/TestMyThreadPool02.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="240">
+          <caret line="15" column="42" lean-forward="true" selection-start-line="15" selection-start-column="42" selection-end-line="15" selection-end-column="42" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/thread/src/main/java/com/dongnao/mark/mythreadpool/MyThreadPool02.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="112">
+          <caret line="70" column="26" lean-forward="true" selection-start-line="70" selection-start-column="26" selection-end-line="70" selection-end-column="26" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/thread/src/main/java/com/dongnao/mark/mythreadpool/MyThreadPool.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="120">
+          <caret line="7" column="13" selection-start-line="7" selection-start-column="13" selection-end-line="7" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/thread/src/main/java/com/dongnao/mark/base/threadstate/ThreadState.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-603">
+          <caret line="24" column="25" selection-start-line="24" selection-start-column="25" selection-end-line="24" selection-end-column="25" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/thread/src/main/java/com/dongnao/mark/base/SleepTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="360">
+          <caret line="39" column="18" selection-start-line="39" selection-start-column="18" selection-end-line="39" selection-end-column="37" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/thread/src/main/java/com/dongnao/mark/base/bq/BlockingQueueWN.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-892">
+          <caret line="7" column="13" selection-start-line="7" selection-start-column="13" selection-end-line="7" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/thread/src/main/java/com/dongnao/mark/base/bq/BqTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-870">
+          <caret line="6" column="13" selection-start-line="6" selection-start-column="13" selection-end-line="6" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/base/src/main/java/com/bjsxt/集合/map/SxtHashMap002.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-510">
+          <caret line="4" column="13" selection-start-line="4" selection-start-column="13" selection-end-line="4" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/base/src/main/java/com/bjsxt/集合/map/SxtHashMap.txt">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/thread/note/thread-dongnao-mark.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="145">
+          <caret line="236" column="21" selection-start-line="236" selection-start-column="21" selection-end-line="236" selection-end-column="21" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/rabbitMQ/pom.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-5940" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/rabbitMQ/note/rabbitmq-dongnao-mark.md">
+      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+        <state split_layout="FIRST">
+          <first_editor relative-caret-position="330">
+            <caret line="155" column="21" selection-start-line="155" selection-start-column="21" selection-end-line="155" selection-end-column="21" />
+          </first_editor>
+          <second_editor />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/rabbitMQ/src/main/java/com/rabbitmq/spring/consumer/BasicConsumer.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-60">
+          <caret line="6" column="13" selection-start-line="6" selection-start-column="13" selection-end-line="6" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/rabbitMQ/src/main/java/com/rabbitmq/spring/produce/AmqpProducer.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="150">
+          <caret line="9" column="13" selection-start-line="9" selection-start-column="13" selection-end-line="9" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/rabbitMQ/src/main/webapp/index.jsp">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/rabbitMQ/src/main/webapp/WEB-INF/web.xml">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/rabbitMQ/src/main/resources/applicationContext.xml">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/rabbitMQ/src/main/resources/rabbitmq.properties">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/rabbitMQ/src/main/java/com/rabbitmq/original/MsgProducer.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="30">
+          <caret line="9" column="13" selection-start-line="9" selection-start-column="13" selection-end-line="9" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/rabbitMQ/src/main/java/com/rabbitmq/original/RabbitUtil.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="120">
+          <caret line="6" column="13" selection-start-line="6" selection-start-column="13" selection-end-line="6" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/rabbitMQ/src/main/java/com/rabbitmq/original/MsgConsumer.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-510">
+          <caret line="6" column="13" selection-start-line="6" selection-start-column="13" selection-end-line="6" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/rabbitMQ/activemq-api/src/main/java/com/gupaoedu/queue/Sender.java">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/rabbitMQ/activemq-api/pom.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-450" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/rabbitMQ/spring-rabbitmq/src/main/java/com/gupaoedu/consumer/FirstConsumer.java">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/rabbitMQ/rabbitmq-javaapi/README.MD">
+      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+        <state split_layout="FIRST">
+          <first_editor />
+          <second_editor />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/rabbitMQ/rabbitmq-javaapi/src/main/resources/config.properties">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/rabbitMQ/rabbitmq-javaapi/pom.xml">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/rabbitMQ/rabbitmq-javaapi/src/main/java/com/gupaoedu/ack/AckConsumer.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="390">
+          <caret line="16" column="13" lean-forward="true" selection-start-line="16" selection-start-column="13" selection-end-line="16" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/rabbitMQ/rabbitmq-javaapi/src/main/java/com/gupaoedu/dlx/DlxConsumer.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="90">
+          <caret line="8" selection-start-line="8" selection-end-line="8" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/rabbitMQ/springboot-mq/src/main/java/com/gupaoedu/config/RabbitConfig.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="60">
+          <caret line="11" column="27" selection-start-line="11" selection-start-column="27" selection-end-line="11" selection-end-column="27" />
         </state>
       </provider>
     </entry>
@@ -1289,7 +1586,6 @@
             <option name="proportions">
               <list>
                 <option value="0.25467288" />
-                <option value="0.5" />
               </list>
             </option>
           </splitter-proportions>
@@ -1309,7 +1605,6 @@
       </state>
       <state key="GlobalLibrariesConfigurable.UI">
         <settings>
-          <last-edited>groovy-2.5.4</last-edited>
           <splitter-proportions>
             <option name="proportions">
               <list>
@@ -1333,12 +1628,11 @@
       </state>
       <state key="ModuleStructureConfigurable.UI">
         <settings>
-          <last-edited>spring源码</last-edited>
+          <last-edited>springboot-mq</last-edited>
           <splitter-proportions>
             <option name="proportions">
               <list>
                 <option value="0.25467288" />
-                <option value="0.6" />
               </list>
             </option>
           </splitter-proportions>

@@ -148,8 +148,8 @@ public class DirectProducer {
         factory.setUsername("gouyan");
         factory.setPassword("123456");
         factory.setVirtualHost("/");
-        Connection connection = factory.newConnection();            /**工厂创建 tcp/ip 连接*/
-        Channel channel = connection.createChannel();               /**在tcp/ip连接上面创建 虚拟信道，使用虚拟信道进行操作，节约tcp/ip连接资源；信道可以无限创建；*/
+        Connection connection = factory.newConnection();            /**工厂创建 tcp/ip 长连接，避免反复重复创建连接*/
+        Channel channel = connection.createChannel();               /**在 长连接connection上面创建 虚拟信道 channel，节约资源；虚拟信道可以无限创建；*/
         channel.exchangeDeclare(EXCHANGE_NAME, BuiltinExchangeType.DIRECT);      /**生产者 声明 交换空间(name + type)*/
         String[]serverities = {"error","info","warning"};
         for(int i=0;i<3;i++){
@@ -173,7 +173,7 @@ public class DirectConsumer {
         factory.setPassword("123456");
         factory.setVirtualHost("/");
         Connection connection = factory.newConnection();                                 /**工厂创建 tcp/ip 连接*/
-        Channel channel = connection.createChannel();                                    /**在tcp/ip连接上面创建 虚拟信道，使用虚拟信道进行操作，节约tcp/ip连接资源；虚拟信道可以无限创建；*/
+        Channel channel = connection.createChannel();                                    /**在 长连接connection上面创建 虚拟信道 channel，节约资源；虚拟信道可以无限创建；*/
         channel.exchangeDeclare(EXCHANGE_NAME, BuiltinExchangeType.DIRECT);              /**消费者 声明 交换空间(name + type)*/
         String queueName = channel.queueDeclare().getQueue();                            /**消费者 声明随机队列，声明队列后无法订阅队列*/
         String[]serverities = {"error","info","warning"};
@@ -205,8 +205,8 @@ public class ProducerConfirm {
         factory.setUsername("gouyan");
         factory.setPassword("123456");
         factory.setVirtualHost("/");
-        Connection connection = factory.newConnection();                            /**工厂创建 tcp/ip 连接*/
-        Channel channel = connection.createChannel();                               /**在tcp/ip连接上面创建 虚拟信道，使用虚拟信道进行操作，节约tcp/ip连接资源；虚拟信道可以无限创建；*/
+        Connection connection = factory.newConnection();                            /**工厂创建 tcp/ip 长连接，避免反复重复创建连接*/
+        Channel channel = connection.createChannel();                               /**在 长连接connection上面创建 虚拟信道 channel，节约资源；虚拟信道可以无限创建；*/
         channel.confirmSelect();                                                    /**将信道设置为 发送方确认模式*/
         channel.addConfirmListener(new ConfirmListener() {                          /**信道中增加监听器，当服务端接收到数据后，远程调用监听方法*/
             @Override

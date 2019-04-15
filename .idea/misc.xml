@@ -30,6 +30,9 @@
       <list>
         <option value="$PROJECT_DIR$/pom.xml" />
         <option value="$PROJECT_DIR$/spring源码/pom.xml" />
+        <option value="$PROJECT_DIR$/rabbitMQ/activemqapi/pom.xml" />
+        <option value="$PROJECT_DIR$/rabbitMQ/rabbitmq-javaapi/pom.xml" />
+        <option value="$PROJECT_DIR$/rabbitMQ/springboot-mq/pom.xml" />
       </list>
     </option>
     <option name="ignoredFiles">
@@ -44,6 +47,7 @@
         <option value="$PROJECT_DIR$/javaweb/pom.xml" />
         <option value="$PROJECT_DIR$/listener/pom.xml" />
         <option value="$PROJECT_DIR$/netty/pom.xml" />
+        <option value="$PROJECT_DIR$/rabbitMQ/activemq-api/pom.xml" />
         <option value="$PROJECT_DIR$/rabbitmq/pom.xml" />
         <option value="$PROJECT_DIR$/redis/pom.xml" />
         <option value="$PROJECT_DIR$/remoteapi/pom.xml" />

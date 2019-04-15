@@ -1,8 +1,8 @@
 package com.dongnao.mark.base.threadstate;
 
-import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
+
 /**直接运行 main() 方法，在运行结果 4:Run 里面点击 相机查看线程 DUMP*/
 public class ThreadState {
     private static Lock lock = new ReentrantLock();

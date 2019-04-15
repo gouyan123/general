@@ -77,11 +77,11 @@ i=0
 使用线程中的中断方法：interrupt(),isInterrupted(),Thread.interrupted();
 
 7、线程的状态？
-新创建：线程被创建，但是没有调用start()方法；
-可运行(RUNNABLE)：不存在运行状态，只存在可运行状态，具体是不是在运行，由cpu决定；
-阻塞BLOCKING：线程被阻塞于锁，该线程等待锁，有锁就能运行，但是锁被其他线程拿到了；
-等待/计时等待（WAITING）：wait(),sleep()等待某些条件成熟；
-被终止：线程执行完毕；
+new 新创建：线程被创建，但是没有调用start()方法；
+runnable 可运行：不存在运行状态，只存在可运行状态，具体是不是在运行，由cpu决定；
+blocking 阻塞：线程被阻塞于锁，该线程等待锁，有锁就能运行，但是锁被其他线程拿到了；
+waiting 等待/计时等待：wait(),sleep()等待某些条件成熟；
+terminated 被终止：线程执行完毕；
 见 com.dongnao.mark.base.threadstate.ThreadState 类，启动 main()方法，点击照相机查看 dump：
 
 总结：线程状态没理解？？？
@@ -96,7 +96,7 @@ i=0
 run()方法就是一个普通方法，真正作为线程执行是因为使用了线程的start()方法；
 
 11、Thread.sleep()不会释放锁，sleep()定义在synchronized(lock) {}里面，其他线程将拿不到锁，因此，
-Thread.sleep()要定义在 synchronized(lock) {} 外面，见 com.dongnao.mark.baseSleepTest 类；
+Thread.sleep()要定义在 synchronized(lock) {} 外面，见 com.dongnao.mark.base.SleepTest 类；
 
 12、yield()：出让cpu，当前线程从正在运行状态 → 可运行状态，下一刻也有可能被cpu选中运行，不会释放锁；
 
@@ -108,6 +108,8 @@ synchronized( O ){...}：隐式锁，进入synchronized修饰的代码就获得�
 与Synchronized配套使用的通信方法通常有wait(),notifyAll()。
 wait()方法会立即释放当前锁，并进入等待状态，等待到相应的notify()并重新获得锁过后才能继续执行；notify()
 不会释放锁，必须要等notify()所在线程执行完synchronized块中的所有代码才会释放。
+而当调用wait()方法的时候，线程会放弃对象锁，进入等待此对象的等待锁定池，只有针对此对象调用notify()方法后本线程才进入对象锁定池准备
+每个对象上都有 一把锁 和 一堆等待锁的 线程对象队列；
 
 synchronized(O){o.wait()}:
 进入synchronized块，表示线程获取 对象o 的锁，其他线程不能再获取 对象o 的锁；
@@ -118,7 +120,7 @@ public void synchronized put(){}等价于 synchronized(this){} 表示当前对�
 notify与notifyAll：
 notify唤醒在对象 O 上面等待的 1 个线程；notifyAll唤醒在对象 O 上面等待的 全部线程；notifyAll常用；
 wait(),notify(),notifyAll()属于对象的方法，不属于线程的方法(Thread.xxx())，继承自 Object 类；
-o.wati()：线程会在对象o上面等待，直到下次被唤醒，接着 wait()方法执行；
+o.wait()：线程会在对象o上面等待，直到下次被唤醒，接着 wait()方法执行；
 见 com.dongnao.mark.base.waitnotify.User 类；
 
 ---------------------------------线程间协作和通信-----------------------------------------

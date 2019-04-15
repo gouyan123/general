@@ -37,7 +37,7 @@ public class SleepTest {
                 }
                 /**sleep()定义在synchronized外面*/
                 /*Thread.sleep(5000);*/
-                Thread.sleep(5000);
+//                Thread.sleep(5000);
             } catch (InterruptedException e) {
                 //e.printStackTrace();
             }
