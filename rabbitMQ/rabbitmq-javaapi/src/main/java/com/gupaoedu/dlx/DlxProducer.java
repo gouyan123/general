@@ -11,9 +11,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * @Author: qingshan
- * @Date: 2018/9/21 10:52
- * @Description: 咕泡学院，只为更好的你
  * 消息生产者，通过TTL测试死信队列
  */
 public class DlxProducer {

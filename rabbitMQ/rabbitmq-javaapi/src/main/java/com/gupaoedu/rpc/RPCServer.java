@@ -7,9 +7,6 @@ import com.rabbitmq.client.AMQP.BasicProperties;
 import java.io.IOException;
 
 /**
- * @Author: qingshan
- * @Date: 2018/9/21 10:52
- * @Description: 咕泡学院，只为更好的你
  * RPC服务端，先启动
  */
 public class RPCServer {

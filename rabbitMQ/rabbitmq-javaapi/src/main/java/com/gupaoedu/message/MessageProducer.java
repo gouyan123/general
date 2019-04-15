@@ -11,9 +11,6 @@ import java.util.Map;
 import java.util.UUID;
 
 /**
- * @Author: qingshan
- * @Date: 2018/10/20 19:38
- * @Description: 咕泡学院，只为更好的你
  * 在消息中添加更多的属性
  */
 public class MessageProducer {

@@ -12,9 +12,6 @@ import java.util.SortedSet;
 import java.util.TreeSet;
 
 /**
- * @Author: qingshan
- * @Date: 2018/9/21 10:52
- * @Description: 咕泡学院，只为更好的你
  * 消息生产者，测试Confirm模式
  *  参考文章：https://www.cnblogs.com/vipstone/p/9350075.html
  */

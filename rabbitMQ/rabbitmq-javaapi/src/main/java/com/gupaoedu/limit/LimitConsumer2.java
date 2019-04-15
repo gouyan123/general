@@ -7,9 +7,6 @@ import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
 /**
- * @Author: qingshan
- * @Date: 2018/9/21 10:53
- * @Description: 咕泡学院，只为更好的你
  * 消息消费者，测试消费端限流，先启动
  */
 public class LimitConsumer2 {

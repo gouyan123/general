@@ -9,9 +9,6 @@ import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 /**
- * @Author: qingshan
- * @Date: 2018/10/19 20:10
- * @Description: 咕泡学院，只为更好的你
  * 当消息无法匹配到队列时，会发回给生产者
  */
 public class ReturnListenerProducer {
