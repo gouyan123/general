@@ -5,10 +5,9 @@ import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.stereotype.Component;
 
 @Component
-@RabbitListener(queues = "SECOND_QUEUE")
 public class SecondConsumer {
 
-    @RabbitHandler
+    @RabbitListener(queues = "SECOND_QUEUE",autoStartup = "false")
     public void process(String msg){
         System.out.println(" second queue received msg : " + msg);
     }
