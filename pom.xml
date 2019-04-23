@@ -12,25 +12,16 @@
 
   <modules>
       <module>mybatis</module>
-      <module>spring</module>
       <module>ssm</module>
-      <module>service</module>
-      <module>springmvc</module>
       <module>dn-jack-soa</module>
       <module>stream</module>
-      <module>mongodb</module>
       <module>thread</module>
       <module>netty</module>
       <module>DesignPatterns</module>
       <module>self-spring</module>
       <module>base</module>
       <module>self-orm</module>
-      <module>redis</module>
-      <module>zookeeper</module>
-      <module>rabbitMQ</module>
       <module>mysql</module>
-      <module>SocketClient</module>
-      <module>SocketServer</module>
   </modules>
 
   <properties>

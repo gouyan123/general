@@ -10,32 +10,30 @@
         <module name="myredis" />
         <module name="rabbit" />
         <module name="log" />
-        <module name="jdbcpool" />
         <module name="mongodb" />
         <module name="filter" />
+        <module name="jdbcpool" />
+        <module name="rabbitMQ" />
         <module name="netty" />
-        <module name="ssm" />
-        <module name="service" />
         <module name="self-spring" />
-        <module name="spring源码" />
-        <module name="redis" />
         <module name="self-orm" />
         <module name="mybatis" />
         <module name="zookeeper" />
         <module name="base" />
+        <module name="mysql" />
         <module name="springmvc" />
-        <module name="springboot-mq" />
         <module name="DesignPatterns" />
+        <module name="dn-jack-soa" />
+        <module name="ssm" />
         <module name="NettyNio" />
         <module name="thread" />
-        <module name="dn-jack-soa" />
-        <module name="mysql" />
-        <module name="dnjacksoa" />
         <module name="rabbitmq-javaapi" />
+        <module name="springboot-mq" />
+        <module name="service" />
+        <module name="dnjacksoa" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="activemq-api" target="1.5" />
       <module name="base" target="1.8" />
       <module name="blockchain" target="1.8" />
       <module name="DesignPatterns" target="1.8" />
@@ -72,7 +70,7 @@
       <module name="springboot" target="1.8" />
       <module name="springboot-mq" target="1.8" />
       <module name="springmvc" target="1.8" />
-      <module name="spring源码" target="1.8" />
+      <module name="spring源码" target="1.5" />
       <module name="ssm" target="1.8" />
       <module name="strategy" target="1.8" />
       <module name="stream" target="1.8" />
@@ -82,8 +80,9 @@
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
-      <module name="netty" options="-verbose -bootclasspath F:/ProgramFiles/Java/jdk1.8.0_101/jre/lib/rt.jar" />
-      <module name="self-spring" options="-verbose -bootclasspath F:/ProgramFiles/Java/jdk1.8.0_101/jre/lib/rt.jar" />
+      <module name="netty" options="-verbose -bootclasspath F:/ProgramFiles/Java/jdk1.8.0_181/jre/lib/rt.jar" />
+      <module name="redis" options="-parameters" />
+      <module name="self-spring" options="-verbose -bootclasspath F:/ProgramFiles/Java/jdk1.8.0_181/jre/lib/rt.jar" />
       <module name="springboot-mq" options="-parameters" />
     </option>
   </component>

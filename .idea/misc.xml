@@ -29,10 +29,9 @@
     <option name="originalFiles">
       <list>
         <option value="$PROJECT_DIR$/pom.xml" />
-        <option value="$PROJECT_DIR$/spring源码/pom.xml" />
-        <option value="$PROJECT_DIR$/rabbitMQ/activemqapi/pom.xml" />
-        <option value="$PROJECT_DIR$/rabbitMQ/rabbitmq-javaapi/pom.xml" />
         <option value="$PROJECT_DIR$/rabbitMQ/springboot-mq/pom.xml" />
+        <option value="$PROJECT_DIR$/rabbitMQ/rabbitmq-javaapi/pom.xml" />
+        <option value="$PROJECT_DIR$/redis/pom.xml" />
       </list>
     </option>
     <option name="ignoredFiles">
@@ -47,7 +46,6 @@
         <option value="$PROJECT_DIR$/javaweb/pom.xml" />
         <option value="$PROJECT_DIR$/listener/pom.xml" />
         <option value="$PROJECT_DIR$/netty/pom.xml" />
-        <option value="$PROJECT_DIR$/rabbitMQ/activemq-api/pom.xml" />
         <option value="$PROJECT_DIR$/rabbitmq/pom.xml" />
         <option value="$PROJECT_DIR$/redis/pom.xml" />
         <option value="$PROJECT_DIR$/remoteapi/pom.xml" />
@@ -66,7 +64,7 @@
     <resource url="http://www.springframework.org/schema/context/spring-mvc.xsd" location="$USER_HOME$/Desktop/spring-mvc-4.2.xsd" />
     <resource url="http://www.springframework.org/schema/data/mongo/spring-mongo.xsd" location="$PROJECT_DIR$/mongodb/src/test/resources/spring-mongo.xsd" />
   </component>
-  <component name="ProjectRootManager" version="2" project-jdk-name="1.8" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_8" default="false" project-jdk-name="1.8" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/out" />
   </component>
 </project>

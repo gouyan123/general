@@ -1,6 +1,12 @@
 <component name="ArtifactManager">
   <artifact type="war" name="mongodb:war">
     <output-path>$PROJECT_DIR$/mongodb/target</output-path>
+    <properties id="maven-jee-properties">
+      <options>
+        <module>mongodb</module>
+        <packaging>war</packaging>
+      </options>
+    </properties>
     <root id="archive" name="mongodb.war">
       <element id="artifact" artifact-name="mongodb:war exploded" />
     </root>
