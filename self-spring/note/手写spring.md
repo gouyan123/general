@@ -1,26 +1,27 @@
-***************************************************************************************
+```text
 学习框架过程：
 ①理清主线，画类图和方法调用时序图;
 ②根据时序图，搭建出框架（只有方法之间调用关系，方法实现为空 { }）;
 ③具体实现各个方法
-*****************************************************************************************
+```
 
----------------------------------手写核心代码---------------------------------------------
-****************************************************************************************
-className：类全名，例如 com.gupaoedu.Person;
-beanName：<bean id="person" class="com.gupaoedu.Person"/>，beanName就是其中的id
-****************************************************************************************
-spring开始的类 ClassPathXmlApplicationContext
-创建 com.gupaoedu.vip.spring.framework 包，spring2.0都在 framework包中开发
-webmvc包下创建 com.gupaoedu.vip.spring.framework.webmvc.servlet.GPDispatcherServlet.java 作为
- MVC启动入口；
-context包下创建 com.gupaoedu.vip.spring.framework.context.GPApplicationContext.java 类，作为
-容器，该类顶层接口为 BeanFactory，BeanFactory定义在 core 包中：
+> 手写核心代码
+>> 名词解释
+>>* className：类全名，例如 com.gupaoedu.Person;
+>>* beanName：<bean id="person" class="com.gupaoedu.Person"/>，beanName就是其中的id
+
+> spring容器初始化
+```java
+/**
+* spring开始的类 ClassPathXmlApplicationContext
+* 创建 com.gupaoedu.vip.spring.framework.webmvc.servlet.GPDispatcherServlet.java 作为MVC启动入口；
+* context包下创建 com.gupaoedu.vip.spring.framework.context.GPApplicationContext.java 类，作为
+* 容器，该类顶层接口为 BeanFactory，BeanFactory定义在 core 包中*/
 public interface BeanFactory {
     /*根据beanName从IOC容器之中获得一个实例Bean*/
     Object getBean(String beanName);
 }
-GPApplicationContext 类实现 BeanFacory 接口，并在类中创建 refresh()方法：
+// GPApplicationContext 类实现 BeanFacory 接口，并在类中创建 refresh()方法：
 public class GPApplicationContext implements BeanFactory{
     public GPApplicationContext(String... contextConfigLocations) {
         this.contextConfigLocations = contextConfigLocations;
@@ -38,7 +39,8 @@ public class GPApplicationContext implements BeanFactory{
         return null;
     }
 }
-Servlet要初始化容器即初始化 GPApplicationContext，转到 DispatcherServlet 类的 init()方法：
+
+// Servlet要初始化容器即初始化 GPApplicationContext，转到 DispatcherServlet 类的 init()方法：
 public class DispatcherServlet extends HttpServlet {
     @Override
     public void init(ServletConfig config) throws ServletException {
@@ -48,7 +50,7 @@ public class DispatcherServlet extends HttpServlet {
         GPApplicationContext context = new GPApplicationContext(config.getInitParameter("contextConfigLocation"));
     }
 }
-IOC容器 GPApplicationContext中创建构造方法，接收 xml 文件扫描路径，并在构造方法中调用 refresh()方法
+// IOC容器 GPApplicationContext中创建构造方法，接收 xml 文件扫描路径，并在构造方法中调用 refresh()方法
 public class GPApplicationContext implements BeanFactory{
     private String [] contextConfigLocation;
     public GPApplicationContext(String... contextConfigLocation) {
@@ -56,11 +58,11 @@ public class GPApplicationContext implements BeanFactory{
         refresh();
     }
 }
-refresh()方法还没开始定义，需要如下定义
 
+/**refresh()方法还没开始定义，需要如下定义:
 context包下创建support包，并创建 com.gupaoedu.vip.spring.framework.context.support.BeanDefinitionReader类
 BeanDefinitionReader类中定义registerBean(String className) 方法，需要在beans包中先定义
-BeanDefiniton 类（用来存储配置信息，即将配置信息封装到 BeanDefinition中）和BeanWrapper 类
+BeanDefiniton 类（用来存储配置信息，即将配置信息封装到 BeanDefinition中）和BeanWrapper 类*/
 public class BeanDefinition {
     /*beanClassName：类全名，即 包名.类名*/
     private String beanClassName;
@@ -70,7 +72,8 @@ public class BeanDefinition {
     private String factoryBeanName;
     /*setter，getter方法省略*/
 }
-/*BeanDefinitionReader类作用：对配置文件进行查找，读取、解析*/
+
+// BeanDefinitionReader类作用：对配置文件进行查找，读取、解析
 public class BeanDefinitionReader {
     //每注册一个className，就返回一个BeanDefinition，我自己包装
     public BeanDefinition registerBean(String className){
@@ -78,66 +81,69 @@ public class BeanDefinitionReader {
     }
 }
 
-回到IOC容器类 GPApplicationContext的 refresh() 方法：
-public void refresh(){
-    //①定位：定位到配置文件，把配置文件的内容封装到java内存对象中
-    this.beanDefinitionReader = new BeanDefinitionReader(this.contextConfigLocations);
-    //②加载：加载到指定包下的所有类的 类全名
-    List<String> beanDefinitions = this.beanDefinitionReader.loadBeanDefinitions();
-    //③注册：注册到beanDefinitionMap（key：id，value：BeanDifinition）
-    /*<bean id="factoryBeanName" class="className">，BeanDifinition封装的是factoryBeanName className*/
-    doRegisty(beanDefinitions);
-    /*至此，容器初始化完毕*/
-    //④依赖注入（lazy-init = false），要是执行依赖注入
-    //在这里自动调用getBean方法
-    //doAutowrited();
-//        MyAction myAction = (MyAction)this.getBean("myAction");
-//        myAction.query(null,null,"任性的Tom老师");
-}
-//①定位操作
-BeanDefinitionReader 读取类 创建构造方法，接收要读取的文件的路径，定位到文件，然后将其内容加载到内存对象
-public BeanDefinitionReader(String... contextConfigLocations) {
-    ...
-}
-②加载操作
-BeanDefinitionReader 读取类 创建 loadBeanDefinitions() 方法，获取 类全名 的list
-public List<String> loadBeanDefinitions(){
-    return this.registyBeanClasses;
-}
-③注册操作
-/*BeanDefinitions：类全名list，注册到beanDefinitionMap（key：id，value：BeanDifinition）中*/
-GPApplicationContext IOC容器类，创建 doRegisty(List<String> beanDefinitions) 注册方法，将beanName，
-BeanDefinition注册到 map 中；
-private void doRegisty(List<String> beanDefinitions) {
-    //beanName有三种情况:1、默认是类名首字母小写；2、自定义名字；3、接口注入
-    try {
-        for (String className : beanDefinitions) {
-            Class<?> beanClass = Class.forName(className);
-            /*如果是一个接口，是不能实例化的，用它实现类来实例化*/
-            if(beanClass.isInterface()){ continue; }
-            BeanDefinition beanDefinition = this.beanDefinitionReader.registerBean(className);
-            if(beanDefinition != null){
-                /*<bean id="factoryBeanName" class="className">*/
-                this.beanDefinitionMap.put(beanDefinition.getFactoryBeanName(),beanDefinition);
+// 回到IOC容器类 GPApplicationContext的 refresh() 方法：
+public class GPApplicationContext extends GPDefaultListableBeanFactory implements GPBeanFactory{
+    public void refresh(){
+        //①定位：定位到配置文件，把配置文件的内容封装到java内存对象中
+        this.beanDefinitionReader = new BeanDefinitionReader(this.contextConfigLocations);
+        //②加载：加载到指定包下的所有类的 类全名
+        List<String> beanDefinitions = this.beanDefinitionReader.loadBeanDefinitions();
+        //③注册：注册到beanDefinitionMap（key：id，value：BeanDifinition）
+        /*<bean id="factoryBeanName" class="className">，BeanDifinition封装的是factoryBeanName className*/
+        doRegisty(beanDefinitions);
+        /*至此，容器初始化完毕*/
+        //④依赖注入（lazy-init = false），要是执行依赖注入
+        //在这里自动调用getBean方法
+        //doAutowrited();
+    //        MyAction myAction = (MyAction)this.getBean("myAction");
+    //        myAction.query(null,null,"任性的Tom老师");
+    }
+    //①定位操作
+    BeanDefinitionReader 读取类 创建构造方法，接收要读取的文件的路径，定位到文件，然后将其内容加载到内存对象
+    public BeanDefinitionReader(String... contextConfigLocations) {
+        //...
+    }
+    //②加载操作
+    BeanDefinitionReader 读取类 创建 loadBeanDefinitions() 方法，获取 类全名 的list
+    public List<String> loadBeanDefinitions(){
+        return this.registyBeanClasses;
+    }
+    //③注册操作
+    /**BeanDefinitions：类全名list，注册到beanDefinitionMap（key：id，value：BeanDifinition）中
+    GPApplicationContext IOC容器类，创建 doRegisty(List<String> beanDefinitions) 注册方法，将beanName，
+    BeanDefinition注册到 map 中*/
+    private void doRegisty(List<String> beanDefinitions) {
+        //beanName有三种情况:1、默认是类名首字母小写；2、自定义名字；3、接口注入
+        try {
+            for (String className : beanDefinitions) {
+                Class<?> beanClass = Class.forName(className);
+                /*如果是一个接口，是不能实例化的，用它实现类来实例化*/
+                if(beanClass.isInterface()){ continue; }
+                BeanDefinition beanDefinition = this.beanDefinitionReader.registerBean(className);
+                if(beanDefinition != null){
+                    /*<bean id="factoryBeanName" class="className">*/
+                    this.beanDefinitionMap.put(beanDefinition.getFactoryBeanName(),beanDefinition);
+                }
+                /*如果是一个接口，是不能实例化的，用它实现类来实例化*/
+                Class<?>[] interfaces = beanClass.getInterfaces();
+                for (Class<?> i: interfaces) {
+                    //如果是多个实现类，只能覆盖
+                    //为什么？因为Spring没那么智能，就是这么傻
+                    //这个时候，可以自定义名字
+                    this.beanDefinitionMap.put(i.getName(),beanDefinition);
+                }
+                //到这里为止，容器初始化完毕
             }
-            /*如果是一个接口，是不能实例化的，用它实现类来实例化*/
-            Class<?>[] interfaces = beanClass.getInterfaces();
-            for (Class<?> i: interfaces) {
-                //如果是多个实现类，只能覆盖
-                //为什么？因为Spring没那么智能，就是这么傻
-                //这个时候，可以自定义名字
-                this.beanDefinitionMap.put(i.getName(),beanDefinition);
-            }
-            //到这里为止，容器初始化完毕
+        }catch (Exception e){
+            e.printStackTrace();
         }
-    }catch (Exception e){
-        e.printStackTrace();
     }
 }
+```
+> 至此，IOC容器初始化完毕，即new GPApplicationContext()，并调用refresh()方法，将beanName作为key，beanClass作为value封装到beanDefinitionMap中；
 
-至此，IOC容器初始化完毕；
 
-依赖注入通过 GPApplicationContext IOC容器类的 getBean()开始的，getBean(beanName)读取
+控制反转，依赖注入通过 GPApplicationContext IOC容器类的 getBean()开始的，getBean(beanName)读取
 BeanDefinition（封装 <bean id="factoryBeanName" class="className">）中封装的内容，利用反射创建
 所需的实例，并返回，但是并不是返回最原始的对象，而是使用 BeanWrapper 封装后再返回；
 
@@ -146,25 +152,30 @@ BeanDefinition（封装 <bean id="factoryBeanName" class="className">）中封�
 回到 GPApplicationContext IOC容器类的 getBean(String beanName)方法，getBean()方法依赖instantionBean()
 方法，传一个BeanDefinition，就返回一个单例实例Bean，单例实例Bean通过缓存集合
 beanCacheMap(key:类全名,value:实例对象) 实现；
-private Object instantionBean(BeanDefinition beanDefinition){
-    Object instance = null;
-    String className = beanDefinition.getBeanClassName();
-    try{
-        /*缓存：缓存就是一个集合，直接去缓存中取，有则取出，没有则创建，并保存到集合里面*/
-        if(this.beanCacheMap.containsKey(className)){
-            instance = this.beanCacheMap.get(className);
-        }else{
-            Class<?> clazz = Class.forName(className);
-            instance = clazz.newInstance();
-            this.beanCacheMap.put(className,instance);
+```java
+public class GPApplicationContext extends GPDefaultListableBeanFactory implements GPBeanFactory{
+    private Object instantionBean(BeanDefinition beanDefinition){
+        Object instance = null;
+        String className = beanDefinition.getBeanClassName();
+        try{
+            /*缓存：缓存就是一个集合，直接去缓存中取，有则取出，没有则创建，并保存到集合里面*/
+            if(this.beanCacheMap.containsKey(className)){
+                instance = this.beanCacheMap.get(className);
+            }else{
+                Class<?> clazz = Class.forName(className);
+                instance = clazz.newInstance();
+                this.beanCacheMap.put(className,instance);
+            }
+            return instance;
+        }catch (Exception e){
+            e.printStackTrace();
         }
-        return instance;
-    }catch (Exception e){
-        e.printStackTrace();
+        return null;
     }
-    return null;
 }
-回到 BeanWrapper 类
+```
+```java
+// 回到 BeanWrapper 类
 public class BeanWrapper {
     /*原始的实例化对象，即直接由 类全名 反射出来的*/
     private Object originalInstance;
@@ -179,9 +190,10 @@ public class BeanWrapper {
     public Class<?> getWrappedClass(){
         return this.wrapperInstance.getClass();
     }
-    /*setter，getter方法省略*/
 }
-因为spring要使用 AOP 因此创建 *.beans.BeanPostProcessor 监听类
+```
+```java
+// 因为spring要使用 AOP 因此创建 *.beans.BeanPostProcessor 监听类
 /*用作事件监听的*/
 public class BeanPostProcessor {
     public Object postProcessBeforeInitialization(Object bean, String beanName) {
@@ -191,43 +203,49 @@ public class BeanPostProcessor {
         return bean;
     }
 }
-用 BeanPostProcessor 类对象作为 BeanWrapper 类的成员变量；
-创建 *.core.FactoryBean 类，BeanWrapper 继承 FactoryBean，保证同宗同源；
+
+/**用 BeanPostProcessor 类对象作为 BeanWrapper 类的成员变量；
+创建 *.core.FactoryBean 类，BeanWrapper 继承 FactoryBean，保证同宗同源*/
 public class BeanWrapper extends FactoryBean{
-    ...
+    //...
 }
+```
 回到 GPApplicationContext IOC容器类的 getBean()方法：
 /*④依赖注入：依赖注入从 getBean()方法开始*/
 /*读取 BeanDefinition（封装配置文件中的 <bean id="factoryBeanName" class="className">）中的内容，
  * 利用反射创建所需的实例，并返回，但是并不是返回最原始的对象，而是使用 BeanWrapper 封装后再返回*/
 /*装饰器模式：1、保留原来的OOP关系；2、我需要对它进行扩展，增强（为了以后AOP打基础）；*/
-@Override
-public Object getBean(String beanName) {
-    BeanDefinition  beanDefinition = this.beanDefinitionMap.get(beanName);
-    String className = beanDefinition.getBeanClassName();
-    try{
-        /*事件监听器对象*/
-        BeanPostProcessor beanPostProcessor = new BeanPostProcessor();
-        /*由beanDefinition获得instance*/
-        Object instance = this.instantionBean(beanDefinition);
-        if(null == instance){ return  null;}
-        /*被监听类GPApplicationContext的被监听方法，调用监听器的监听方法，监听方法有 2 种：
-        * ①只有 1 个监听方法 handleEvent(Event event) ，监听方法会根据事件参数做相应处理
-        * ②有多个监听方法，想做什么处理，就调哪个监听方法*/
-        beanPostProcessor.postProcessBeforeInitialization(instance,beanName);
-        BeanWrapper beanWrapper = new BeanWrapper(instance);
-        beanWrapper.setPostProcessor(beanPostProcessor);
-        this.beanWrapperMap.put(beanName,beanWrapper);
-        /*在实例初始化以后调用监听方法postProcessAfterInitialization()，做相应操作*/
-        beanPostProcessor.postProcessAfterInitialization(instance,beanName);
-//            populateBean(beanName,instance);
-        //通过这样一调用，相当于给我们自己留有了可操作的空间
-        return this.beanWrapperMap.get(beanName).getWrapperInstance();
-    }catch (Exception e){
-        e.printStackTrace();
+```java
+public class GPApplicationContext extends GPDefaultListableBeanFactory implements GPBeanFactory{
+    @Override
+    public Object getBean(String beanName) {
+        BeanDefinition  beanDefinition = this.beanDefinitionMap.get(beanName);
+        String className = beanDefinition.getBeanClassName();
+        try{
+            /*事件监听器对象*/
+            BeanPostProcessor beanPostProcessor = new BeanPostProcessor();
+            /*由beanDefinition获得instance*/
+            Object instance = this.instantionBean(beanDefinition);
+            if(null == instance){ return  null;}
+            /*被监听类GPApplicationContext的被监听方法，调用监听器的监听方法，监听方法有 2 种：
+            * ①只有 1 个监听方法 handleEvent(Event event) ，监听方法会根据事件参数做相应处理
+            * ②有多个监听方法，想做什么处理，就调哪个监听方法*/
+            beanPostProcessor.postProcessBeforeInitialization(instance,beanName);
+            BeanWrapper beanWrapper = new BeanWrapper(instance);
+            beanWrapper.setPostProcessor(beanPostProcessor);
+            this.beanWrapperMap.put(beanName,beanWrapper);
+            /*在实例初始化以后调用监听方法postProcessAfterInitialization()，做相应操作*/
+            beanPostProcessor.postProcessAfterInitialization(instance,beanName);
+    //            populateBean(beanName,instance);
+            //通过这样一调用，相当于给我们自己留有了可操作的空间
+            return this.beanWrapperMap.get(beanName).getWrapperInstance();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return null;
     }
-    return null;
 }
+```
 ④依赖注入方法 doAutowrited();该方法里面再调用 populateBean()方法，该方法给 bean 属性赋值；
 ****************************************************************************************
 依赖注入实质：spring容器初始化产生的对象都是无参构造器创建的，属性都是初始值，还没有赋值，
