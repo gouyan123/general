@@ -8,6 +8,7 @@ import org.eclipse.jgit.internal.storage.file.FileRepository;
 import org.eclipse.jgit.lib.Repository;
 import org.eclipse.jgit.storage.file.FileRepositoryBuilder;
 import org.eclipse.jgit.transport.UsernamePasswordCredentialsProvider;
+import org.junit.Test;
 import java.io.*;
 import java.text.SimpleDateFormat;
 import java.util.Date;
