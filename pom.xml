@@ -46,7 +46,7 @@
       <aopalliance.version>1.0</aopalliance.version>
       <aspectjweaver.version>1.6.8</aspectjweaver.version>
       <spring-dao.version>2.08</spring-dao.version>
-      <junit.version>4.12</junit.version>
+      <junit.version>4.13.1</junit.version>
       <!--spring结束-->
       <servlet.version>3.1.0</servlet.version>
       <jsp.version>2.2</jsp.version>
