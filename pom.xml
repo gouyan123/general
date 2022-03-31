@@ -40,7 +40,7 @@
       <javassist.version>3.21.0-GA</javassist.version>
       <remote.api.version>1.0-SNAPSHOT</remote.api.version>
       <!--spring开始-->
-      <spring.version>5.0.4.RELEASE</spring.version>
+      <spring.version>5.3.18</spring.version>
       <commons-collections.version>3.2.2</commons-collections.version>
       <cglib-nodep.version>3.2.6</cglib-nodep.version>
       <aopalliance.version>1.0</aopalliance.version>
